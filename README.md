@@ -9,7 +9,7 @@
 5. Remplissez votre clé d'accès dans le fichier `.env` :
 
    ```plaintext
-   VUE_APP_MAPBOX_ACCESS_TOKEN=your_mapbox_access_token_here
+   VITE_APP_MAPBOX_ACCESS_TOKEN=your_mapbox_access_token_here
 
    ```
 
