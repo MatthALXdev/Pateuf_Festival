@@ -12,15 +12,21 @@
       >
         <details>
           <summary class="cursor-pointer">Filtrer par icônes</summary>
-          <div v-for="symbol in symbols" :key="symbol" class="mt-2">
+          <button
+            @click="toggleSelectAllAndUpdateLayers"
+            class="text-blue-500 text-sm mt-2"
+          >
+            {{ allSelected ? 'Tout désélectionner' : 'Tout sélectionner' }}
+          </button>
+          <div v-for="group in groupFilterData" :key="group.name" class="mt-2">
             <input
               type="checkbox"
-              :id="symbol"
-              v-model="checkedSymbols"
-              :value="symbol"
+              :id="group.name"
+              v-model="checkedGroups"
+              :value="group.name"
               class="mr-2"
             />
-            <label :for="symbol">{{ symbol }}</label>
+            <label :for="group.name">{{ group.name }}</label>
           </div>
         </details>
       </nav>
@@ -61,6 +67,7 @@ const props = defineProps({
   logoMapData: Object,
   mapStyleData: Object,
   planningData: Object,
+  groupFilterData: Array,
 })
 
 const mapContainer = ref(null)
@@ -69,12 +76,9 @@ const map = ref(null)
 const isExpanded = ref(false)
 const selectedFeature = ref(null)
 const coordinates = ref([0, 0])
-const checkedSymbols = ref([])
-const symbols = ref([])
+const checkedGroups = ref([])
+const allSelected = ref(true)
 
-// Observer le changement de l'état d'expansion
-// Sert à zoomer en mettant l'élément bien au centre quand il est cliqué,
-//vue que le commposant détails modifie la taille de la carte au moment du clic.
 watch(isExpanded, async newVal => {
   if (newVal && map.value) {
     await nextTick()
@@ -86,7 +90,6 @@ watch(isExpanded, async newVal => {
   }
 })
 
-// Ajuster les coordonnées centrales de la carte
 function adjustCenterCoordinates(center) {
   if (map.value) {
     const centerOffsetY =
@@ -117,11 +120,8 @@ function selectFeature(feature) {
       geometry.type === 'Point'
         ? geometry.coordinates
         : getPolygonCenter(geometry.coordinates)
-    if (overlay.value) {
-      overlay.value.style.display = 'block'
-    }
-  } else {
-    console.error("Feature ou geometry n'est pas défini:", feature)
+
+    overlay.value.style.display = 'block'
   }
 }
 
@@ -136,10 +136,65 @@ function closeDetails() {
     overlay.value.style.display = 'none'
   }
 }
+// Désélectionner ou sélectionner tous les groupes et mettre à jour les couches
+function toggleSelectAllAndUpdateLayers() {
+  if (allSelected.value) {
+    checkedGroups.value = []
+  } else {
+    checkedGroups.value = props.groupFilterData.map(group => group.name)
+  }
+  allSelected.value = !allSelected.value
+
+  // Créer une nouvelle référence à checkedGroups pour déclencher le watch
+  checkedGroups.value = checkedGroups.value.slice()
+}
+
+// Mise à jour des couches en fonction des groupes cochés
+function updateLayers() {
+  // Récupérer les icônes et ref-ids des groupes cochés
+  const selectedIcons = []
+  const selectedRefIds = []
+
+  props.groupFilterData.forEach(group => {
+    if (checkedGroups.value.includes(group.name)) {
+      selectedIcons.push(...group.icons)
+      if (group.name === 'Scènes') {
+        group.refIds.forEach((refId, index) => {
+          const icon = index < 3 ? 'music' : 'scene'
+          selectedRefIds.push(`${refId}_${icon}`)
+        })
+      } else {
+        group.refIds.forEach((refId, index) => {
+          const icon = group.icons[index] || group.icons[group.icons.length - 1]
+          selectedRefIds.push(`${refId}_${icon}`)
+        })
+      }
+    }
+  })
+
+  // Appliquer le filtre aux couches en utilisant les icônes et ref-ids sélectionnés
+  if (selectedIcons.length > 0) {
+    map.value.setFilter('logomap-20241128', ['in', 'icon', ...selectedIcons])
+  } else {
+    map.value.setFilter('logomap-20241128', null) // Affiche tout par défaut
+  }
+
+  if (selectedRefIds.length > 0) {
+    map.value.setFilter('mapZone', ['in', 'ref-id', ...selectedRefIds])
+    map.value.setFilter('markerMap', ['in', 'ref-id', ...selectedRefIds])
+  } else {
+    map.value.setFilter('mapZone', null) // Affiche tout par défaut
+    map.value.setFilter('markerMap', null) // Affiche tout par défaut
+  }
+}
 
 // Initialiser la carte avec Mapbox et configurer les sources et couches
 onMounted(() => {
   mapboxgl.accessToken = MAPBOX_ACCESS_TOKEN
+
+  if (map.value) {
+    map.value.remove()
+  }
 
   map.value = new mapboxgl.Map({
     container: mapContainer.value,
@@ -156,73 +211,15 @@ onMounted(() => {
     initializeMapSources(map.value, props)
 
     map.value.once('idle', () => {
-      const sources = map.value.getStyle().sources
-      const layers = map.value.getStyle().layers
-
-      console.log('Sources:', sources)
-      console.log('Layers:', layers)
-
-      if (!sources.composite) {
-        console.error("La source composite n'existe pas")
-        return
-      }
-
-      const features = map.value.querySourceFeatures('composite', {
-        sourceLayer: 'logoMap20241202-64xyb4',
-      })
-      console.log('Features:', features)
-
-      if (features.length === 0) {
-        console.error(
-          'Aucune fonctionnalité trouvée dans le layer logoMap20241202-64xyb4',
-        )
-      } else {
-        const uniqueSymbols = [
-          ...new Set(features.map(feature => feature.properties.icon)),
-        ]
-        symbols.value = uniqueSymbols
-        checkedSymbols.value = uniqueSymbols
-        setupLayerEvents(map.value, selectFeature)
-      }
+      checkedGroups.value = props.groupFilterData.map(group => group.name)
+      setupLayerEvents(map.value, selectFeature)
     })
   })
 })
 
-// Observer les changements dans les symboles cochés
-watch(checkedSymbols, newCheckedSymbols => {
-  const validSymbols = newCheckedSymbols.filter(
-    symbol => symbol !== undefined && symbol !== null,
-  )
-
-  let visibleIcons = []
-  if (validSymbols.length > 0) {
-    map.value.setFilter('logomap-20241128', ['in', 'icon', ...validSymbols])
-
-    visibleIcons = map.value
-      .queryRenderedFeatures({
-        layers: ['logomap-20241128'],
-        filter: ['in', 'icon', ...validSymbols],
-      })
-      .map(feature => ({
-        id: feature.id,
-        name: feature.properties.icon,
-        uniqueId: `${feature.id}_${feature.properties.icon}`,
-      }))
-  } else {
-    map.value.setFilter('logomap-20241128', ['in', 'icon', ''])
-  }
-
-  const validUniqueIds = visibleIcons.map(icon => icon.uniqueId)
-  //Les layers mapZone et markerMap ne réapparaisent pas lorsqu'on recoche.
-  //Seule un double clic ()
-  if (validUniqueIds.length > 0) {
-    map.value.setFilter('mapZone', ['in', 'ref-id', ...validUniqueIds])
-    map.value.setFilter('markerMap', ['in', 'ref-id', ...validUniqueIds])
-  } else {
-    map.value.setFilter('mapZone', ['in', 'ref-id', ''])
-    map.value.setFilter('markerMap', ['in', 'ref-id', ''])
-  }
-
-  console.log('Visible Icons:', visibleIcons)
+// Observer les changements dans les groupes cochés
+watch(checkedGroups, newCheckedGroups => {
+  allSelected.value = newCheckedGroups.length === props.groupFilterData.length
+  updateLayers()
 })
 </script>

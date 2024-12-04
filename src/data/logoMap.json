@@ -113,15 +113,6 @@
     },
     {
       "type": "Feature",
-      "properties": { "ref-id": "3_sanitary", "icon": "sanitary" },
-      "geometry": {
-        "coordinates": [1.1393228135119386, 47.45624182860632],
-        "type": "Point"
-      },
-      "id": 124
-    },
-    {
-      "type": "Feature",
       "properties": { "ref-id": "7_inOut", "icon": "inOut" },
       "geometry": {
         "coordinates": [1.137647872709266, 47.45557973116067],

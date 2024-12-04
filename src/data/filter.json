@@ -1,0 +1,67 @@
+[
+  {
+    "name": "Campements",
+    "icons": ["camp"],
+    "refIds": ["2", "5"]
+  },
+  {
+    "name": "Points de vente",
+    "icons": ["storeRoad"],
+    "refIds": ["13", "18"]
+  },
+  {
+    "name": "Centres d'information",
+    "icons": ["infoCenter"],
+    "refIds": ["6", "11", "16"]
+  },
+  {
+    "name": "Activités",
+    "icons": ["sanctuary", "anvilArt", "titanArena", "artiste"],
+    "refIds": ["4", "8", "4", "1"]
+  },
+  {
+    "name": "Scènes",
+    "icons": ["music", "scene"],
+    "refIds": ["5", "2", "1", "4", "3", "2"]
+  },
+  {
+    "name": "Centres de secours",
+    "icons": ["rescueCenter"],
+    "refIds": ["3", "10", "14"]
+  },
+  {
+    "name": "Entrées",
+    "icons": ["inOut"],
+    "refIds": ["7", "11", "15"]
+  },
+  {
+    "name": "Accès secours & artiste",
+    "icons": ["vipinOut"],
+    "refIds": ["4"]
+  },
+  {
+    "name": "Toilettes",
+    "icons": ["WC"],
+    "refIds": ["5", "9", "12"]
+  },
+  {
+    "name": "Restauration",
+    "icons": ["tavern", "food"],
+    "refIds": ["3", "6", "7"]
+  },
+  {
+    "name": "Douches",
+    "icons": ["sanitary"],
+    "refIds": ["3"]
+  },
+  {
+    "name": "Entrées véhicules",
+    "icons": ["entranceMainRoad"],
+    "refIds": ["8"]
+  },
+  {
+    "name": "Parkings",
+    "icons": ["parking"],
+    "refIds": ["10", "9"]
+  }
+]

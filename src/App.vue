@@ -9,6 +9,7 @@
         :mapData="mapData"
         :logoMapData="logoMapData"
         :planningData="planningData"
+        :groupFilterData="groupFilterData"
       />
     </div>
   </div>
@@ -21,6 +22,7 @@ import Map_comp from './components/Map_comp.vue'
 const mapData = ref(null)
 const planningData = ref(null)
 const logoMapData = ref(null)
+const groupFilterData = ref(null)
 
 // Récupération des données pour mapData
 fetch('./src/data/map.json')
@@ -62,5 +64,19 @@ fetch('./src/data/logoMap.json')
   .then(data => {
     // Assignation des données récupérées à la variable réactive logoMapData
     logoMapData.value = data
+  })
+
+// Récupération des données pour groupFilterData
+fetch('./src/data/filter.json')
+  .then(response => {
+    if (response.ok) {
+      return response.json()
+    }
+    // Gestion d'erreur en cas d'échec de la requête
+    throw new Error('Impossible de récupérer les données de logoMap')
+  })
+  .then(data => {
+    // Assignation des données récupérées à la variable réactive groupFilterData
+    groupFilterData.value = data
   })
 </script>
