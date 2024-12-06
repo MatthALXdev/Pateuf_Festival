@@ -38,15 +38,7 @@
     {
       "type": "Feature",
       "properties": {
-        "logoArea": false,
-        "selected": false,
-        "hover": false,
-        "name": "La taverne des brasseurs",
-        "stroke": "#6A96A0",
-        "stroke-width": 5,
-        "stroke-opacity": 1,
-        "fill-opacity": 1,
-        "ref-id": "3_tavern"
+        "name": "La taverne des brasseurs"
       },
       "geometry": {
         "coordinates": [
@@ -65,15 +57,7 @@
     {
       "type": "Feature",
       "properties": {
-        "logoArea": false,
-        "selected": false,
-        "hover": false,
-        "name": "Le repaire du kraken",
-        "stroke": "#6A96A0",
-        "stroke-width": 5,
-        "stroke-opacity": 1,
-        "fill-opacity": 1,
-        "ref-id": "2_music"
+        "name": "Le repaire du kraken"
       },
       "geometry": {
         "coordinates": [
@@ -96,15 +80,7 @@
     {
       "type": "Feature",
       "properties": {
-        "logoArea": false,
-        "selected": false,
-        "hover": false,
-        "name": "La forge",
-        "stroke": "#6A96A0",
-        "stroke-width": 5,
-        "stroke-opacity": 1,
-        "fill-opacity": 1,
-        "ref-id": "5_music"
+        "name": "La forge"
       },
       "geometry": {
         "coordinates": [
@@ -126,15 +102,7 @@
     {
       "type": "Feature",
       "properties": {
-        "logoArea": false,
-        "selected": false,
-        "hover": false,
-        "name": "Valhalla",
-        "stroke": "#6A96A0",
-        "stroke-width": 5,
-        "stroke-opacity": 1,
-        "fill-opacity": 1,
-        "ref-id": "1_artiste"
+        "name": "Valhalla"
       },
       "geometry": {
         "coordinates": [
@@ -153,15 +121,7 @@
     {
       "type": "Feature",
       "properties": {
-        "logoArea": false,
-        "selected": false,
-        "hover": false,
-        "name": "Le Chaos Sonore",
-        "stroke": "#6A96A0",
-        "stroke-width": 5,
-        "stroke-opacity": 1,
-        "fill-opacity": 1,
-        "ref-id": "1_music"
+        "name": "Le Chaos Sonore"
       },
       "geometry": {
         "coordinates": [
@@ -182,15 +142,7 @@
     {
       "type": "Feature",
       "properties": {
-        "logoArea": false,
-        "selected": false,
-        "hover": false,
-        "name": "Le chaudron Gourmand ",
-        "stroke": "#6A96A0",
-        "stroke-width": 5,
-        "stroke-opacity": 1,
-        "fill-opacity": 1,
-        "ref-id": "7_food"
+        "name": "Le chaudron Gourmand "
       },
       "geometry": {
         "coordinates": [
@@ -214,15 +166,7 @@
     {
       "type": "Feature",
       "properties": {
-        "logoArea": false,
-        "selected": false,
-        "hover": false,
-        "name": "L'Enclume des arts ",
-        "stroke": "#6A96A0",
-        "stroke-width": 5,
-        "stroke-opacity": 1,
-        "fill-opacity": 1,
-        "ref-id": "8_anvilArt"
+        "name": "L'Enclume des arts "
       },
       "geometry": {
         "coordinates": [
@@ -241,15 +185,7 @@
     {
       "type": "Feature",
       "properties": {
-        "logoArea": false,
-        "selected": false,
-        "hover": false,
-        "name": "Le camp des Guerriers ",
-        "stroke": "#6A96A0",
-        "stroke-width": 5,
-        "stroke-opacity": 1,
-        "fill-opacity": 1,
-        "ref-id": "5_camp"
+        "name": "Le camp des Guerriers "
       },
       "geometry": {
         "coordinates": [
@@ -271,15 +207,7 @@
     {
       "type": "Feature",
       "properties": {
-        "logoArea": false,
-        "selected": false,
-        "hover": false,
-        "name": "Le camp des Ombres",
-        "stroke": "#6A96A0",
-        "stroke-width": 5,
-        "stroke-opacity": 1,
-        "fill-opacity": 1,
-        "ref-id": "2_camp"
+        "name": "Le camp des Ombres"
       },
       "geometry": {
         "coordinates": [
@@ -303,15 +231,7 @@
     {
       "type": "Feature",
       "properties": {
-        "logoArea": false,
-        "selected": false,
-        "hover": false,
-        "name": "Le sanctuaire du Nord ",
-        "stroke": "#6A96A0",
-        "stroke-width": 5,
-        "stroke-opacity": 1,
-        "fill-opacity": 1,
-        "ref-id": "4_sanctuary"
+        "name": "Le sanctuaire du Nord "
       },
       "geometry": {
         "coordinates": [
@@ -336,13 +256,7 @@
     {
       "type": "Feature",
       "properties": {
-        "logoArea": false,
-        "name": "La vallées des Ames Perdues",
-        "stroke": "#6A96A0",
-        "stroke-width": 5,
-        "stroke-opacity": 0.1,
-        "fill-opacity": 1,
-        "ref-id": "3_sanitary"
+        "name": "La vallées des Ames Perdues"
       },
       "geometry": {
         "coordinates": [
@@ -364,15 +278,7 @@
     {
       "type": "Feature",
       "properties": {
-        "logoArea": false,
-        "selected": false,
-        "hover": false,
-        "name": "Le chaudron Gourmand ",
-        "stroke": "#6A96A0",
-        "stroke-width": 5,
-        "stroke-opacity": 1,
-        "fill-opacity": 1,
-        "ref-id": "6_food"
+        "name": "Le chaudron Gourmand "
       },
       "geometry": {
         "coordinates": [
