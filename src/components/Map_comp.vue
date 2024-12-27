@@ -11,11 +11,13 @@
     >
       <!-- Groupe de filtres pour les icônes -->
       <nav
-        class="absolute top-10 left-10 z-20 w-52 bg-white rounded-lg shadow-lg p-4 border border-gray-200"
+        v-if="!isExpanded"
+        class="absolute top-10 left-10 z-20 w-52 max-h-96 bg-_white03 text-base rounded-lg shadow-lg px-4 pb-4 font-caesar overflow-y-auto"
+        :class="scrollbarClass"
       >
-        <details class="group">
+        <details class="flex flex-col col group">
           <summary
-            class="cursor-pointer font-semibold text-gray-800 group-hover:text-blue-600 text-center flex items-center justify-between"
+            class="sticky top-0 bg-_white03 cursor-pointer font-semibold text-darkBlue01 group-hover:text-_blue01 text-center flex items-center justify-between pt-4 z-30"
           >
             <span>Filtre</span>
             <svg
@@ -33,40 +35,54 @@
               />
             </svg>
           </summary>
+          <div class="sticky top-9 bg-_white03 h-2"></div>
           <button
             @click="toggleSelectHandler"
-            class="text-blue-500 text-sm mt-2 focus:outline-none focus:ring focus:ring-blue-300"
+            class="sticky top-11 bg-_white03 text-_blue01 text-sm z-30 w-full"
           >
             {{ allSelected ? 'Tout désélectionner' : 'Tout sélectionner' }}
           </button>
-          <div v-for="group in groupFilterData" :key="group.name" class="mt-3">
-            <input
-              type="checkbox"
-              :id="group.name"
-              v-model="checkedGroups"
-              :value="group.name"
-              class="mr-2 focus:ring-blue-500 focus:outline-none"
-            />
-            <label :for="group.name" class="text-gray-700">
-              {{ group.name }}
-            </label>
+
+          <div>
+            <div v-for="group in groupFilterData" :key="group.name" class="">
+              <input
+                type="checkbox"
+                :id="group.name"
+                v-model="checkedGroups"
+                :value="group.name"
+                class="focus:ring-blue-500 focus:outline-none hidden"
+              />
+              <label
+                :for="group.name"
+                class="block w-full text-_black01 cursor-pointer p-1 rounded-lg mr-2"
+                :class="[
+                  'mt-2',
+                  checkedGroups.includes(group.name)
+                    ? 'bg-_blue03'
+                    : 'bg-_white03',
+                ]"
+              >
+                {{ group.name }}
+              </label>
+            </div>
           </div>
         </details>
       </nav>
 
       <!-- Bouton Actuellement -->
       <button
+        v-if="!isExpanded"
         @click="showOnStage"
-        class="absolute bottom-5 right-5 z-20 w-20 h-10 bg-blue-600 text-white font-medium rounded-lg shadow-md p-2 transition-colors duration-200 ease-in-out hover:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-400"
+        class="text-base absolute bottom-5 right-5 z-20 w-auto h-10 bg-_white02 text-_darkBlue02 font-medium rounded-md shadow-md p-2 transition-colors duration-200 ease-in-out hover:bg-_blue02 font-caesar animate-pulse hover:animate-none focus:animate-none"
       >
-        Actuel
+        En ce moment
       </button>
 
       <!-- Overlay pour les interactions -->
       <div
         id="overlay"
         ref="overlay"
-        class="absolute inset-0 w-full h-full bg-white bg-opacity-0 pointer-events-auto z-10 hidden"
+        class="absolute inset-0 w-full h-full bg-_white02 bg-opacity-0 pointer-events-auto z-10 hidden"
       ></div>
     </div>
 
@@ -83,7 +99,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref, watch, nextTick } from 'vue'
+import { onMounted, ref, watch, nextTick, inject, defineEmits } from 'vue'
 import mapboxgl from 'mapbox-gl'
 import { setupLayerEvents, selectFeature } from '@/services/layerHandler'
 import { initializeMapSources } from '@/services/mapInit'
@@ -105,16 +121,18 @@ const props = defineProps({
   planningData: Object,
   groupFilterData: Array,
 })
+const emit = defineEmits(['is-loaded'])
 const mapContainer = ref(null)
 const overlay = ref(null)
 const map = ref(null)
 const isExpanded = ref(false)
-
+const scrollbarClass = inject('scrollbarClass')
 const selectedFeature = ref(null)
 const coordinates = ref([0, 0])
 const checkedGroups = ref([])
 const allSelected = ref(true)
 const currentlyOnStage = ref(false)
+const isLoaded = ref(false)
 // const selectedLocations = ref(false)
 
 watch(isExpanded, async newVal => {
@@ -171,25 +189,17 @@ function showOnStage() {
   }
 }
 
-// showDetailsForSelectedLocations(selectedLocations, props, isExpanded)
-
 // Initialiser la carte avec Mapbox et configurer les sources et couches
 onMounted(() => {
+  // const startTime = performance.now()
   mapboxgl.accessToken = MAPBOX_ACCESS_TOKEN
-  if (map.value) {
-    map.value.remove()
-  }
   map.value = new mapboxgl.Map({
     container: mapContainer.value,
     style: 'mapbox://styles/devamalix/cm3r6hztm004l01s67dy67elp/draft',
     center: [1.1451961205377867, 47.45770024379996],
     zoom: 14,
-    maxBounds: [
-      [1.123468936041729, 47.44501907592129],
-      [1.166923305033844, 47.47038141167863],
-    ],
   })
-  map.value.on('load', () => {
+  map.value.on('load', async () => {
     initializeMapSources(map.value, props)
     map.value.once('idle', () => {
       checkedGroups.value = props.groupFilterData.map(group => group.name)
@@ -202,6 +212,12 @@ onMounted(() => {
           overlay.value,
         ),
       )
+      // const endTime = performance.now()
+      // console.log(
+      //   `Temps total de chargement du composant et des couches : ${endTime - startTime} ms`,
+      // )
+      isLoaded.value = true
+      emit('is-loaded', isLoaded.value)
     })
   })
 })

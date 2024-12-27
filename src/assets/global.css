@@ -1,0 +1,26 @@
+/* Styles pour Chrome, Edge, Safari */
+.custom-webkit-scrollbar::-webkit-scrollbar {
+  display: block;
+  width: 8px;
+  border-radius: 8px; /* Arrondi du track */
+}
+
+.custom-webkit-scrollbar::-webkit-scrollbar-track {
+  background: var(--tw-color-invisible);
+  border-radius: 8px; /* Arrondi du track */
+}
+
+.custom-webkit-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #555;
+  border-radius: 8px; /* Arrondi du slider */
+}
+
+.custom-webkit-scrollbar::-webkit-scrollbar-button {
+  display: none; /* Supprime les flèches */
+}
+
+/* Styles pour Firefox uniquement */
+.custom-firefox-scrollbar {
+  scrollbar-width: thin; /* Réduire la largeur */
+  scrollbar-color: #555 #e0e0e0; /* Slider et fond */
+}

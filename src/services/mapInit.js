@@ -1,6 +1,7 @@
 // Fonction pour initialiser les sources et les couches sur la carte
-export function initializeMapSources(map, props) {
+export async function initializeMapSources(map, props) {
   // Ajout de la source des zones de carte
+
   map.addSource('mapFile', {
     type: 'geojson',
     data: props.mapData,
