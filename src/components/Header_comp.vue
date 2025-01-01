@@ -1,26 +1,33 @@
 <template>
-  <div class="flex flex-row border border-red-500 justify-between items-center">
-    <div class="border border-blue-500">
-      <p
-        class="text-xs w-2/3 text-center h-auto px-0 bg-_black text-_white rounded-lg"
-      >
+  <!-- Header fixe -->
+  <div
+    class="px-4 py-1 bg-_beige02 flex flex-wrap justify-between items-center fixed top-0 left-0 w-full z-50"
+  >
+    <div class="text-lg">
+      <p class="w-2/3 text-center bg-_black01 text-_white03 rounded-full">
         Since 1989
       </p>
-      <h1 class="text-xl">PATEUF</h1>
-      <p
-        class="h-auto text-xs px-2 text-center bg-_black text-_white rounded-lg"
-      >
+      <h1 class="text-3xl">PATEUF</h1>
+      <p class="px-2 text-center bg-_black01 text-_white03 rounded-full">
         14 & 15 JUIN 2025
       </p>
     </div>
     <div>
-      <a href="#" class="inline-block border border-red-500">
+      <a href="#">
         <img
-          class="p-1 w-10 h-10 m-1 bg-_beige"
-          src=".\..\assets\images\Festival\profil.png"
+          class="w-14 h-14"
+          src=".\..\assets\images\profil.png"
           alt="logo profile"
         />
       </a>
     </div>
+  </div>
+  <!-- Image principale -->
+  <div>
+    <img
+      src="./../assets/images/frontImage.png"
+      alt="Image principale"
+      class="w-full mt-[100px]"
+    />
   </div>
 </template>

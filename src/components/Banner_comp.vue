@@ -1,65 +1,107 @@
 <template>
-  <div class="p-4 cursor-pointer max-w-xs mx-auto" ref="dropDown">
+  <!-- Carrousel -->
+  <div class="w-full h-20 overflow-hidden">
     <div
-      class="p-4 border border-gray-800 rounded-lg mb-1.5"
-      @click="isDropDownVisible = true"
+      class="absolute inset-0 flex transition-transform duration-1000"
+      :style="{ transform: `translateX(-${currentSlide * 100}%)` }"
     >
-      {{ mappedSelectedOption }}
-    </div>
-    <div class="options-wrapper" v-if="isDropDownVisible">
+      <!-- Compte à rebours -->
       <div
-        v-for="(option, index) in props.options"
-        :key="index"
-        class="p-4 border border-gray-800 hover:bg-gray-300 box-border first:rounded-t-lg last:rounded-b-lg"
-        @click="toggleOptionSelect(option)"
+        class="flex justify-center space-x-8 text-center w-full flex-shrink-0"
       >
-        {{ option.name || option }}
+        <div>
+          <p class="text-4xl font-bold">{{ days }}</p>
+          <p class="text-lg">JOURS</p>
+        </div>
+        <div>
+          <p class="text-4xl font-bold">{{ hours }}</p>
+          <p class="text-lg">HEURES</p>
+        </div>
+        <div>
+          <p class="text-4xl font-bold">{{ minutes }}</p>
+          <p class="text-lg">MINUTES</p>
+        </div>
+        <div>
+          <p class="text-4xl font-bold">{{ seconds }}</p>
+          <p class="text-lg">SECONDES</p>
+        </div>
+      </div>
+      <!-- Informations -->
+      <div
+        v-for="info in infos"
+        :key="info.infoID"
+        class="flex items-center justify-center w-full flex-shrink-0"
+      >
+        <p class="text-lg font-semibold text-center px-4">
+          {{ info.infoDescription }}
+        </p>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { computed, ref, defineEmits, onMounted, onBeforeUnmount } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 
-const dropDown = ref(null)
-
+const dataLoaded = ref(null)
 const props = defineProps({
-  options: {
+  infos: {
     type: Array,
-    recquired: true,
-  },
-  modelValue: {
-    default: null,
+    required: false,
+    default: () => [],
   },
 })
 
-const mappedSelectedOption = computed(() => {
-  return selectedOption.value?.name || selectedOption.value || 'Heure'
-})
+const currentSlide = ref(0)
+const totalSlides = ref(1) // Will update dynamically based on infos length
 
-const selectedOption = ref(null)
+watch(
+  () => props.infos,
+  newData => {
+    if (newData && Array.isArray(newData) && newData.length > 0) {
+      dataLoaded.value = true
+      totalSlides.value = newData.length + 1 // Include countdown slide
+    } else {
+      dataLoaded.value = false
+      totalSlides.value = 1
+    }
+  },
+  { immediate: true },
+)
 
-const isDropDownVisible = ref(false)
+const targetDate = new Date('2025-06-14T14:00:00+02:00')
+const days = ref('XXX')
+const hours = ref('XX')
+const minutes = ref('XX')
+const seconds = ref('XX')
 
-const toggleOptionSelect = option => {
-  selectedOption.value = option
-  emit('update:modelValue', option)
-  isDropDownVisible.value = false
-}
+const updateCountdown = () => {
+  const now = new Date()
+  const difference = targetDate - now
 
-const emit = defineEmits(['update:modelValue'])
-
-const closeDropDown = element => {
-  if (!dropDown.value.contains(element.target)) {
-    isDropDownVisible.value = false
+  if (difference > 0) {
+    days.value = Math.floor(difference / (1000 * 60 * 60 * 24))
+    hours.value = Math.floor((difference / (1000 * 60 * 60)) % 24)
+    minutes.value = Math.floor((difference / (1000 * 60)) % 60)
+    seconds.value = Math.floor((difference / 1000) % 60)
+  } else {
+    days.value = 0
+    hours.value = 0
+    minutes.value = 0
+    seconds.value = 0
   }
 }
 
+const startCarousel = () => {
+  const interval = 12000 // 12 seconds per slide
+  setInterval(() => {
+    currentSlide.value = (currentSlide.value + 1) % totalSlides.value
+  }, interval)
+}
+
 onMounted(() => {
-  window.addEventListener('click', closeDropDown)
-})
-onBeforeUnmount(() => {
-  window.removeEventListener('click', closeDropDown)
+  updateCountdown()
+  setInterval(updateCountdown, 1000)
+  startCarousel()
 })
 </script>
