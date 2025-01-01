@@ -1,8 +1,5 @@
 <template>
   <div class="max-w-96 max-h-96 m-6 flex flex-col">
-    <!-- Titre du composant -->
-    <h2 class="text-2xl font-bold mb-2 h-8">Concert</h2>
-
     <!-- Titre de la scène -->
     <p class="text-xl font-semibold mb-2 h-8">
       {{ currentLocation }}
@@ -35,7 +32,7 @@
           <div
             class="pr-2"
             :class="[
-              'h-56',
+              'h-64',
               index === currentSceneIndex || isSwiping
                 ? 'overflow-y-auto'
                 : 'overflow-hidden',
@@ -132,10 +129,8 @@ watch(
   newData => {
     if (newData && Array.isArray(newData) && newData.length > 0) {
       dataLoaded.value = true
-      console.log('Données chargées :', newData)
     } else {
       dataLoaded.value = false
-      console.warn('Aucune donnée reçue ou le tableau est vide.')
     }
   },
 )

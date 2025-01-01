@@ -1,184 +1,239 @@
 <template>
-  <div class="p-4">
-    <div class="flex flex-wrap gap-4 mb-4">
-      <!-- Filtre par Localisation -->
-      <label class="flex flex-col">
-        <select v-model="selectedLocation" class="border p-2 rounded">
-          <option value="">Localisation</option>
-          <option
-            v-for="location in uniqueLocations"
-            :key="location"
-            :value="location"
-          >
-            {{ location }}
-          </option>
-        </select>
-      </label>
-
-      <!-- Filtre par Type d'activité -->
-      <label class="flex flex-col">
-        Type d'activité:
-        <select v-model="selectedLabel" class="border p-2 rounded">
-          <option value="">Tous</option>
-          <option v-for="label in uniqueLabels" :key="label" :value="label">
-            {{ label }}
-          </option>
-        </select>
-      </label>
-
-      <!-- Filtre par Date -->
-      <label class="flex flex-col">
-        Date:
-        <select v-model="selectedDate" class="border p-2 rounded">
-          <option value="">Toutes</option>
-          <option v-for="date in uniqueDates" :key="date" :value="date">
-            {{ formatDate(date) }}
-          </option>
-        </select>
-      </label>
-
-      <!-- Filtre par Heure -->
-      <label class="flex flex-col relative">
-        Heure (HH:MM):
-        <select
+  <div class="h-full flex flex-col">
+    <div class="filtre flex-shrink-0">
+      <div class="flex flex-wrap gap-2">
+        <!-- Filtre Localisation -->
+        <Selector_comp
+          ref="locationSelector"
+          optionName="Localisation"
+          :options="locationOptions"
+          v-model="selectedLocation"
+        />
+        <!-- Filtre Type d'activité -->
+        <Selector_comp
+          ref="labelSelector"
+          optionName="Activité"
+          :options="labelOptions"
+          v-model="selectedLabel"
+        />
+        <!-- Filtre Date -->
+        <Selector_comp
+          ref="dateSelector"
+          optionName="Jour"
+          :options="dateOptions"
+          v-model="selectedDate"
+        />
+        <!-- Filtre Heure -->
+        <Selector_comp
+          ref="timeSelector"
+          optionName="Horaire"
+          :options="timeOptions"
           v-model="selectedTime"
-          class="custom-select border rounded w-full"
-          size="4"
+        />
+      </div>
+
+      <!-- Bouton pour réinitialiser les filtres -->
+      <div class="ml-4">
+        <button
+          class="text-sm text-gray-600 hover:text-gray-800 underline"
+          @click="resetFilters"
         >
-          <option value="">Toutes</option>
-          <option v-for="time in availableTimes" :key="time" :value="time">
-            {{ time }}
-          </option>
-        </select>
-      </label>
+          Réinitialiser les filtres
+        </button>
+      </div>
     </div>
 
     <!-- Liste des activités filtrées -->
-    <ul class="space-y-4">
-      <li
-        v-for="activity in filteredActivities"
-        :key="activity.name"
-        class="border rounded p-4 shadow"
-      >
-        <div class="flex items-center gap-4">
-          <img
-            :src="activity.image || '/default-logo.png'"
-            alt="logo"
-            class="w-16 h-16 object-cover rounded"
-          />
-          <div class="flex-grow">
-            <h3 class="text-lg font-bold">{{ activity.name }}</h3>
-            <p class="text-sm text-gray-500">
-              {{
-                isToday(activity.date)
-                  ? `Commence à ${activity.start}`
-                  : `${formatDate(activity.date)} à ${activity.start}`
-              }}
+    <div
+      class="liste flex-grow overflow-y-auto text-sm pr-2"
+      :class="scrollbarClass"
+    >
+      <ul class="space-y-4 mt-4">
+        <li
+          v-for="activity in filteredActivities"
+          :key="activity.id"
+          class="border rounded px-4 py-2 shadow space-y-2"
+        >
+          <!-- Contenu principal -->
+          <div class="flex items-center space-x-4">
+            <!-- Image -->
+            <img
+              :src="activity.logoURL"
+              alt="Activity Logo"
+              class="w-10 h-10 object-cover rounded"
+            />
+
+            <!-- Infos -->
+            <div class="flex-grow">
+              <h3 class="text-sm font-bold">{{ activity.name }}</h3>
+              <p class="text-xs text-gray-500">
+                {{ formatDate(activity.date) }}
+              </p>
+              <p class="text-xs text-gray-500">
+                {{ activity.start }} &#8658; {{ activity.end }}
+              </p>
+              <p class="text-sm text-gray-700">
+                {{ activity.location }}
+              </p>
+            </div>
+
+            <!-- Localisation -->
+            <div class="flex flex-col justify-between items-center">
+              <img
+                src="/src/assets/images/marker.svg"
+                alt="Map Marker"
+                class="w-6 h-6 inline-block shadow-3xl"
+              />
+            </div>
+
+            <!-- Bouton Ajouter -->
+            <button
+              class="bg-_blue03 text-white px-2 py-1 rounded hover:bg-_blue01"
+              @click="toggleExpand(activity.id)"
+            >
+              {{ expandedActivities.includes(activity.id) ? '-' : '+' }}
+            </button>
+          </div>
+
+          <!-- Contenu étendu -->
+          <div
+            v-if="expandedActivities.includes(activity.id)"
+            class="flex items-start space-x-4 mt-2"
+          >
+            <img
+              :src="activity.image"
+              alt="Activity Image"
+              class="w-14 h-14 object-cover rounded self-center"
+            />
+            <p class="text-sm text-gray-700">
+              {{ activity.description }}
             </p>
           </div>
-          <button
-            @click="goToLocation(activity.location)"
-            class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-          >
-            S'y rendre
-          </button>
-          <button
-            @click="toggleDescription(activity)"
-            class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
-          >
-            {{ activity.showDescription ? 'Réduire' : 'Détail' }}
-          </button>
-        </div>
-        <div v-if="activity.showDescription" class="mt-4 text-gray-700">
-          <p>{{ activity.description }}</p>
-        </div>
-      </li>
-    </ul>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
-import { getTestDateTime } from '@/services/testHandler'
-
+import { ref, watch, inject } from 'vue'
+import Selector_comp from './Selector_comp.vue'
+const scrollbarClass = inject('scrollbarClass')
+// Props
 const props = defineProps({
   planningData: {
     type: Array,
-    required: false,
-    default: () => [],
+    required: true, // Marque la prop comme obligatoire
   },
 })
 
-// Fonction utilitaire pour formater les dates
-const formatDate = date => {
-  const options = { year: 'numeric', month: 'long', day: 'numeric' }
-  return new Date(date).toLocaleDateString('fr-FR', options)
-}
-
-// Obtenir la date et l'heure actuelles pour le test
-const { testDate, testTime } = getTestDateTime()
-
 // Filtres réactifs
-const selectedLocation = ref('')
-const selectedLabel = ref('')
-const selectedDate = ref('')
-const selectedTime = ref('')
+const selectedLocation = ref([])
+const selectedLabel = ref([])
+const selectedDate = ref([])
+const selectedTime = ref([])
 
-// Fonction pour générer des créneaux horaires
-const generateTimeSlots = startTime => {
-  const times = []
-  let [hour, minute] = startTime.split(':').map(Number)
-  for (let i = 0; i < 48; i++) {
-    times.push(
-      `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`,
-    )
-    minute += 30
-    if (minute === 60) {
-      minute = 0
-      hour += 1
-    }
-    if (hour === 24) break
-  }
-  return times
+// Options dynamiques pour les filtres
+const locationOptions = ref([])
+const labelOptions = ref([])
+const dateOptions = ref([])
+const timeOptions = ref([])
+
+// Activités filtrées
+const filteredActivities = ref([])
+
+// Indique si les données sont chargées
+const dataLoaded = ref(false)
+
+// Références des composants Selector_comp
+const locationSelector = ref(null)
+const labelSelector = ref(null)
+const dateSelector = ref(null)
+const timeSelector = ref(null)
+
+// Réinitialise tous les filtres en appelant les méthodes des composants Selector_comp
+const resetFilters = () => {
+  if (locationSelector.value) locationSelector.value.resetSelection()
+  if (labelSelector.value) labelSelector.value.resetSelection()
+  if (dateSelector.value) dateSelector.value.resetSelection()
+  if (timeSelector.value) timeSelector.value.resetSelection()
+
+  filteredActivities.value = props.planningData
 }
 
-// Création des plages horaires disponibles
-const startSlot = `${testTime.split(':')[0].padStart(2, '0')}:00`
-const allTimes = generateTimeSlots('00:00')
-const availableTimes = computed(() =>
-  allTimes.slice(allTimes.indexOf(startSlot)),
+// Gère l'expansion des activités
+const expandedActivities = ref([])
+const toggleExpand = id => {
+  const index = expandedActivities.value.indexOf(id)
+  if (index === -1) {
+    expandedActivities.value.push(id)
+  } else {
+    expandedActivities.value.splice(index, 1)
+  }
+}
+
+// Formate la date
+const formatDate = date => {
+  const month = date.slice(4, 6)
+  const day = date.slice(6, 8)
+  return `${day} / ${month}`
+}
+
+// Surveille planningData et met à jour dataLoaded
+watch(
+  () => props.planningData,
+  newData => {
+    if (newData && Array.isArray(newData) && newData.length > 0) {
+      dataLoaded.value = true
+
+      // Mise à jour des options des filtres
+      locationOptions.value = [...new Set(newData.map(a => a.location))].map(
+        (location, index) => ({
+          id: `location-${index}`,
+          name: location,
+          value: location,
+        }),
+      )
+      labelOptions.value = [...new Set(newData.map(a => a.labels))].map(
+        (label, index) => ({ id: `label-${index}`, name: label, value: label }),
+      )
+      dateOptions.value = [...new Set(newData.map(a => a.date))].map(
+        (date, index) => ({ id: `date-${index}`, name: date, value: date }),
+      )
+      timeOptions.value = [...new Set(newData.map(a => a.start))].map(
+        (time, index) => ({ id: `time-${index}`, name: time, value: time }),
+      )
+
+      // Mise à jour des activités filtrées
+      filteredActivities.value = newData
+    } else {
+      dataLoaded.value = false
+    }
+  },
+  { immediate: true }, // Vérifie immédiatement si les données sont prêtes
 )
 
-// Valeurs uniques pour les filtres
-const uniqueLocations = computed(() => [
-  ...new Set(props.planningData.map(a => a.location)),
-])
-const uniqueLabels = computed(() => [
-  ...new Set(props.planningData.map(a => a.labels)),
-])
-const uniqueDates = computed(() => [
-  ...new Set(props.planningData.map(a => a.date)),
-])
+// Filtrage des activités en fonction des sélections
+watch([selectedLocation, selectedLabel, selectedDate, selectedTime], () => {
+  if (dataLoaded.value) {
+    filteredActivities.value = props.planningData.filter(activity => {
+      const matchesLocation =
+        selectedLocation.value.length === 0 ||
+        selectedLocation.value.some(loc => loc.value === activity.location)
+      const matchesLabel =
+        selectedLabel.value.length === 0 ||
+        selectedLabel.value.some(label => label.value === activity.labels)
+      const matchesDate =
+        selectedDate.value.length === 0 ||
+        selectedDate.value.some(date => date.value === activity.date)
+      const matchesTime =
+        selectedTime.value.length === 0 ||
+        selectedTime.value.some(
+          time => activity.start <= time.value && activity.end >= time.value,
+        )
 
-// Logique des activités filtrées
-const filteredActivities = computed(() => {
-  return props.planningData.filter(activity => {
-    const matchesLocation =
-      !selectedLocation.value || activity.location === selectedLocation.value
-    const matchesLabel =
-      !selectedLabel.value || activity.labels === selectedLabel.value
-    const matchesDate =
-      !selectedDate.value || activity.date === selectedDate.value
-    const matchesTime =
-      !selectedTime.value || activity.start >= selectedTime.value
-    return matchesLocation && matchesLabel && matchesDate && matchesTime
-  })
+      return matchesLocation && matchesLabel && matchesDate && matchesTime
+    })
+  }
 })
-
-// Fonctions utilitaires
-const isToday = date => date === testDate
-const goToLocation = location => console.log(`S'y rendre: ${location}`)
-const toggleDescription = activity => {
-  activity.showDescription = !activity.showDescription
-}
 </script>

@@ -1,5 +1,6 @@
 [
   {
+    "id": "1",
     "name": "THE THICK STRINGS",
     "order": "1",
     "duration": "90",
@@ -16,6 +17,7 @@
     "backGroundActivity": false
   },
   {
+    "id": "2",
     "name": "ZEBRA NOISES",
     "order": "2",
     "duration": "90",
@@ -32,6 +34,7 @@
     "backGroundActivity": false
   },
   {
+    "id": "3",
     "name": "LE POULPE",
     "order": "3",
     "duration": "90",
@@ -48,6 +51,7 @@
     "backGroundActivity": false
   },
   {
+    "id": "4",
     "name": "BAFFES OU TORGNOLLES",
     "order": "4",
     "duration": "90",
@@ -64,6 +68,7 @@
     "backGroundActivity": false
   },
   {
+    "id": "5",
     "name": "DRIVEN HIPS",
     "order": "5",
     "duration": "120",
@@ -80,6 +85,7 @@
     "backGroundActivity": false
   },
   {
+    "id": "6",
     "name": "SPINAL RAVE",
     "order": "1",
     "duration": "90",
@@ -96,6 +102,7 @@
     "backGroundActivity": false
   },
   {
+    "id": "7",
     "name": "THE BUZZED BEES",
     "order": "2",
     "duration": "90",
@@ -112,6 +119,7 @@
     "backGroundActivity": false
   },
   {
+    "id": "8",
     "name": "VINCE AND THE HUBY'S",
     "order": "3",
     "duration": "90",
@@ -128,6 +136,7 @@
     "backGroundActivity": false
   },
   {
+    "id": "9",
     "name": "RENAUD DETRESSAN",
     "order": "4",
     "duration": "90",
@@ -144,6 +153,7 @@
     "backGroundActivity": false
   },
   {
+    "id": "10",
     "name": "THE JALLIES",
     "order": "5",
     "duration": "120",
@@ -160,6 +170,7 @@
     "backGroundActivity": false
   },
   {
+    "id": "11",
     "name": "LUNA & THE LUNATICS",
     "order": "1",
     "duration": "90",
@@ -176,6 +187,7 @@
     "backGroundActivity": false
   },
   {
+    "id": "12",
     "name": "LE CRABE GÉANT",
     "order": "2",
     "duration": "90",
@@ -192,6 +204,7 @@
     "backGroundActivity": false
   },
   {
+    "id": "13",
     "name": "GATHER NO MOSS",
     "order": "3",
     "duration": "90",
@@ -208,6 +221,7 @@
     "backGroundActivity": false
   },
   {
+    "id": "14",
     "name": "THE BLUE BUTTER POT",
     "order": "4",
     "duration": "90",
@@ -224,6 +238,7 @@
     "backGroundActivity": false
   },
   {
+    "id": "15",
     "name": "SÉBASTIEN LESPOISSONS",
     "order": "5",
     "duration": "120",
@@ -240,6 +255,7 @@
     "backGroundActivity": false
   },
   {
+    "id": "16",
     "name": "CONCEPT",
     "order": "6",
     "duration": "90",
@@ -256,6 +272,7 @@
     "backGroundActivity": false
   },
   {
+    "id": "17",
     "name": "THE FLASHY FLYERS",
     "order": "1",
     "duration": "90",
@@ -272,6 +289,7 @@
     "backGroundActivity": false
   },
   {
+    "id": "18",
     "name": "OLIVER & THE SPOONS",
     "order": "2",
     "duration": "90",
@@ -288,6 +306,7 @@
     "backGroundActivity": false
   },
   {
+    "id": "19",
     "name": "BÉ AND THE 28",
     "order": "3",
     "duration": "90",
@@ -304,6 +323,7 @@
     "backGroundActivity": false
   },
   {
+    "id": "20",
     "name": "LET IT BEAT BAND",
     "order": "4",
     "duration": "90",
@@ -320,6 +340,7 @@
     "backGroundActivity": false
   },
   {
+    "id": "21",
     "name": "SPAMS",
     "order": "5",
     "duration": "120",
@@ -336,6 +357,7 @@
     "backGroundActivity": false
   },
   {
+    "id": "22",
     "name": "CRASHED CHAIRS",
     "order": "1",
     "duration": "90",
@@ -352,6 +374,7 @@
     "backGroundActivity": false
   },
   {
+    "id": "23",
     "name": "PINE & THE NEEDLES",
     "order": "2",
     "duration": "90",
@@ -368,6 +391,7 @@
     "backGroundActivity": false
   },
   {
+    "id": "24",
     "name": "THE STATIC LEAVES",
     "order": "3",
     "duration": "90",
@@ -384,6 +408,7 @@
     "backGroundActivity": false
   },
   {
+    "id": "25",
     "name": "WALDDEN & TAPA EL TAPADOR",
     "order": "4",
     "duration": "90",
@@ -400,6 +425,7 @@
     "backGroundActivity": false
   },
   {
+    "id": "26",
     "name": "PETER ALEXANDER BAND",
     "order": "5",
     "duration": "120",
@@ -416,6 +442,7 @@
     "backGroundActivity": false
   },
   {
+    "id": "27",
     "name": "DISTORTED PEARLS",
     "order": "1",
     "duration": "90",
@@ -432,6 +459,7 @@
     "backGroundActivity": false
   },
   {
+    "id": "28",
     "name": "BROTHER AND SISTER",
     "order": "2",
     "duration": "90",
@@ -448,6 +476,7 @@
     "backGroundActivity": false
   },
   {
+    "id": "29",
     "name": "SKINNY BADGER",
     "order": "3",
     "duration": "90",
@@ -464,6 +493,7 @@
     "backGroundActivity": false
   },
   {
+    "id": "30",
     "name": "MOTHER OF THORNS",
     "order": "4",
     "duration": "90",
@@ -480,6 +510,7 @@
     "backGroundActivity": false
   },
   {
+    "id": "31",
     "name": "FISTS & NOODLES",
     "order": "5",
     "duration": "120",
@@ -496,6 +527,7 @@
     "backGroundActivity": false
   },
   {
+    "id": "32",
     "name": "SON OF A BLEACH",
     "order": "6",
     "duration": "90",
@@ -512,6 +544,7 @@
     "backGroundActivity": false
   },
   {
+    "id": "33",
     "name": "Combat d'épée en mousse",
     "order": "1",
     "duration": "02:00",
@@ -528,6 +561,7 @@
     "backGroundActivity": false
   },
   {
+    "id": "34",
     "name": "Tir à l'arc",
     "order": "2",
     "duration": "01:00",
@@ -544,6 +578,7 @@
     "backGroundActivity": true
   },
   {
+    "id": "35",
     "name": "Parcours du guerrier",
     "order": "3",
     "duration": "02:00",
@@ -560,6 +595,7 @@
     "backGroundActivity": false
   },
   {
+    "id": "36",
     "name": "Tournoi de bras de fer et concours de force",
     "order": "4",
     "duration": "02:00",
@@ -576,6 +612,7 @@
     "backGroundActivity": false
   },
   {
+    "id": "37",
     "name": "Lancer de haches",
     "order": "0",
     "duration": "08:00",
@@ -592,6 +629,7 @@
     "backGroundActivity": true
   },
   {
+    "id": "38",
     "name": "Jeux de quilles viking",
     "order": "0",
     "duration": "08:00",
@@ -604,10 +642,11 @@
     "end": "18:00",
     "description": "Des jeux de quilles scandinaves (Kubb) en libre accès pour des compétitions amicalement féroce !",
     "image": "",
-    "logoURL": "",
+    "logoURL": "/src/assets/images/svg/titanArena.svg",
     "backGroundActivity": true
   },
   {
+    "id": "39",
     "name": "Spectacle : Gloire au Pateuf",
     "order": "5",
     "duration": "01:00",
@@ -624,6 +663,7 @@
     "backGroundActivity": false
   },
   {
+    "id": "40",
     "name": "Bataille royale",
     "order": "1",
     "duration": "02:00",
@@ -640,6 +680,7 @@
     "backGroundActivity": false
   },
   {
+    "id": "41",
     "name": "Capture du drapeau",
     "order": "2",
     "duration": "02:00",
@@ -656,7 +697,8 @@
     "backGroundActivity": false
   },
   {
-    "name": "Concours de costumes \"Guerrier Metal\"",
+    "id": "42",
+    "name": "Concours de costumes Guerrier Metal",
     "order": "3",
     "duration": "02:00",
     "preptime": "0",
@@ -668,10 +710,11 @@
     "end": "18:00",
     "description": "Participez à un concours de costumes en lien avec les thèmes vikings, gladiateurs ou guerriers. Défilez et battez vous (symboliquement) pour obtenir le titre de \"Titan du festival\".",
     "image": "",
-    "logoURL": "",
+    "logoURL": "/src/assets/images/svg/titanArena.svg",
     "backGroundActivity": false
   },
   {
+    "id": "43",
     "name": "Spectacle: Ultime offrande au Pateuf",
     "order": "4",
     "duration": "01:00",
@@ -688,6 +731,7 @@
     "backGroundActivity": false
   },
   {
+    "id": "44",
     "name": "Séance de yoga nordique",
     "order": "1",
     "duration": "01:00",
@@ -700,10 +744,11 @@
     "end": "12:00",
     "description": "Un yoga axé sur des postures inspirées par les guerriers nordiques, suivi d'une méditation guidée en lien avec la nature, accompagné de sons de tambours et de chants traditionnels.",
     "image": "",
-    "logoURL": "/src/assets/images/svg/sancturay.svg",
+    "logoURL": "/src/assets/images/svg/sanctuary.svg",
     "backGroundActivity": false
   },
   {
+    "id": "45",
     "name": "Atelier de relaxation sonore avec instruments traditionnels",
     "order": "2",
     "duration": "01:00",
@@ -716,10 +761,11 @@
     "end": "13:00",
     "description": "Détente grâce aux sons de tambours chamaniques, bols tibétains, et harpes pour un voyage sonore immersif dans la forêt.",
     "image": "",
-    "logoURL": "",
+    "logoURL": "/src/assets/images/svg/titanArena.svg",
     "backGroundActivity": false
   },
   {
+    "id": "46",
     "name": "Initiation à la sylvothérapie",
     "order": "3",
     "duration": "01:00",
@@ -732,10 +778,11 @@
     "end": "15:00",
     "description": "Une balade en forêt guidée par un expert, où la connexion aux arbres et à la nature environnante permet de retrouver calme et énergie.",
     "image": "",
-    "logoURL": "/src/assets/images/svg/sancturay.svg",
+    "logoURL": "/src/assets/images/svg/sanctuary.svg",
     "backGroundActivity": false
   },
   {
+    "id": "47",
     "name": "Ateliers d'aromathérapie et de préparation de potions naturelles",
     "order": "4",
     "duration": "02:00",
@@ -748,10 +795,11 @@
     "end": "17:00",
     "description": "Atelier où vous pourrez apprendre à créer vos propres huiles essentielles, potions naturelles et tisanes énergisantes avec des plantes de la forêt et des herbes médicinales.",
     "image": "",
-    "logoURL": "/src/assets/images/svg/sancturay.svg",
+    "logoURL": "/src/assets/images/svg/sanctuary.svg",
     "backGroundActivity": false
   },
   {
+    "id": "48",
     "name": "Massage",
     "order": "0",
     "duration": "08:00",
@@ -764,10 +812,11 @@
     "end": "18:00",
     "description": "Des espaces de relaxation avec des chaises longues sous les arbres et des masseurs disponibles pour des séances de massages courts.",
     "image": "",
-    "logoURL": "/src/assets/images/svg/sancturay.svg",
+    "logoURL": "/src/assets/images/svg/sanctuary.svg",
     "backGroundActivity": true
   },
   {
+    "id": "49",
     "name": "Relaxation",
     "order": "0",
     "duration": "08:00",
@@ -780,10 +829,11 @@
     "end": "18:00",
     "description": "Relaxation sur hamacs et chaises longues.",
     "image": "",
-    "logoURL": "/src/assets/images/svg/sancturay.svg",
+    "logoURL": "/src/assets/images/svg/sanctuary.svg",
     "backGroundActivity": true
   },
   {
+    "id": "50",
     "name": "Séance de yoga métal",
     "order": "1",
     "duration": "01:00",
@@ -796,10 +846,11 @@
     "end": "12:00",
     "description": "Une variante plus énergique du yoga, où des groupes de métal acoustiques (ou unplugged) sont diffusés pour créer une ambiance unique et apaisante.",
     "image": "",
-    "logoURL": "/src/assets/images/svg/sancturay.svg",
+    "logoURL": "/src/assets/images/svg/sanctuary.svg",
     "backGroundActivity": false
   },
   {
+    "id": "51",
     "name": "Cercle de tambours et chants tribaux",
     "order": "2",
     "duration": "01:00",
@@ -812,10 +863,11 @@
     "end": "13:00",
     "description": "Une session collective où vous pourrez jouer des tambours et chanter ensemble pour se reconnecter avec vos racines primales.",
     "image": "",
-    "logoURL": "/src/assets/images/svg/sancturay.svg",
+    "logoURL": "/src/assets/images/svg/sanctuary.svg",
     "backGroundActivity": false
   },
   {
+    "id": "52",
     "name": "Balade méditative et contes autour des légendes nordiques",
     "order": "3",
     "duration": "01:00",
@@ -828,10 +880,11 @@
     "end": "15:00",
     "description": "Une marche lente guidée avec des pauses pour raconter des légendes vikings, suivie d'une réflexion en pleine nature.",
     "image": "",
-    "logoURL": "/src/assets/images/svg/sancturay.svg",
+    "logoURL": "/src/assets/images/svg/sanctuary.svg",
     "backGroundActivity": false
   },
   {
+    "id": "53",
     "name": "Atelier de lithothérapie et reconnaissance des pierres",
     "order": "4",
     "duration": "02:00",
@@ -844,10 +897,11 @@
     "end": "17:00",
     "description": "Découverte des différentes pierres et cristaux dans la nature, comprendre leurs propriétés et leur utilisation pour améliorer leur bien-être. Cet atelier inclut une promenade guidée pour trouver et identifier des pierres dans la forêt.",
     "image": "",
-    "logoURL": "/src/assets/images/svg/sancturay.svg",
+    "logoURL": "/src/assets/images/svg/sanctuary.svg",
     "backGroundActivity": false
   },
   {
+    "id": "54",
     "name": "Dégustation de bières locales et artisanales",
     "order": "1",
     "duration": "02:00",
@@ -864,6 +918,7 @@
     "backGroundActivity": false
   },
   {
+    "id": "55",
     "name": "Atelier \"Introduction au brassage de bière\"",
     "order": "2",
     "duration": "02:00",
@@ -880,6 +935,7 @@
     "backGroundActivity": false
   },
   {
+    "id": "56",
     "name": "Jeux de société en libre accès",
     "order": "0",
     "duration": "13:00",
@@ -896,6 +952,7 @@
     "backGroundActivity": true
   },
   {
+    "id": "57",
     "name": "Concours de la meilleure barbe et moustache",
     "order": "0",
     "duration": "13:00",
@@ -912,6 +969,7 @@
     "backGroundActivity": true
   },
   {
+    "id": "58",
     "name": "Dégustation de bières thématiques du festival",
     "order": "1",
     "duration": "02:00",
@@ -928,6 +986,7 @@
     "backGroundActivity": false
   },
   {
+    "id": "59",
     "name": "Atelier \"Accords mets et bières\"",
     "order": "2",
     "duration": "02:00",
@@ -944,6 +1003,7 @@
     "backGroundActivity": false
   },
   {
+    "id": "60",
     "name": "Karaoké metal acoustique",
     "order": "0",
     "duration": "13:00",
@@ -960,6 +1020,7 @@
     "backGroundActivity": true
   },
   {
+    "id": "61",
     "name": "Jeux de fléchettes et de lancer de haches miniatures",
     "order": "0",
     "duration": "13:00",
@@ -976,6 +1037,7 @@
     "backGroundActivity": true
   },
   {
+    "id": "62",
     "name": "BBQ Viking",
     "order": "1",
     "duration": "01:30",
@@ -992,6 +1054,7 @@
     "backGroundActivity": false
   },
   {
+    "id": "63",
     "name": "Repas des Chevaliers",
     "order": "2",
     "duration": "01:00",
@@ -1008,6 +1071,7 @@
     "backGroundActivity": false
   },
   {
+    "id": "64",
     "name": "Food trucks et stands de mets gourmands",
     "order": "0",
     "duration": "13:00",
@@ -1024,6 +1088,7 @@
     "backGroundActivity": true
   },
   {
+    "id": "65",
     "name": "Bière & Accords Mets",
     "order": "3",
     "duration": "01:30",
@@ -1040,6 +1105,7 @@
     "backGroundActivity": false
   },
   {
+    "id": "66",
     "name": "Le Duel des Chefs Metal",
     "order": "4",
     "duration": "00:30",
@@ -1056,6 +1122,7 @@
     "backGroundActivity": false
   },
   {
+    "id": "67",
     "name": "Les Gourmandises Metal",
     "order": "0",
     "duration": "13:00",
@@ -1072,6 +1139,7 @@
     "backGroundActivity": true
   },
   {
+    "id": "68",
     "name": "Cuisine Sauvage",
     "order": "1",
     "duration": "01:30",
@@ -1088,6 +1156,7 @@
     "backGroundActivity": false
   },
   {
+    "id": "69",
     "name": "Pizza au Feu de Bois façon Viking",
     "order": "2",
     "duration": "01:00",
@@ -1104,6 +1173,7 @@
     "backGroundActivity": false
   },
   {
+    "id": "70",
     "name": "Food trucks et stands de mets gourmands",
     "order": "0",
     "duration": "13:00",
@@ -1120,6 +1190,7 @@
     "backGroundActivity": true
   },
   {
+    "id": "71",
     "name": "Cocktails Metal",
     "order": "3",
     "duration": "01:00",
@@ -1136,6 +1207,7 @@
     "backGroundActivity": false
   },
   {
+    "id": "72",
     "name": "Le Comptoir des Potions",
     "order": "4",
     "duration": "01:00",
@@ -1152,6 +1224,7 @@
     "backGroundActivity": false
   },
   {
+    "id": "73",
     "name": "Atelier de Gravure sur Pain",
     "order": "0",
     "duration": "13:00",
@@ -1168,6 +1241,7 @@
     "backGroundActivity": true
   },
   {
+    "id": "74",
     "name": "Atelier de forge de petits objets en métal",
     "order": "1",
     "duration": "01:00",
@@ -1184,6 +1258,7 @@
     "backGroundActivity": false
   },
   {
+    "id": "75",
     "name": "Création de bijoux en cuir et en métal",
     "order": "2",
     "duration": "01:00",
@@ -1200,6 +1275,7 @@
     "backGroundActivity": false
   },
   {
+    "id": "76",
     "name": "Peinture sur bois",
     "order": "0",
     "duration": "08:00",
@@ -1216,6 +1292,7 @@
     "backGroundActivity": true
   },
   {
+    "id": "77",
     "name": "Sculpture sur bois",
     "order": "3",
     "duration": "02:00",
@@ -1232,6 +1309,7 @@
     "backGroundActivity": false
   },
   {
+    "id": "78",
     "name": "Confection de costumes et accessoires",
     "order": "4",
     "duration": "01:00",
@@ -1248,6 +1326,7 @@
     "backGroundActivity": false
   },
   {
+    "id": "79",
     "name": "Modelage de l'argile",
     "order": "0",
     "duration": "08:00",
@@ -1264,6 +1343,7 @@
     "backGroundActivity": true
   },
   {
+    "id": "80",
     "name": "Tissage de talismans et bracelets païens",
     "order": "1",
     "duration": "01:00",
@@ -1280,6 +1360,7 @@
     "backGroundActivity": false
   },
   {
+    "id": "81",
     "name": "Décoration de tambours et instruments de musique",
     "order": "2",
     "duration": "01:00",
@@ -1296,6 +1377,7 @@
     "backGroundActivity": false
   },
   {
+    "id": "82",
     "name": "Modelage de l'argile",
     "order": "0",
     "duration": "08:00",

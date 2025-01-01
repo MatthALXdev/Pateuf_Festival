@@ -1,0 +1,92 @@
+[
+  {
+    "questionId": "1",
+    "theme": "Sécurité et Secours",
+    "question": "Quels dispositifs de sécurité sont mis en place durant le festival ?",
+    "reponse": "Le festival dispose d’une équipe de sécurité dédiée, de postes de secours accessibles en permanence, et d’un numéro d’urgence affiché sur tout le site. Veuillez également respecter les consignes de sécurité indiquées sur place."
+  },
+  {
+    "questionId": "2",
+    "theme": "Sécurité et Secours",
+    "question": "Que faire en cas d'urgence ?",
+    "reponse": "En cas d'urgence, dirigez-vous vers le poste de secours le plus proche ou contactez un membre de l'équipe de sécurité. Le numéro d'urgence est indiqué sur votre bracelet d'accès."
+  },
+  {
+    "questionId": "3",
+    "theme": "Sécurité et Secours",
+    "question": "Puis-je entrer avec des objets interdits ?",
+    "reponse": "Pour garantir la sécurité de tous, certains objets comme les armes, drogues et bouteilles en verre sont strictement interdits. Consultez la liste complète sur notre site web."
+  },
+  {
+    "questionId": "4",
+    "theme": "Alimentation",
+    "question": "Quels types de repas et boissons sont proposés sur le site ?",
+    "reponse": "Nous proposons une variété de stands alimentaires avec des options végétariennes, véganes et sans gluten. Des stands de boissons, y compris des bières artisanales et des boissons sans alcool, sont également disponibles."
+  },
+  {
+    "questionId": "5",
+    "theme": "Alimentation",
+    "question": "Puis-je apporter ma propre nourriture ?",
+    "reponse": "Oui, vous pouvez apporter votre propre nourriture, mais les contenants en verre et l’alcool extérieur ne sont pas autorisés sur le site."
+  },
+  {
+    "questionId": "6",
+    "theme": "Alimentation",
+    "question": "Des options alimentaires pour les enfants sont-elles disponibles ?",
+    "reponse": "Oui, plusieurs stands proposent des menus adaptés aux enfants, comme des sandwichs, des fruits et des plats simples."
+  },
+  {
+    "questionId": "7",
+    "theme": "Moyens de Transport",
+    "question": "Comment se rendre au festival ?",
+    "reponse": "Le festival est situé à proximité de la petite ville de Rilly-sur-Loire. Des navettes seront disponibles depuis la gare de Blois. Des parkings pour voitures et vélos sont également prévus."
+  },
+  {
+    "questionId": "8",
+    "theme": "Moyens de Transport",
+    "question": "Y a-t-il des navettes disponibles depuis les villes voisines ?",
+    "reponse": "Oui, des navettes relient Rilly-sur-Loire aux grandes villes voisines comme Blois et Tours. Consultez les horaires sur notre site."
+  },
+  {
+    "questionId": "9",
+    "theme": "Moyens de Transport",
+    "question": "Le festival dispose-t-il de parkings sécurisés ?",
+    "reponse": "Oui, nous offrons des parkings sécurisés pour voitures, motos et vélos. Des places de stationnement pour personnes à mobilité réduite sont également disponibles."
+  },
+  {
+    "questionId": "10",
+    "theme": "Logement",
+    "question": "Quelles options d'hébergement sont disponibles ?",
+    "reponse": "Vous pouvez séjourner dans notre camping officiel équipé de douches et toilettes. Des hébergements sont également disponibles dans les hôtels et chambres d'hôtes de Rilly-sur-Loire, située à quelques kilomètres."
+  },
+  {
+    "questionId": "11",
+    "theme": "Logement",
+    "question": "Le camping est-il inclus dans le prix du billet ?",
+    "reponse": "Non, le camping est en supplément. Vous pouvez réserver votre emplacement lors de l'achat de votre billet sur notre site."
+  },
+  {
+    "questionId": "12",
+    "theme": "Logement",
+    "question": "Y a-t-il des options de camping pour les familles ?",
+    "reponse": "Oui, une zone de camping dédiée aux familles est disponible, avec des activités spéciales pour les enfants et un environnement plus calme."
+  },
+  {
+    "questionId": "13",
+    "theme": "Paiement et Réseaux",
+    "question": "Quels moyens de paiement sont acceptés sur place ?",
+    "reponse": "Sur le site, tous les paiements se font par carte ou via une application cashless."
+  },
+  {
+    "questionId": "14",
+    "theme": "Paiement et Réseaux",
+    "question": "Puis-je recharger ma carte cashless sur place ?",
+    "reponse": "Oui, des bornes de recharge cashless sont disponibles à divers endroits sur le site. Vous pouvez également recharger via notre application mobile."
+  },
+  {
+    "questionId": "15",
+    "theme": "Paiement et Réseaux",
+    "question": "Comment suivre le festival sur les réseaux sociaux ?",
+    "reponse": "Vous pouvez nous suivre sur Instagram, Facebook et Twitter pour rester informé des dernières actualités et événements. Cherchez le hashtag officiel pour partager vos moments !"
+  }
+]
