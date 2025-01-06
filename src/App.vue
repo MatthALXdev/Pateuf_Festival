@@ -30,28 +30,15 @@
   <div class="flex flex-wrap gap-3 justify-around items-center bg-_beige02">
     <!-- Composant bannière -->
     <div
-      class="bg-_beige02 w-screen sticky top-[100px] z-50 overflow-hidden px-4 max-w-96"
+      class="bg-_beige02 w-screen sticky top-[58px] z-50 overflow-hidden px-2"
     >
       <Banner_comp :infos="infos" />
     </div>
-    <!-- Composant faq -->
-    <div class="bg-_beige02 w-screen px-4 max-w-96">
-      <h2 class="text-xl">FAQ</h2>
-      <div class="h-fit max-w-[26rem] mx-auto">
-        <Faq_comp :faqData="faqData" />
-      </div>
-    </div>
-    <!-- Composant tickets -->
-    <div class="bg-_beige02 w-screen px-4 max-w-96">
-      <h2 class="text-xl">Billeterie</h2>
-      <div class="m-4 h-96 mx-auto">
-        <Tickets_comp />
-      </div>
-    </div>
+
     <!-- Composant concert -->
-    <div class="bg-_beige02 w-screen px-4 max-w-96">
+    <div class="bg-_beige02 w-screen max-w-96">
       <h2 class="text-xl">Les concerts</h2>
-      <div class="m-4 h-96 mx-auto">
+      <div class="h-96">
         <Concert :planningData="planningData" />
       </div>
     </div>
@@ -60,6 +47,13 @@
       <h2 class="text-xl">Liste des activitées</h2>
       <div class="m-4 h-96 mx-auto overflow-hidden">
         <Program_comp :planningData="planningData" />
+      </div>
+    </div>
+    <!-- Composant tickets -->
+    <div class="bg-_beige02 w-screen px-4 max-w-96">
+      <h2 class="text-xl">Billeterie</h2>
+      <div class="m-4 h-96 mx-auto">
+        <Tickets_comp />
       </div>
     </div>
     <!-- Composant map -->
@@ -78,22 +72,29 @@
             <p class="text-xl font-bold">Chargement de la carte en cours</p>
           </div>
           <!-- Composant Map_comp avec des props -->
-          <Map_comp
+          <!-- <Map_comp
             :mapData="mapData"
             :logoMapData="logoMapData"
             :planningData="planningData"
             :groupFilterData="groupFilterData"
             @is-loaded="onMapLoaded"
-          />
+          /> -->
         </div>
       </div>
     </div>
+    <!-- Composant faq -->
+    <div class="bg-_beige02 w-screen px-4 max-w-96">
+      <h2 class="text-xl">FAQ</h2>
+      <div class="mx-auto h-fit">
+        <Faq_comp :faqData="faqData" />
+      </div>
+    </div>
     <!-- Composant partners -->
-    <div class="bg-_beige02 w-screen max-w-96">
+    <div class="bg-_beige02 w-screen">
       <Partners_comp />
     </div>
     <!-- Composant socialMedia -->
-    <div class="bg-_beige02 w-screen max-w-96">
+    <div class="bg-_beige02 w-screen">
       <Social_comp />
     </div>
     <!-- Composant navBar -->

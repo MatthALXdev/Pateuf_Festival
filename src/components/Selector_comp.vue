@@ -12,7 +12,6 @@
 
     <div
       class="options-wrapper absolute top-full left-0 z-10 text-sm flex flex-col max-h-80 overflow-y-auto pr-1 mt-2"
-      :style="{ minWidth: dropDownWidth + 'px' }"
       :class="scrollbarClass"
       v-if="isDropDownVisible"
     >
@@ -30,6 +29,8 @@
         :class="{
           'bg-_green03': isOptionSelected(option),
           'bg-_white02': !isOptionSelected(option),
+          'w-48': props.optionName === 'Localisation',
+          'w-30': props.optionName !== 'Localisation',
         }"
         class="border border-gray-800 box-border p-1 last:rounded-b-lg hover:bg-_beige01"
         @click="toggleOptionSelect(option)"

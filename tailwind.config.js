@@ -5,8 +5,11 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['"Caesar Dressing"', 'sans-serif'],
-        caesar: ['"Caesar Dressing"', 'cursive'],
+        title: ['"Caesar Dressing"', 'cursive'],
+        body: ['"Special Elite"', 'cursive'],
+        // sans: ['"Caesar Dressing"', 'sans-serif'],
+        // caesar: ['"Caesar Dressing"', 'cursive'],
+        // special: ['"Special Elite"', 'cursive'],
       },
       colors: {
         _beige01: '#CCB583',

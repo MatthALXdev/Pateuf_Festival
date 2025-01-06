@@ -1,5 +1,19 @@
-@import url('https://fonts.googleapis.com/css2?family=Caesar+Dressing&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Caesar+Dressing&family=Special+Elite&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-title; /* Utilise la classe définie pour "Caesar Dressing" */
+  }
+
+  body {
+    @apply font-body font-semibold; /* Utilise la classe définie pour "Special Elite" */
+  }
+}
