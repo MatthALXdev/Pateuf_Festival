@@ -99,7 +99,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref, watch, nextTick, inject, defineEmits } from 'vue'
+import { onMounted, ref, watch, nextTick, inject } from 'vue'
 import mapboxgl from 'mapbox-gl'
 import { setupLayerEvents, selectFeature } from '@/services/layerHandler'
 import { initializeMapSources } from '@/services/mapInit'

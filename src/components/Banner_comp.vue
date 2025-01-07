@@ -1,6 +1,6 @@
 <template>
   <!-- Carrousel -->
-  <div class="w-full h-14 overflow-hidden">
+  <div class="w-fit h-14">
     <div
       class="absolute inset-0 flex transition-transform duration-1000"
       :style="{ transform: `translateX(-${currentSlide * 100}%)` }"

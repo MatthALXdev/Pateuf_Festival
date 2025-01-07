@@ -23,14 +23,14 @@
   </div> -->
   <!-- Composant Header -->
   <div class="w-screen">
-    <Header_comp />
+    <Header_comp :infos="infos" />
   </div>
   <!-- main comp -->
 
   <div class="flex flex-wrap gap-3 justify-around items-center bg-_beige02">
     <!-- Composant bannière -->
     <div
-      class="bg-_beige02 w-screen sticky top-[58px] z-50 overflow-hidden px-2"
+      class="bg-_beige02 w-screen sticky top-[58px] z-50 overflow-hidden px-2 md:hidden"
     >
       <Banner_comp :infos="infos" />
     </div>
