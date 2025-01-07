@@ -1,8 +1,9 @@
 <template>
   <div class="max-w-96 max-h-96 m-6 flex flex-col">
     <!-- Titre de la scène -->
-    <p class="text-xl font-semibold mb-2 h-8">
-      {{ currentLocation }}
+    <p class="text-xl font-semibold mb-2 h-8 flex flex-grow">
+      <span class="flex-grow">SCENE</span>
+      <span class="">{{ currentLocation }}</span>
     </p>
 
     <!-- Carrousel des scènes -->
@@ -49,12 +50,12 @@
               <img
                 :src="group.image"
                 alt="Logo de {{ group.name }}"
-                class="w-20 h-20 rounded-md border border-black shadow-lg mr-4"
+                class="w-12 h-12 rounded-md border border-black shadow-lg mr-4"
               />
               <div class="flex-1">
-                <p class="text-sm font-medium">Nom : {{ group.name }}</p>
+                <p class="text-sm font-medium font-title">{{ group.name }}</p>
                 <p class="text-sm text-gray-600">
-                  Heure de début : {{ group.start }}
+                  {{ group.start }}
                 </p>
               </div>
               <div class="">
@@ -68,6 +69,20 @@
         </div>
       </div>
     </div>
+    <!-- Indicateurs de position du carrousel -->
+    <div class="flex justify-center mt-2">
+      <span
+        v-for="(location, index) in [
+          'La forge',
+          'Le repaire du kraken',
+          'Le Chaos Sonore',
+        ]"
+        :key="index"
+        class="w-2 h-2 mx-1 rounded-full"
+        :class="index === currentSceneIndex ? 'bg-_black01' : 'bg-gray-400'"
+      >
+      </span>
+    </div>
     <!-- Boutons de défilement -->
     <div v-if="!isTouchDevice" class="flex justify-between h-8">
       <button
@@ -76,20 +91,7 @@
       >
         &#8656;
       </button>
-      <!-- Indicateurs de position du carrousel -->
-      <div class="flex justify-center mt-2">
-        <span
-          v-for="(location, index) in [
-            'La forge',
-            'Le repaire du kraken',
-            'Le Chaos Sonore',
-          ]"
-          :key="index"
-          class="w-3 h-3 mx-1 rounded-full"
-          :class="index === currentSceneIndex ? 'bg-_black01' : 'bg-gray-400'"
-        >
-        </span>
-      </div>
+
       <button
         @click="nextScene"
         class="text-_darkBlue01 text-5xl font-bold rounded-full"
@@ -151,16 +153,16 @@ const getSortedGroupsForScene = scene => {
 }
 
 const nextScene = () => {
-  if (!isSwiping) {
+  if (!isSwiping && currentSceneIndex.value < 2) {
     isSwiping = true
-    currentSceneIndex.value = (currentSceneIndex.value + 1) % 3
+    currentSceneIndex.value++
   }
 }
 
 const previousScene = () => {
-  if (!isSwiping) {
+  if (!isSwiping && currentSceneIndex.value > 0) {
     isSwiping = true
-    currentSceneIndex.value = (currentSceneIndex.value - 1 + 3) % 3
+    currentSceneIndex.value--
   }
 }
 

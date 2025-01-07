@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-_darkBlue01 flex justify-evenly">
+  <div class="bg-_black01 flex justify-evenly h-12">
     <a v-for="(icon, index) in icons" :key="index" :href="icon.href">
       <img
         :src="icon.src"
@@ -16,13 +16,13 @@ const icons = [
   {
     src: 'src/assets/images/hamMenu.svg',
     alt: 'Menu',
-    customClass: '',
+    customClass: 'h-10',
     href: '',
   },
   {
     src: 'src/assets/images/tickets.svg',
     alt: 'Tickets',
-    customClass: 'h-10',
+    customClass: 'h-8',
     href: '',
   },
   {
@@ -34,13 +34,13 @@ const icons = [
   {
     src: 'src/assets/images/faqIcon.svg',
     alt: 'FAQ',
-    customClass: '',
+    customClass: 'h-10',
     href: '',
   },
   {
     src: 'src/assets/images/mapIcon.svg',
     alt: 'Map',
-    customClass: '',
+    customClass: 'h-10',
     href: '',
   },
 ]

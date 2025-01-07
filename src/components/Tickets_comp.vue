@@ -1,5 +1,9 @@
 <template>
-  <div class="overflow-hidden relative w-full">
+  <div
+    class="overflow-hidden relative w-full"
+    @touchstart="startSwipe"
+    @touchend="endSwipe"
+  >
     <div
       class="flex transition-transform duration-500 ease-in-out w-full"
       :style="{ transform: `translateX(-${currentImageIndex * 100}%)` }"
@@ -9,9 +13,9 @@
         :key="index"
         class="flex-shrink-0 w-full"
       >
-        <a :href="image.url"
-          ><img :src="image.src" :alt="image.alt" class="h-80 w-auto mx-auto"
-        /></a>
+        <a :href="image.url">
+          <img :src="image.src" :alt="image.alt" class="h-80 w-auto mx-auto" />
+        </a>
       </div>
     </div>
 
@@ -20,21 +24,26 @@
       <span
         v-for="(image, index) in images"
         :key="index"
-        class="w-3 h-3 rounded-full mx-1"
+        class="w-2 h-2 rounded-full mx-1"
         :class="index === currentImageIndex ? 'bg-black' : 'bg-gray-400'"
       ></span>
     </div>
 
     <!-- Boutons de navigation -->
-    <div class="inset-0 flex items-center justify-between px-4">
+    <div
+      v-if="!isTouchDevice"
+      class="inset-0 flex items-center justify-between px-4"
+    >
       <button
         @click="previousImage"
+        :disabled="currentImageIndex === 0"
         class="text-5xl font-bold text-_darkBlue01 px-4"
       >
         &#8656;
       </button>
       <button
         @click="nextImage"
+        :disabled="currentImageIndex === images.length - 1"
         class="text-5xl font-bold text-_darkBlue01 px-4"
       >
         &#8658;
@@ -44,7 +53,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import pass1Day from './../assets/images/ticket/pass1Day.png'
 import vip1Day from './../assets/images/ticket/vip1Day.png'
 import pass2Day from './../assets/images/ticket/pass2Day.png'
@@ -58,15 +67,39 @@ const images = [
 ]
 
 const currentImageIndex = ref(0)
+const startX = ref(0)
+const isTouchDevice = ref(false)
 
 const nextImage = () => {
-  currentImageIndex.value = (currentImageIndex.value + 1) % images.length
+  if (currentImageIndex.value < images.length - 1) {
+    currentImageIndex.value++
+  }
 }
 
 const previousImage = () => {
-  currentImageIndex.value =
-    (currentImageIndex.value - 1 + images.length) % images.length
+  if (currentImageIndex.value > 0) {
+    currentImageIndex.value--
+  }
 }
+
+const startSwipe = event => {
+  startX.value = event.touches[0].clientX
+}
+
+const endSwipe = event => {
+  const endX = event.changedTouches[0].clientX
+  const deltaX = endX - startX.value
+
+  if (deltaX > 50) {
+    previousImage()
+  } else if (deltaX < -50) {
+    nextImage()
+  }
+}
+
+onMounted(() => {
+  isTouchDevice.value = 'ontouchstart' in window || navigator.maxTouchPoints > 0
+})
 </script>
 
 <style>
@@ -78,5 +111,9 @@ const previousImage = () => {
 }
 .transition-transform {
   transition: transform 0.5s ease-in-out;
+}
+button:disabled {
+  opacity: 0.5;
+  pointer-events: none;
 }
 </style>

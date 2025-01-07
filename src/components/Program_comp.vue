@@ -35,7 +35,7 @@
       <!-- Bouton pour réinitialiser les filtres -->
       <div class="ml-4">
         <button
-          class="text-sm text-gray-600 hover:text-gray-800 underline"
+          class="text-sm text-_black03 hover:text-_darkBlue02 underline mt-3"
           @click="resetFilters"
         >
           Réinitialiser les filtres
@@ -52,7 +52,8 @@
         <li
           v-for="activity in filteredActivities"
           :key="activity.id"
-          class="border rounded px-4 py-2 shadow space-y-2"
+          class="border-2 border-_darkBlue01 rounded-lg px-4 py-2 shadow space-y-2 hover:bg-_green01 hover:cursor-pointer hover:bg-opacity-50"
+          @click="toggleExpand(activity.id)"
         >
           <!-- Contenu principal -->
           <div class="flex items-center space-x-4">
@@ -60,39 +61,59 @@
             <img
               :src="activity.logoURL"
               alt="Activity Logo"
-              class="w-10 h-10 object-cover rounded"
+              class="w-8 h-8 object-cover"
             />
-
-            <!-- Infos -->
-            <div class="flex-grow">
-              <h3 class="text-sm font-bold">{{ activity.name }}</h3>
-              <p class="text-xs text-gray-500">
-                {{ formatDate(activity.date) }}
-              </p>
-              <p class="text-xs text-gray-500">
-                {{ activity.start }} &#8658; {{ activity.end }}
-              </p>
-              <p class="text-sm text-gray-700">
-                {{ activity.location }}
-              </p>
+            <div class="flex flex-col flex-grow">
+              <div class="flex justify-between">
+                <h3 class="text-sm font-bold">
+                  {{ activity.name }}
+                </h3>
+                <!-- Bouton Ajouter -->
+                <button
+                  class="text-_black01 self-end text-3xl px-2 rounded transition-transform duration-300"
+                  :class="{
+                    'rotate-90': expandedActivities.includes(activity.id),
+                    'rotate-[270deg]': !expandedActivities.includes(
+                      activity.id,
+                    ),
+                  }"
+                  @click="toggleExpand(activity.id)"
+                >
+                  <span
+                    v-if="expandedActivities.includes(activity.id)"
+                    class="inline-block transition-opacity duration-500 opacity-100"
+                    >&gt;</span
+                  >
+                  <span
+                    v-else
+                    class="inline-block transition-opacity duration-500 opacity-100"
+                    >&gt;</span
+                  >
+                </button>
+              </div>
+              <div class="flex flex-row justify-between">
+                <!-- Infos -->
+                <div class="flex flex-col self-start">
+                  <p class="text-xs text-_black02">
+                    {{ formatDate(activity.date) }}
+                  </p>
+                  <p class="text-xs text-_black02">
+                    {{ activity.start }} | {{ activity.end }}
+                  </p>
+                </div>
+                <!-- Localisation -->
+                <div class="flex self-end">
+                  <img
+                    src="/src/assets/images/marker.svg"
+                    alt="Map Marker"
+                    class="w-4 h-4 inline-block shadow-3xl"
+                  />
+                  <p class="text-sm text-_black02 self-start">
+                    {{ activity.location }}
+                  </p>
+                </div>
+              </div>
             </div>
-
-            <!-- Localisation -->
-            <div class="flex flex-col justify-between items-center">
-              <img
-                src="/src/assets/images/marker.svg"
-                alt="Map Marker"
-                class="w-6 h-6 inline-block shadow-3xl"
-              />
-            </div>
-
-            <!-- Bouton Ajouter -->
-            <button
-              class="bg-_blue03 text-white px-2 py-1 rounded hover:bg-_blue01"
-              @click="toggleExpand(activity.id)"
-            >
-              {{ expandedActivities.includes(activity.id) ? '-' : '+' }}
-            </button>
           </div>
 
           <!-- Contenu étendu -->
@@ -174,9 +195,9 @@ const toggleExpand = id => {
 
 // Formate la date
 const formatDate = date => {
-  const month = date.slice(4, 6)
+  // const month = date.slice(4, 6)
   const day = date.slice(6, 8)
-  return `${day} / ${month}`
+  return `${day} juin`
 }
 
 // Surveille planningData et met à jour dataLoaded

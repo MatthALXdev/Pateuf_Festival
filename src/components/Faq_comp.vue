@@ -1,27 +1,33 @@
 <template>
-  <div class="mb-4">
+  <div class="">
     <div v-if="dataLoaded">
       <div
         v-for="(themeGroup, index) in groupedFaqData"
         :key="index"
         class="faq-theme relative"
         :style="{
-          marginTop: isQuestionOpen(themeGroup.theme) ? '0rem' : '-0.5rem',
-          marginBottom: isQuestionOpen(themeGroup.theme) ? '1rem' : '0rem',
+          marginTop:
+            index === 0
+              ? '0rem'
+              : isQuestionOpen(themeGroup.theme)
+                ? '0.5rem'
+                : '-0.5rem',
         }"
       >
         <div class="faq-question">
           <!-- Question container with toggle functionality -->
           <div
-            class="flex items-center justify-between cursor-pointer p-3 bg-_green03 rounded-2xl top-4 hover:bg-_green02 relative z-[calc(10-index)] shadow-[0_-5px_5px_2px_rgba(0,0,0,0.4)]"
+            class="flex items-center justify-between cursor-pointer p-3 bg-_green03 rounded-2xl top-4 hover:bg-_green02 relative z-[calc(10-index)] shadow-[0_-2px_5px_2px_rgba(0,0,0,0.2)]"
             @click="toggleQuestion(themeGroup.theme)"
           >
             <!-- Display the question text -->
-            <span>{{ themeGroup.questions[0].question }}</span>
+            <span class="flex-grow">{{
+              themeGroup.questions[0].question
+            }}</span>
             <!-- Chevron icon rotates based on the open state -->
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              class="h-5 w-5 transform transition-transform"
+              class="flex-shrink-0 h-6 w-6 transform transition-transform"
               :class="{ 'rotate-180': isQuestionOpen(themeGroup.theme) }"
               fill="none"
               viewBox="0 0 24 24"
@@ -39,10 +45,12 @@
           <transition name="slide" mode="out-in">
             <div
               v-if="isQuestionOpen(themeGroup.theme)"
-              class="overflow-hidden bg-_green02 rounded-b-2xl pt-5 px-2 pb-2"
+              class="overflow-hidden bg-_green02 rounded-b-2xl px-2"
             >
               <!-- Display the answer text -->
+              <hr class="h-6" />
               <p>{{ themeGroup.questions[0].reponse }}</p>
+              <hr class="h-2 border-_green02" />
             </div>
           </transition>
         </div>
@@ -112,13 +120,13 @@ const isQuestionOpen = theme => {
 
 <style scoped>
 .faq-theme {
-  transition: margin-top 0.3s ease-in-out;
+  transition: margin-top 0.5s ease-in-out;
 }
 
 /* Transition styles for sliding effect only */
 .slide-enter-active,
 .slide-leave-active {
-  transition: max-height 0.3s ease-in-out;
+  transition: max-height 0.5s ease-in-out;
 }
 .slide-enter-from,
 .slide-leave-to {
@@ -126,6 +134,6 @@ const isQuestionOpen = theme => {
 }
 .slide-enter-to,
 .slide-leave-from {
-  max-height: 150px; /* Adjust based on content */
+  max-height: 250px; /* Adjust based on content */
 }
 </style>
