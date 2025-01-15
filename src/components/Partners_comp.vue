@@ -7,7 +7,7 @@
         :key="partner"
         :src="`/src/assets/images/${partner}.png`"
         :alt="partner"
-        class="h-14"
+        class="h-14 lg:h-24"
       />
     </div>
   </div>

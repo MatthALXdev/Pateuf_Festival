@@ -1,6 +1,6 @@
 <template>
   <div class="h-full flex flex-col">
-    <div class="filtre flex-shrink-0">
+    <div class="flex-shrink-0">
       <div class="flex flex-wrap gap-2">
         <!-- Filtre Localisation -->
         <Selector_comp
@@ -42,104 +42,117 @@
         </button>
       </div>
     </div>
-
-    <!-- Liste des activités filtrées -->
-    <div
-      class="liste flex-grow overflow-y-auto text-sm pr-2"
-      :class="scrollbarClass"
-    >
-      <ul class="space-y-4 mt-4">
-        <li
-          v-for="activity in filteredActivities"
-          :key="activity.id"
-          class="border-2 border-_darkBlue01 rounded-lg px-4 py-2 shadow space-y-2 hover:bg-_green01 hover:cursor-pointer hover:bg-opacity-50"
-          @click="toggleExpand(activity.id)"
+    <div class="flex justify-between gap-4 overflow-y-hidden">
+      <!-- Liste des activités filtrées -->
+      <div
+        class="overflow-y-auto text-sm pr-2 w-full md:w-1/2 lg:w-full h-full"
+        :class="scrollbarClass"
+      >
+        <ul
+          class="space-y-4 lg:space-y-0 mt-4 lg:flex lg:flex-wrap gap-4 justify-center md:h-max md:overflow-y-auto"
         >
-          <!-- Contenu principal -->
-          <div class="flex items-center space-x-4">
-            <!-- Image -->
-            <img
-              :src="activity.logoURL"
-              alt="Activity Logo"
-              class="w-8 h-8 object-cover"
-            />
-            <div class="flex flex-col flex-grow">
-              <div class="flex justify-between">
-                <h3 class="text-sm font-bold">
-                  {{ activity.name }}
-                </h3>
-                <!-- Bouton Ajouter -->
-                <button
-                  class="text-_black01 self-end text-3xl px-2 rounded transition-transform duration-300"
-                  :class="{
-                    'rotate-90': expandedActivities.includes(activity.id),
-                    'rotate-[270deg]': !expandedActivities.includes(
-                      activity.id,
-                    ),
-                  }"
-                  @click="toggleExpand(activity.id)"
-                >
-                  <span
-                    v-if="expandedActivities.includes(activity.id)"
-                    class="inline-block transition-opacity duration-500 opacity-100"
-                    >&gt;</span
-                  >
-                  <span
-                    v-else
-                    class="inline-block transition-opacity duration-500 opacity-100"
-                    >&gt;</span
-                  >
-                </button>
-              </div>
-              <div class="flex flex-row justify-between">
-                <!-- Infos -->
-                <div class="flex flex-col self-start">
-                  <p class="text-xs text-_black02">
-                    {{ formatDate(activity.date) }}
-                  </p>
-                  <p class="text-xs text-_black02">
-                    {{ activity.start }} | {{ activity.end }}
-                  </p>
+          <li
+            v-for="activity in filteredActivities"
+            :key="activity.id"
+            class="lg:w-1/5 lg:h-[20rem] border-2 border-_darkBlue01 rounded-lg px-4 lg:px-0 shadow hover:bg-_green03 hover:cursor-pointer bg-opacity-50 lg:flex lg:flex-col lg:justify-between"
+            :class="{
+              'bg-_green03':
+                activeActivity && activeActivity.id === activity.id,
+            }"
+            @click="setActiveActivity(activity)"
+          >
+            <!-- Contenu principal -->
+            <div class="flex items-center space-x-4">
+              <!-- Image -->
+              <img
+                :src="activity.logoURL"
+                alt="Activity Logo"
+                class="w-8 h-8 object-cover"
+              />
+              <div class="flex flex-col flex-grow">
+                <div class="flex justify-between">
+                  <h3 class="text-sm font-bold">
+                    {{ activity.name }}
+                  </h3>
                 </div>
-                <!-- Localisation -->
-                <div class="flex self-end">
-                  <img
-                    src="/src/assets/images/marker.svg"
-                    alt="Map Marker"
-                    class="w-4 h-4 inline-block shadow-3xl"
-                  />
-                  <p class="text-sm text-_black02 self-start">
-                    {{ activity.location }}
-                  </p>
+                <div class="flex flex-row justify-between">
+                  <!-- Infos -->
+                  <div class="flex flex-col self-start">
+                    <p class="text-xs text-_black02">
+                      {{ formatDate(activity.date) }}
+                    </p>
+                    <p class="text-xs text-_black02">
+                      {{ activity.start }} | {{ activity.end }}
+                    </p>
+                  </div>
+                  <!-- Localisation -->
+                  <div class="flex self-end">
+                    <img
+                      src="/src/assets/images/marker.svg"
+                      alt="Map Marker"
+                      class="w-4 h-4 inline-block shadow-3xl"
+                    />
+                    <p class="text-sm text-_black02 self-start">
+                      {{ activity.location }}
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <!-- Contenu étendu -->
-          <div
-            v-if="expandedActivities.includes(activity.id)"
-            class="flex items-start space-x-4 mt-2"
-          >
+            <!-- Contenu étendu (petit écran) -->
+            <div
+              v-if="
+                (activeActivity &&
+                  activeActivity.id === activity.id &&
+                  isSmallScreen) ||
+                isLgScreen
+              "
+              class="flex lg:flex-col items-center space-x-4 mt-2 lg:justify-around flex-grow"
+            >
+              <img
+                :src="activity.image"
+                alt="Activity Image"
+                class="w-14 object-cover rounded"
+              />
+              <p class="text-sm text-gray-700 lg:self-center">
+                {{ activity.description }}
+              </p>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <!-- Contenu étendu (grand écran) -->
+      <div
+        v-if="!isSmallScreen && activeActivity"
+        class="hidden md:flex lg:hidden w-1/2 justify-center h-[90%] self-center"
+      >
+        <div
+          class="flex flex-col w-2/3 border-2 border-_black01 rounded-md gap-4"
+        >
+          <div class="flex bg-_blue01 justify-center">
             <img
-              :src="activity.image"
+              :src="activeActivity.image"
               alt="Activity Image"
-              class="w-14 h-14 object-cover rounded self-center"
+              class="w-36 object-cover"
             />
-            <p class="text-sm text-gray-700">
-              {{ activity.description }}
-            </p>
           </div>
-        </li>
-      </ul>
+          <p
+            class="text-sm text-gray-700 px-4 overflow-y-auto"
+            :class="scrollbarClass"
+          >
+            {{ activeActivity.description }}
+          </p>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, watch, inject } from 'vue'
+import { ref, watch, computed, inject } from 'vue'
 import Selector_comp from './Selector_comp.vue'
-const scrollbarClass = inject('scrollbarClass')
+
 // Props
 const props = defineProps({
   planningData: {
@@ -147,7 +160,7 @@ const props = defineProps({
     required: true, // Marque la prop comme obligatoire
   },
 })
-
+const scrollbarClass = inject('scrollbarClass')
 // Filtres réactifs
 const selectedLocation = ref([])
 const selectedLabel = ref([])
@@ -166,6 +179,14 @@ const filteredActivities = ref([])
 // Indique si les données sont chargées
 const dataLoaded = ref(false)
 
+// Activité active
+const activeActivity = ref(null)
+
+// Détecte si l'écran est petit
+const isSmallScreen = computed(() => window.innerWidth < 768)
+
+const isLgScreen = computed(() => window.innerWidth > 1024)
+
 // Références des composants Selector_comp
 const locationSelector = ref(null)
 const labelSelector = ref(null)
@@ -180,22 +201,18 @@ const resetFilters = () => {
   if (timeSelector.value) timeSelector.value.resetSelection()
 
   filteredActivities.value = props.planningData
+  activeActivity.value = isSmallScreen.value
+    ? null
+    : filteredActivities.value[0] || null
 }
 
-// Gère l'expansion des activités
-const expandedActivities = ref([])
-const toggleExpand = id => {
-  const index = expandedActivities.value.indexOf(id)
-  if (index === -1) {
-    expandedActivities.value.push(id)
-  } else {
-    expandedActivities.value.splice(index, 1)
-  }
+// Définir une activité active
+const setActiveActivity = activity => {
+  activeActivity.value = activity
 }
 
 // Formate la date
 const formatDate = date => {
-  // const month = date.slice(4, 6)
   const day = date.slice(6, 8)
   return `${day} juin`
 }
@@ -227,13 +244,15 @@ watch(
 
       // Mise à jour des activités filtrées
       filteredActivities.value = newData
+      activeActivity.value = isSmallScreen.value
+        ? null
+        : filteredActivities.value[0] || null
     } else {
       dataLoaded.value = false
     }
   },
   { immediate: true }, // Vérifie immédiatement si les données sont prêtes
 )
-
 // Filtrage des activités en fonction des sélections
 watch([selectedLocation, selectedLabel, selectedDate, selectedTime], () => {
   if (dataLoaded.value) {
