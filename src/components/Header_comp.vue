@@ -1,13 +1,17 @@
 <template>
   <!-- Header fixe -->
+
   <div
-    class="px-4 py-1 text-xs bg-_beige02 flex flex-row gap-2 justify-start items-center fixed top-0 left-0 w-full z-50"
+    class="px-1 py-1 text-xs bg-_beige02 flex flex-row gap-2 justify-start items-center fixed top-0 left-0 w-full z-50"
   >
-    <h1 class="text-3xl flex-grow">PATEUF</h1>
-    <div class="w-96">
+    <div class="w-1/6">
+      <h1 class="text-3xl">PATEUF</h1>
+    </div>
+
+    <div class="hidden w-full sm:flex">
       <Banner_comp :infos="infos" />
     </div>
-    <div class="flex flex-grow flex-col font-title">
+    <div class="flex flex-grow w-2/6 flex-col font-title">
       <!-- Compte à rebours -->
       <div class="flex flex-row gap-2 text-center justify-end">
         <div>
@@ -38,10 +42,10 @@
       </div> -->
       </div>
       <div class="flex flex-row gap-1 justify-end">
-        <p class="px-2 text-center bg-_black01 text-_white03 rounded-full">
+        <p class="px-1 text-center bg-_black01 text-_white03 rounded-full">
           Since 1989
         </p>
-        <p class="px-2 text-center bg-_black01 text-_white03 rounded-full">
+        <p class="px-1 text-center bg-_black01 text-_white03 rounded-full">
           14 & 15 JUIN 2025
         </p>
       </div>

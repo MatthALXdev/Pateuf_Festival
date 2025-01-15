@@ -1,6 +1,8 @@
 <template>
   <!-- Carrousel -->
-  <div class="w-fit h-14">
+  <div
+    class="relative h-14 overflow-hidden w-full flex items-center justify-center"
+  >
     <div
       class="absolute inset-0 flex transition-transform duration-1000"
       :style="{ transform: `translateX(-${currentSlide * 100}%)` }"
@@ -9,9 +11,9 @@
       <div
         v-for="info in infos"
         :key="info.infoID"
-        class="flex items-center justify-center w-full flex-shrink-0"
+        class="flex items-center justify-center flex-shrink-0 w-full"
       >
-        <p class="text-sm text-center px-1">
+        <p class="text-xs text-center px-2 line-clamp-3">
           {{ info.infoDescription }}
         </p>
       </div>
@@ -49,7 +51,7 @@ watch(
 )
 
 const startCarousel = () => {
-  const interval = 12000 // 12 seconds per slide
+  const interval = 3000 // 12 seconds per slide
   setInterval(() => {
     currentSlide.value = (currentSlide.value + 1) % totalSlides.value
   }, interval)
@@ -59,3 +61,13 @@ onMounted(() => {
   startCarousel()
 })
 </script>
+
+<style scoped>
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  overflow: hidden;
+}
+</style>

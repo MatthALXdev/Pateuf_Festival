@@ -1,9 +1,9 @@
 <template>
   <div class="max-w-96 max-h-96 md:hidden flex flex-col">
     <!-- Titre de la scène -->
-    <p class="text-xl font-semibold mb-2 flex">
-      <span class="flex-grow border-b-4 border-_black03">SCENE</span>
-      <span class="mr-4 border-b-4 border-_black03">{{ currentLocation }}</span>
+    <p class="text-xl font-semibold mb-2 h-8 flex flex-grow">
+      <span class="flex-grow">SCENE</span>
+      <span class="mr-4">{{ currentLocation }}</span>
     </p>
 
     <!-- Carrousel des scènes -->
@@ -127,10 +127,8 @@
         >
           <!-- Titre de la scène -->
           <p class="text-xl font-semibold mb-2 h-8 flex flex-grow">
-            <span class="flex-grow border-b-4 border-_black03">SCENE</span>
-            <span class="text-lg mr-4 border-b-4 border-_black03">{{
-              location
-            }}</span>
+            <span class="flex-grow">SCENE</span>
+            <span class="text-lg mr-4">{{ location }}</span>
           </p>
           <div class="pr-2 overflow-y-auto h-64" :class="[scrollbarClass]">
             <!-- Listes des groupes par scène -->
@@ -189,7 +187,7 @@
     </div>
   </div>
   <div
-    class="hidden lg:flex w-screen lg:max-w-[1000px] xl:max-w-[1200px] lg:max-h-[48rem] flex-col xl:max-h-100% mt-4"
+    class="hidden lg:flex w-screen lg:max-w-[1000px] xl:max-w-[1200px] max-h-[48rem] flex-col"
   >
     <!-- Carrousel des scènes -->
     <div v-if="dataLoaded">
@@ -202,24 +200,19 @@
             'Le Chaos Sonore',
           ]"
           :key="index"
-          class="w-full flex-grow border border-_beige02 bg-_brown03 bg-opacity-20 p-4 h-fit"
+          class="w-full flex-grow border border-_beige02"
         >
           <!-- Titre de la scène -->
           <p class="text-xl font-semibold mb-2 h-8 flex flex-grow">
-            <span class="flex-grow border-b-4 border-_black03">SCENE</span>
-            <span class="text-lg mr-4 border-b-4 border-_black03">{{
-              location
-            }}</span>
+            <span class="flex-grow">SCENE</span>
+            <span class="text-lg mr-4">{{ location }}</span>
           </p>
-          <div
-            class="pr-2 overflow-y-auto h-[32rem] xl:h-max"
-            :class="[scrollbarClass]"
-          >
+          <div class="pr-2 overflow-y-auto h-[32rem]" :class="[scrollbarClass]">
             <!-- Listes des groupes par scène -->
             <div
               v-for="(group, index) in getSortedGroupsForScene(location)"
               :key="index"
-              class="border-2 border-_darkBlue01 p-2 rounded-lg mb-2 w-full flex items-center transition duration-300 ease-in-out hover:bg-_green03 hover:shadow hover:bg-opacity-80"
+              class="border-2 border-_darkBlue01 p-2 rounded-lg mb-2 w-full flex items-center"
             >
               <img
                 :src="group.image"
