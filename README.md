@@ -1,4 +1,28 @@
-# pateuf-festival
+# pateuf-festival - dev04
+
+- [ ] Implementation CMS
+- Choose CMS and justification
+- Host json
+- Connect to the project
+- Test and document
+- [ ] Comment the code
+
+## Ways to improve the design
+
+- Implementation of a new, more advanced design for the map detail
+  component - **medium priority**
+- Banner_comp font size on large screen - **minimum priority**
+- Make the background colors of the components clearer and more natural **medium priority**
+- Loading screen **minimum priority**
+
+## Upgrade to be done:
+
+- Comment the code **high priority**
+- Identify the code that can be refactored (redundancy and modularity)**medium priority**
+- Nav_bar component link **medium priority**
+- Network and partner link**medium priority**
+- Management of a global state with store **medium priority**
+- Implementation CMS **high priority**
 
 ## Configuration
 
