@@ -128,17 +128,31 @@
         class="hidden md:flex lg:hidden w-1/2 justify-center h-[90%] self-center"
       >
         <div
-          class="flex flex-col w-2/3 border-2 border-_black01 rounded-md gap-4"
+          class="flex flex-col w-2/3 border-2 border-_black01 rounded-md gap-4 overflow-hidden relative z-0"
         >
-          <div class="flex bg-_blue01 justify-center">
+          <!-- Image du groupe -->
+          <div class="flex justify-center mx-auto overflow-hidden">
+            <!-- Image floue en arrière-plan (agrandie) -->
+            <div class="absolute blur-sm w-52 z-0">
+              <img
+                v-if="activeActivity.image"
+                :src="activeActivity.image"
+                alt="Activity Image"
+                class="object-cover opacity-70 scale-150"
+              />
+            </div>
+            <!-- Image nette au premier plan -->
             <img
+              v-if="activeActivity.image"
               :src="activeActivity.image"
               alt="Activity Image"
-              class="w-36 object-cover"
+              class="z-10 w-36 h-auto object-cover rounded-md mt-4"
             />
           </div>
+
+          <!-- Informations supplémentaires -->
           <p
-            class="text-sm text-gray-700 px-4 overflow-y-auto"
+            class="text-sm text-_black02 bg-_beige03 px-4 overflow-y-auto h-1/2 z-10 text-center flex items-center justify-center"
             :class="scrollbarClass"
           >
             {{ activeActivity.description }}
@@ -152,14 +166,14 @@
 <script setup>
 import { ref, watch, computed, inject } from 'vue'
 import Selector_comp from './Selector_comp.vue'
+import { useScheduleStore } from '@/stores/useScheduleStore'
+import { useWindowSize } from '@/composables/useWindowSize'
 
-// Props
-const props = defineProps({
-  planningData: {
-    type: Array,
-    required: true, // Marque la prop comme obligatoire
-  },
-})
+const scheduleStore = useScheduleStore()
+// ⚡️ On encapsule `scheduleStore.getScheduleData` dans un `computed` ⚡️
+const scheduleData = computed(() => scheduleStore.getScheduleData)
+console.log(scheduleStore.getScheduleData)
+
 const scrollbarClass = inject('scrollbarClass')
 // Filtres réactifs
 const selectedLocation = ref([])
@@ -183,9 +197,7 @@ const dataLoaded = ref(false)
 const activeActivity = ref(null)
 
 // Détecte si l'écran est petit
-const isSmallScreen = computed(() => window.innerWidth < 768)
-
-const isLgScreen = computed(() => window.innerWidth > 1024)
+const { isSmallScreen, isLgScreen } = useWindowSize()
 
 // Références des composants Selector_comp
 const locationSelector = ref(null)
@@ -200,7 +212,7 @@ const resetFilters = () => {
   if (dateSelector.value) dateSelector.value.resetSelection()
   if (timeSelector.value) timeSelector.value.resetSelection()
 
-  filteredActivities.value = props.planningData
+  filteredActivities.value = scheduleData
   activeActivity.value = isSmallScreen.value
     ? null
     : filteredActivities.value[0] || null
@@ -208,7 +220,15 @@ const resetFilters = () => {
 
 // Définir une activité active
 const setActiveActivity = activity => {
-  activeActivity.value = activity
+  // Si l'activité cliquée est déjà active, on la désactive
+  if (activeActivity.value && activeActivity.value.id === activity.id) {
+    activeActivity.value = null
+  } else {
+    activeActivity.value = activity
+  }
+  console.log('scheduleData:', scheduleData.value)
+  console.log('filteredActivities:', filteredActivities.value)
+  console.log('activeActivity:', activeActivity.value.id)
 }
 
 // Formate la date
@@ -217,14 +237,13 @@ const formatDate = date => {
   return `${day} juin`
 }
 
-// Surveille planningData et met à jour dataLoaded
+// 🕵️‍♂️ Watch réactif basé sur `scheduleData`
 watch(
-  () => props.planningData,
+  scheduleData,
   newData => {
     if (newData && Array.isArray(newData) && newData.length > 0) {
       dataLoaded.value = true
 
-      // Mise à jour des options des filtres
       locationOptions.value = [...new Set(newData.map(a => a.location))].map(
         (location, index) => ({
           id: `location-${index}`,
@@ -242,7 +261,6 @@ watch(
         (time, index) => ({ id: `time-${index}`, name: time, value: time }),
       )
 
-      // Mise à jour des activités filtrées
       filteredActivities.value = newData
       activeActivity.value = isSmallScreen.value
         ? null
@@ -251,12 +269,13 @@ watch(
       dataLoaded.value = false
     }
   },
-  { immediate: true }, // Vérifie immédiatement si les données sont prêtes
+  { immediate: true, deep: true }, // 👈 `deep: true` pour surveiller les changements internes du tableau
 )
-// Filtrage des activités en fonction des sélections
+
+// 🕵️‍♂️ Watch pour filtrer les activités (basé sur `scheduleData`)
 watch([selectedLocation, selectedLabel, selectedDate, selectedTime], () => {
   if (dataLoaded.value) {
-    filteredActivities.value = props.planningData.filter(activity => {
+    filteredActivities.value = scheduleData.value.filter(activity => {
       const matchesLocation =
         selectedLocation.value.length === 0 ||
         selectedLocation.value.some(loc => loc.value === activity.location)

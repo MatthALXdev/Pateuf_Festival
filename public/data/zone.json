@@ -4,15 +4,8 @@
     {
       "type": "Feature",
       "properties": {
-        "logoArea": false,
-        "selected": false,
-        "hover": false,
-        "name": "L'Arène des Titans",
-        "stroke": "#6A96A0",
-        "stroke-width": 5,
-        "stroke-opacity": 1,
-        "fill-opacity": 1,
-        "ref-id": "4_titanArena"
+        "ActivityGroupName": "Activités",
+        "name": "L'Arène des Titans"
       },
       "geometry": {
         "coordinates": [
@@ -38,7 +31,10 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "La taverne des brasseurs"
+        "ActivityGroupName": "Restauration",
+
+        "name": "La taverne des brasseurs",
+        "stroke": "#6A96A0"
       },
       "geometry": {
         "coordinates": [
@@ -57,6 +53,7 @@
     {
       "type": "Feature",
       "properties": {
+        "ActivityGroupName": "Scènes",
         "name": "Le repaire du kraken"
       },
       "geometry": {
@@ -80,6 +77,7 @@
     {
       "type": "Feature",
       "properties": {
+        "ActivityGroupName": "Scènes",
         "name": "La forge"
       },
       "geometry": {
@@ -102,6 +100,8 @@
     {
       "type": "Feature",
       "properties": {
+        "ActivityGroupName": "Activités",
+
         "name": "Valhalla"
       },
       "geometry": {
@@ -121,6 +121,8 @@
     {
       "type": "Feature",
       "properties": {
+        "ActivityGroupName": "Scènes",
+
         "name": "Le Chaos Sonore"
       },
       "geometry": {
@@ -142,6 +144,8 @@
     {
       "type": "Feature",
       "properties": {
+        "ActivityGroupName": "Restauration",
+
         "name": "Le chaudron Gourmand "
       },
       "geometry": {
@@ -166,6 +170,8 @@
     {
       "type": "Feature",
       "properties": {
+        "ActivityGroupName": "Activités",
+
         "name": "L'Enclume des arts "
       },
       "geometry": {
@@ -185,6 +191,8 @@
     {
       "type": "Feature",
       "properties": {
+        "ActivityGroupName": "Campements",
+
         "name": "Le camp des Guerriers "
       },
       "geometry": {
@@ -207,6 +215,8 @@
     {
       "type": "Feature",
       "properties": {
+        "ActivityGroupName": "Campements",
+
         "name": "Le camp des Ombres"
       },
       "geometry": {
@@ -231,6 +241,8 @@
     {
       "type": "Feature",
       "properties": {
+        "ActivityGroupName": "Activités",
+
         "name": "Le sanctuaire du Nord "
       },
       "geometry": {
@@ -256,6 +268,8 @@
     {
       "type": "Feature",
       "properties": {
+        "ActivityGroupName": "Douches",
+
         "name": "La vallées des Ames Perdues"
       },
       "geometry": {
@@ -278,6 +292,8 @@
     {
       "type": "Feature",
       "properties": {
+        "ActivityGroupName": "Restauration",
+
         "name": "Le chaudron Gourmand "
       },
       "geometry": {

@@ -12,7 +12,21 @@ export default [
     name: 'app/files-to-ignore',
     ignores: ['**/dist/**', '**/dist-ssr/**', '**/coverage/**'],
   },
-
+  {
+    name: 'app/env',
+    languageOptions: {
+      ecmaVersion: 'latest',
+      sourceType: 'module',
+      globals: {
+        process: 'readonly', // ✅ Ajout pour éviter l'erreur
+      },
+      env: {
+        browser: true,
+        es2021: true,
+        node: true, // ✅ Ajout pour que ESLint reconnaisse process.env
+      },
+    },
+  },
   js.configs.recommended,
   ...pluginVue.configs['flat/essential'],
   skipFormatting,

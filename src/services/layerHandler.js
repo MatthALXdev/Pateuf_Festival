@@ -29,46 +29,46 @@ export function selectFeature(
 export function setupLayerEvents(map, selectFeature) {
   let isMarkerMapHovered = false
 
-  // Gestion des événements pour 'markerMap'
-  map.on('mousemove', 'markerMap', e => {
+  // Gestion des événements pour 'markerLayer'
+  map.on('mousemove', 'markerLayer', e => {
     isMarkerMapHovered = true
     resetMapZoneHover(map) // Réinitialiser le survol de mapZone
-    handleMarkerMapHover(map, e) // Gérer le survol de markerMap
+    handleMarkerMapHover(map, e) // Gérer le survol de markerLayer
   })
-  map.on('mouseleave', 'markerMap', () => {
+  map.on('mouseleave', 'markerLayer', () => {
     isMarkerMapHovered = false
-    resetMarkerMapHover(map) // Réinitialiser le survol de markerMap
+    resetMarkerMapHover(map) // Réinitialiser le survol de markerLayer
   })
-  map.on('click', 'markerMap', e => {
-    handleMarkerMapSelect(map, e, selectFeature) // Gérer la sélection de markerMap
+  map.on('click', 'markerLayer', e => {
+    handleMarkerMapSelect(map, e, selectFeature) // Gérer la sélection de markerLayer
   })
 
-  // Gestion des événements pour 'mapZone'
-  map.on('mousemove', 'mapZone', e => {
+  // Gestion des événements pour 'mapZoneLayer'
+  map.on('mousemove', 'mapZoneLayer', e => {
     if (!isMarkerMapHovered) {
       handleMapZoneHover(map, e) // Gérer le survol de mapZone
     }
   })
-  map.on('mouseleave', 'mapZone', () => {
+  map.on('mouseleave', 'mapZoneLayer', () => {
     if (!isMarkerMapHovered) {
       resetMapZoneHover(map) // Réinitialiser le survol de mapZone
     }
   })
-  map.on('click', 'mapZone', e => {
+  map.on('click', 'mapZoneLayer', e => {
     if (!isMarkerMapHovered) {
       handleMapZoneSelect(map, e, selectFeature) // Gérer la sélection de mapZone
     }
   })
 }
 
-// Fonction pour gérer le survol de 'mapZone'
+// Fonction pour gérer le survol de 'mapZoneLayer'
 function handleMapZoneHover(map, e) {
   if (!e.features || e.features.length === 0) {
     return
   }
 
   const feature = e.features[0]
-  const sourceName = 'mapFile'
+  const sourceName = 'mapZoneSource'
   const id = feature.id
 
   if (hoveredMapZoneId !== null && hoveredMapZoneId !== id) {
@@ -88,11 +88,11 @@ function handleMapZoneHover(map, e) {
   map.getCanvas().style.cursor = 'pointer'
 }
 
-// Fonction pour réinitialiser le survol de 'mapZone'
+// Fonction pour réinitialiser le survol de 'mapZoneLayer'
 function resetMapZoneHover(map) {
   if (hoveredMapZoneId !== null) {
     map.setFeatureState(
-      { source: 'mapFile', id: hoveredMapZoneId },
+      { source: 'mapZoneSource', id: hoveredMapZoneId },
       { hover: false },
     )
     hoveredMapZoneId = null
@@ -100,14 +100,14 @@ function resetMapZoneHover(map) {
   map.getCanvas().style.cursor = ''
 }
 
-// Fonction pour gérer la sélection de 'mapZone'
+// Fonction pour gérer la sélection de 'mapZoneLayer'
 function handleMapZoneSelect(map, e, selectFeature) {
   if (!e.features || e.features.length === 0) {
     return
   }
 
   const feature = e.features[0]
-  const sourceName = 'mapFile'
+  const sourceName = 'mapZoneSource'
   const id = feature.id
 
   if (selectedMapZoneId !== null && selectedMapZoneId !== id) {
@@ -130,14 +130,14 @@ function handleMapZoneSelect(map, e, selectFeature) {
   selectFeature({ ...feature, geometry })
 }
 
-// Fonction pour gérer le survol de 'markerMap'
+// Fonction pour gérer le survol de 'markerLayer'
 function handleMarkerMapHover(map, e) {
   if (!e.features || e.features.length === 0) {
     return
   }
 
   const feature = e.features[0]
-  const sourceName = 'markerFile'
+  const sourceName = 'iconSource'
   const id = feature.id
 
   if (hoveredMarkerMapId !== null && hoveredMarkerMapId !== id) {
@@ -157,11 +157,11 @@ function handleMarkerMapHover(map, e) {
   map.getCanvas().style.cursor = 'pointer'
 }
 
-// Fonction pour réinitialiser le survol de 'markerMap'
+// Fonction pour réinitialiser le survol de 'markerLayer'
 function resetMarkerMapHover(map) {
   if (hoveredMarkerMapId !== null) {
     map.setFeatureState(
-      { source: 'markerFile', id: hoveredMarkerMapId },
+      { source: 'iconSource', id: hoveredMarkerMapId },
       { hover: false },
     )
     hoveredMarkerMapId = null
@@ -169,14 +169,14 @@ function resetMarkerMapHover(map) {
   map.getCanvas().style.cursor = ''
 }
 
-// Fonction pour gérer la sélection de 'markerMap'
+// Fonction pour gérer la sélection de 'markerLayer'
 function handleMarkerMapSelect(map, e, selectFeature) {
   if (!e.features || e.features.length === 0) {
     return
   }
 
   const feature = e.features[0]
-  const sourceName = 'markerFile'
+  const sourceName = 'iconSource'
   const id = feature.id
 
   if (selectedMarkerMapId !== null && selectedMarkerMapId !== id) {
@@ -204,28 +204,28 @@ export function resetLayerAndMap(map) {
   // Réinitialiser la vue de la carte
   map.flyTo({
     center: [1.1451961205377867, 47.45770024379996],
-    zoom: 14,
+    zoom: 14.7,
     essential: true,
   })
 
   // Réinitialiser tous les états 'hover' et 'selected'
   if (hoveredMapZoneId !== null) {
     map.setFeatureState(
-      { source: 'mapFile', id: hoveredMapZoneId },
+      { source: 'mapZoneSource', id: hoveredMapZoneId },
       { hover: false },
     )
     hoveredMapZoneId = null
   }
   if (hoveredMarkerMapId !== null) {
     map.setFeatureState(
-      { source: 'markerFile', id: hoveredMarkerMapId },
+      { source: 'iconSource', id: hoveredMarkerMapId },
       { hover: false },
     )
     hoveredMarkerMapId = null
   }
   if (selectedMapZoneId !== null) {
     map.setFeatureState(
-      { source: 'mapFile', id: selectedMapZoneId },
+      { source: 'mapZoneSource', id: selectedMapZoneId },
       { selected: false },
     )
 
@@ -233,7 +233,7 @@ export function resetLayerAndMap(map) {
   }
   if (selectedMarkerMapId !== null) {
     map.setFeatureState(
-      { source: 'markerFile', id: selectedMarkerMapId },
+      { source: 'iconSource', id: selectedMarkerMapId },
       { selected: false },
     )
     selectedMarkerMapId = null

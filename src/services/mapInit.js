@@ -1,57 +1,100 @@
 // Fonction pour initialiser les sources et les couches sur la carte
-export async function initializeMapSources(map, props) {
+export async function initializeMapSources(
+  map,
+  festivalBorder,
+  mapZone,
+  iconData,
+) {
   // Ajout de la source des zones de carte
-
-  map.addSource('mapFile', {
+  map.addSource('festivalBorderSource', {
     type: 'geojson',
-    data: props.mapData,
+    data: festivalBorder,
   })
+
   // Ajout de la source des marqueurs
-  map.addSource('markerFile', {
+  map.addSource('iconSource', {
     type: 'geojson',
-    data: props.logoMapData,
+    data: iconData,
   })
 
-  // Ajout de la couche pour les zones de carte
-  if (!map.getLayer('mapZone')) {
+  map.addSource('mapZoneSource', {
+    type: 'geojson',
+    data: mapZone,
+  })
+
+  // Ajout des couches
+  if (!map.getLayer('festivalBorderLayer')) {
     map.addLayer({
-      id: 'mapZone',
+      id: 'festivalBorderLayer',
       type: 'fill',
-      source: 'mapFile',
+      source: 'festivalBorderSource',
       paint: {
-        // Définir les couleurs de remplissage en fonction de l'état des fonctionnalités
+        'fill-color': '#B3755A',
+      },
+    })
+  }
+
+  if (!map.getLayer('mapZoneLayer')) {
+    map.addLayer({
+      id: 'mapZoneLayer',
+      type: 'fill',
+      source: 'mapZoneSource',
+      paint: {
         'fill-color': [
           'case',
           ['boolean', ['feature-state', 'selected'], false],
-          '#a7643a', // Couleur pour les fonctionnalités sélectionnées
+          '#a7643a',
           ['boolean', ['feature-state', 'hover'], false],
-          '#d6ac57', // Couleur pour les fonctionnalités survolées
-          '#e5c992', // Couleur par défaut
+          '#d6ac57',
+          ['boolean', ['feature-state', 'invisible'], false],
+          '#d3d3d3',
+          '#e5c992',
         ],
       },
     })
   }
 
-  // Ajout de la couche pour les marqueurs
-  if (!map.getLayer('markerMap')) {
+  if (!map.getLayer('iconLayer')) {
     map.addLayer({
-      id: 'markerMap',
-      type: 'circle',
-      source: 'markerFile',
+      id: 'iconLayer',
+      type: 'symbol',
+      source: 'iconSource',
+      layout: {
+        'icon-image': ['get', 'icon'],
+        'icon-size': ['get', 'iconSize'],
+        'icon-anchor': 'center',
+        'icon-allow-overlap': true,
+      },
       paint: {
-        // Définir l'opacité des cercles en fonction de l'état des fonctionnalités
+        'icon-opacity': [
+          'case',
+          ['boolean', ['feature-state', 'hidden'], false],
+          0,
+          1,
+        ],
+      },
+    })
+  }
+
+  if (!map.getLayer('markerLayer')) {
+    map.addLayer({
+      id: 'markerLayer',
+      type: 'circle',
+      source: 'iconSource',
+      filter: ['==', ['get', 'isMarker'], true],
+      paint: {
         'circle-opacity': [
           'case',
           ['boolean', ['feature-state', 'selected'], false],
-          1, // Opacité pour les fonctionnalités sélectionnées
-          1, // Opacité par défaut
+          1,
+          1,
         ],
-        'circle-radius': 20, // Rayon des cercles
+        'circle-radius': 20,
         'circle-color': [
           'case',
           ['boolean', ['feature-state', 'selected'], false],
-          '#99B84F', // Couleur pour les fonctionnalités sélectionnées
-          '#d6ac57', // Couleur par défaut
+          '#99B84F',
+          '#d6ac57',
         ],
         'circle-stroke-width': [
           'case',
@@ -60,21 +103,18 @@ export async function initializeMapSources(map, props) {
             ['boolean', ['feature-state', 'selected'], false],
             ['boolean', ['feature-state', 'hover'], false],
           ],
-          2, // Épaisseur du contour lorsque sélectionné et survolé
+          2,
           [
             'case',
             ['boolean', ['feature-state', 'selected'], false],
-            2, // Épaisseur du contour lorsque sélectionné
+            2,
             ['boolean', ['feature-state', 'hover'], false],
-            2, // Épaisseur du contour lorsque survolé
-            0, // Épaisseur du contour par défaut
+            2,
+            0,
           ],
         ],
       },
     })
   }
-
-  // Déplacer la couche du logo Mapbox Studio au-dessus des autres couches
-  const logoMapLayerId = 'logomap-20241128'
-  map.moveLayer(logoMapLayerId)
+  map.moveLayer('iconLayer')
 }
