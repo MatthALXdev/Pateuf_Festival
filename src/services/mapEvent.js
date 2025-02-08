@@ -21,60 +21,59 @@ export function closeDetails(
     overlay.style.display = 'none'
   }
 }
-
+//Si tout séléctionné est clické alors maj du table checkgroupe à vide sinon
+// checkgroup reprend la liste initiale à partir des données.
+//Inverse allSelected
 export function toggleSelectAllAndUpdateLayers(
   allSelected,
   checkedGroups,
-  groupFilterData,
+  ActivityGroupsArray,
 ) {
   if (allSelected.value) {
     checkedGroups.value = []
   } else {
-    checkedGroups.value = groupFilterData.map(group => group.name)
+    checkedGroups.value = ActivityGroupsArray.map(group => group.name)
   }
   allSelected.value = !allSelected.value
 
   // Créer une nouvelle référence à checkedGroups pour déclencher le watch
+  // A revoir lors d'intégration d'un état.
   checkedGroups.value = checkedGroups.value.slice()
 }
 
-// Dans services/mapEvent.js
+export function updateLayers(map, ActivityGroupsArray, checkedGroups) {
+  // Calculer les groupes non sélectionnés (uncheckedGroups)
+  const uncheckedGroups = ActivityGroupsArray.map(group => group.name).filter(
+    groupName => !checkedGroups.includes(groupName),
+  )
 
-export function updateLayers(map, groupFilterData, checkedGroups) {
-  // Récupérer les icônes et ref-ids des groupes cochés
-  const selectedIcons = []
-  const selectedRefIds = []
+  // Parcourir les fonctionnalités de mapZone pour mettre à jour leur état
+  map
+    .querySourceFeatures('mapZoneSource', { sourceLayer: 'mapZoneLayer' })
+    .forEach(feature => {
+      const groupName = feature.properties.ActivityGroupName
 
-  groupFilterData.forEach(group => {
-    if (checkedGroups.includes(group.name)) {
-      selectedIcons.push(...group.icons)
-      if (group.name === 'Scènes') {
-        group.refIds.forEach((refId, index) => {
-          const icon = index < 3 ? 'music' : 'scene'
-          selectedRefIds.push(`${refId}_${icon}`)
-        })
-      } else {
-        group.refIds.forEach((refId, index) => {
-          const icon = group.icons[index] || group.icons[group.icons.length - 1]
-          selectedRefIds.push(`${refId}_${icon}`)
-        })
-      }
-    }
-  })
+      // Vérifier si la fonctionnalité appartient aux groupes non sélectionnés
+      const isInvisible = uncheckedGroups.includes(groupName)
 
-  // Appliquer le filtre aux couches en utilisant les icônes et ref-ids sélectionnés
-  if (selectedIcons.length > 0) {
-    map.setFilter('logomap-20241128', ['in', 'icon', ...selectedIcons])
+      // Mettre à jour l'état `invisible`
+      map.setFeatureState(
+        { source: 'mapZoneSource', id: feature.id },
+        { invisible: isInvisible },
+      )
+    })
+
+  if (checkedGroups.length > 0) {
+    map.setFilter('iconLayer', ['in', 'ActivityGroupName', ...checkedGroups])
+    map.setFilter('markerLayer', [
+      'all', // Combine plusieurs conditions
+      ['==', 'isMarker', true], // Ne garder que les marqueurs
+      ['in', 'ActivityGroupName', ...checkedGroups], // Appliquer le filtre de groupes cochés
+    ])
   } else {
-    map.setFilter('logomap-20241128', ['in', 'icon', ''])
-  }
-
-  if (selectedRefIds.length > 0) {
-    map.setFilter('mapZone', ['in', 'ref-id', ...selectedRefIds])
-    map.setFilter('markerMap', ['in', 'ref-id', ...selectedRefIds])
-  } else {
-    map.setFilter('mapZone', ['in', 'ref-id', ''])
-    map.setFilter('markerMap', ['in', 'ref-id', ''])
+    // Si aucun groupe n'est coché, afficher uniquement les isMarker true
+    map.setFilter('iconLayer', ['in', 'ActivityGroupName', ''])
+    map.setFilter('markerLayer', ['in', 'ActivityGroupName', '']) // Ne plus écraser le filtre
   }
 }
 

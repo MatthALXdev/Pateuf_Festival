@@ -248,20 +248,14 @@
 
 <script setup>
 import { getTestDateTime } from '@/services/testHandler'
-import { ref, watch, computed, inject, onMounted } from 'vue'
+import { ref, computed, inject, onMounted } from 'vue'
+import { useScheduleStore } from '@/stores/useScheduleStore'
 
+const scheduleStore = useScheduleStore()
 const scrollbarClass = inject('scrollbarClass')
 
-const props = defineProps({
-  planningData: {
-    type: Array,
-    required: false,
-    default: () => [],
-  },
-})
-
 const currentSceneIndex = ref(0)
-const dataLoaded = ref(false)
+const dataLoaded = computed(() => scheduleStore.getScheduleData.length > 0)
 let startX = 0
 let isSwiping = false
 const isTouchDevice = ref(false)
@@ -269,17 +263,6 @@ const isTouchDevice = ref(false)
 onMounted(() => {
   isTouchDevice.value = 'ontouchstart' in window || navigator.maxTouchPoints > 0
 })
-
-watch(
-  () => props.planningData,
-  newData => {
-    if (newData && Array.isArray(newData) && newData.length > 0) {
-      dataLoaded.value = true
-    } else {
-      dataLoaded.value = false
-    }
-  },
-)
 
 const currentLocation = computed(
   () =>
@@ -290,7 +273,7 @@ const currentLocation = computed(
 
 const getSortedGroupsForScene = scene => {
   const { testDate, testTime } = getTestDateTime()
-  return props.planningData
+  return scheduleStore.getScheduleData
     .filter(group => group.location === scene)
     .sort((a, b) => parseInt(a.order) - parseInt(b.order))
     .filter(group => group.date + group.end >= testDate + testTime)

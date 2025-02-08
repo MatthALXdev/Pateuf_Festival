@@ -5,7 +5,7 @@
   >
     <div class="flex flex-row justify-between items-center mb-3">
       <div class="ml-3 font-semibold">
-        {{ currentGroup.location }}
+        {{ currentGroup?.location || 'Lieu inconnu' }}
       </div>
       <div v-if="currentlyOnStage" class="font-semibold">
         Actuellement en live
@@ -21,7 +21,6 @@
     </div>
     <div v-if="currentlyOnStage">
       <!-- Affichage des informations de currentlyOnStage -->
-
       <div
         v-for="location in [
           'La forge',
@@ -31,11 +30,7 @@
         :key="location"
         class="bg-_beige02 p-4 mb-4 border border-_black02 rounded-lg"
       >
-        <div
-          v-for="group in getCurrentLiveGroups(location)"
-          :key="group.name"
-          class=""
-        >
+        <div v-for="group in getCurrentLiveGroups(location)" :key="group.name">
           <GroupCard :group="group" :isCurrent="false" />
         </div>
         <div v-if="!getCurrentLiveGroups(location).length">
@@ -49,10 +44,7 @@
     >
       <!-- Affichage des groupes (actuel et suivants) -->
       <GroupCard
-        v-for="group in [
-          currentGroup,
-          ...getUpcomingGroups(currentGroup.location, currentGroup.order),
-        ]"
+        v-for="group in filteredGroups"
         :key="group.name"
         :group="group"
         :isCurrent="group.order === currentGroup.order"
@@ -62,28 +54,37 @@
 </template>
 
 <script setup>
-import { ref, inject } from 'vue'
+import { ref, inject, computed } from 'vue'
 import { getTestDateTime } from '@/services/testHandler'
 import GroupCard from '@/components/Group_card.vue'
+import { useScheduleStore } from '@/stores/useScheduleStore'
 
-const scrollbarClass = inject('scrollbarClass')
-console.log(scrollbarClass.value)
-
-const props = defineProps({
+defineProps({
   feature: Object,
-  planningData: Object,
   currentlyOnStage: Boolean,
 })
 
-const currentGroup = ref(null)
-const currentScene = ref(props.feature?.properties?.name || '')
+const scheduleStore = useScheduleStore()
+const scrollbarClass = inject('scrollbarClass')
+console.log(scrollbarClass.value)
+
+const currentGroup = ref({
+  name: '',
+  location: '',
+  start: '',
+  end: '',
+  image: '',
+  description: '',
+  order: 0,
+})
+const currentScene = ref(scheduleStore.getsheduleData?.[0]?.location || '')
 const pathImage = ref('pathImage vide')
 
 const { testDate, testTime } = getTestDateTime()
 const now = testTime
 const today = testDate
 
-const group = props.planningData?.find(groupe => {
+const group = scheduleStore.getsheduleData?.find(groupe => {
   return (
     currentScene.value &&
     groupe.location === currentScene.value &&
@@ -93,12 +94,22 @@ const group = props.planningData?.find(groupe => {
   )
 })
 
-currentGroup.value = group || 'Aucun groupe ne joue actuellement'
+console.log(group)
+
+currentGroup.value = group || {
+  name: 'Aucun groupe',
+  location: 'Lieu inconnu',
+  start: '',
+  end: '',
+  image: '',
+  description: 'Aucun groupe ne joue actuellement',
+  order: 0,
+}
 pathImage.value = currentGroup.value?.image || 'pathImage vide'
 
 function getCurrentLiveGroups(location) {
   return (
-    props.planningData?.filter(group => {
+    scheduleStore.getsheduleData?.filter(group => {
       return (
         group.location === location &&
         group.date === today &&
@@ -111,7 +122,7 @@ function getCurrentLiveGroups(location) {
 
 function getUpcomingGroups(location, currentOrder) {
   return (
-    props.planningData
+    scheduleStore.getScheduleData
       ?.filter(group => {
         return (
           group.location === location &&
@@ -122,4 +133,11 @@ function getUpcomingGroups(location, currentOrder) {
       .sort((a, b) => a.order - b.order) || []
   )
 }
+
+const filteredGroups = computed(() => {
+  return [
+    currentGroup.value,
+    ...getUpcomingGroups(currentGroup.value.location, currentGroup.value.order),
+  ].filter(group => group && group.name)
+})
 </script>

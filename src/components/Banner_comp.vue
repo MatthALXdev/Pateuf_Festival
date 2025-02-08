@@ -9,7 +9,7 @@
     >
       <!-- Informations -->
       <div
-        v-for="info in infos"
+        v-for="info in newsStore.newsData"
         :key="info.infoID"
         class="flex items-center justify-center flex-shrink-0 w-full"
       >
@@ -22,43 +22,30 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue'
-
-const dataLoaded = ref(null)
-const props = defineProps({
-  infos: {
-    type: Array,
-    required: false,
-    default: () => [],
-  },
-})
-
+import { ref, onMounted } from 'vue'
+import { useNewsStore } from '@/stores/useNewsStore'
+const newsStore = useNewsStore()
 const currentSlide = ref(0)
-const totalSlides = ref(1) // Will update dynamically based on infos length
-
-watch(
-  () => props.infos,
-  newData => {
-    if (newData && Array.isArray(newData) && newData.length > 0) {
-      dataLoaded.value = true
-      totalSlides.value = newData.length
-    } else {
-      dataLoaded.value = false
-      totalSlides.value = 1
-    }
-  },
-  { immediate: true },
-)
 
 const startCarousel = () => {
-  const interval = 3000 // 12 seconds per slide
+  const interval = 3000 // 3 seconds per slide
   setInterval(() => {
-    currentSlide.value = (currentSlide.value + 1) % totalSlides.value
+    if (newsStore.newsData.length > 0) {
+      currentSlide.value = (currentSlide.value + 1) % newsStore.newsData.length
+    }
   }, interval)
 }
 
 onMounted(() => {
-  startCarousel()
+  if (newsStore.newsData.length === 0) {
+    newsStore.fetchNews().then(() => {
+      if (newsStore.newsData.length > 0) {
+        startCarousel()
+      }
+    })
+  } else {
+    startCarousel()
+  }
 })
 </script>
 

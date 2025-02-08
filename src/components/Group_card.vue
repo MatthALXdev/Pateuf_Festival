@@ -20,8 +20,6 @@
 </template>
 
 <script setup>
-//const ..
-
 defineProps({
   group: Object, // Informations sur le groupe
   isCurrent: Boolean, // Indique si c'est le groupe en live

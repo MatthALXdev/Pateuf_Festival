@@ -1,7 +1,44 @@
+// @ts-nocheck
 import { createApp } from 'vue'
+import { createPinia } from 'pinia'
+
+import netlifyIdentity from 'netlify-identity-widget'
 import App from './App.vue'
+import router from './router'
 import './assets/global.css'
 import './assets/tailwind.css'
-const app = createApp(App)
+import { useFaqStore } from '@/stores/useFaqStore'
+import { useBorderStore } from '@/stores/useBorderStore'
+import { useIconStore } from '@/stores/useIconStore'
+import { useMapZoneStore } from '@/stores/useMapZoneStore'
+import { useScheduleStore } from '@/stores/useScheduleStore'
 
-app.mount('#app')
+const pinia = createPinia()
+const app = createApp(App)
+netlifyIdentity.init({
+  APIUrl: 'https://pateuf-dev.netlify.app/.netlify/identity',
+})
+export { netlifyIdentity }
+
+// Précharger les données nécessaires pour les stores
+async function preloadStores() {
+  const borderStore = useBorderStore(pinia)
+  const faq = useFaqStore(pinia)
+  const iconStore = useIconStore(pinia)
+  const mapZoneStore = useMapZoneStore(pinia)
+  const scheduleStore = useScheduleStore(pinia)
+  await borderStore.fetchFestivalBorder()
+  await faq.fetchFaq()
+  await iconStore.fetchIconData()
+  await mapZoneStore.fetchMapZone()
+  await scheduleStore.fetchScheduleData()
+}
+
+// Préchargement avant le montage de l'application
+preloadStores()
+  .then(() => {
+    app.use(pinia).use(router).mount('#app')
+  })
+  .catch(error => {
+    console.error('Erreur lors du préchargement des stores:', error)
+  })

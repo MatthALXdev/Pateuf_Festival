@@ -1,4 +1,3 @@
-<!-- NavList.vue -->
 <template>
   <nav>
     <ul
@@ -9,18 +8,38 @@
         :key="index"
         class="transform transition duration-200 hover:scale-125"
       >
-        <a :href="link.url" class="relative group"
-          >{{ link.name
-          }}<span
+        <a :href="link.url" class="relative group">
+          {{ link.name }}
+          <span
             class="absolute -bottom-1 left-0 w-0 h-1 bg-_green03 transition-all group-hover:w-full group-focus:w-full"
-          ></span
-        ></a>
+          ></span>
+        </a>
+      </li>
+      <li>
+        <a href="/" @click.prevent="resetToHome">Home</a>
+      </li>
+
+      <li v-if="authStore.authenticated">
+        <router-link to="/gestion">Gestion</router-link>
       </li>
     </ul>
   </nav>
 </template>
 
 <script setup>
+import { useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
+
+// Hook to handle routing
+const router = useRouter()
+const authStore = useAuthStore() // Access authentication state
+
+// Reset to Home route
+const resetToHome = () => {
+  router.push('/')
+}
+
+// Placeholder links
 const links = [
   { name: 'Programmation', url: '#' },
   { name: 'Concert', url: '#' },

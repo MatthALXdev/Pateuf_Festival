@@ -9,7 +9,7 @@
     </div>
 
     <div class="hidden w-full sm:flex">
-      <Banner_comp :infos="infos" />
+      <Banner_comp />
     </div>
     <div class="flex flex-grow w-2/6 flex-col font-title">
       <!-- Compte à rebours -->
@@ -22,7 +22,6 @@
           <p class="text-sm font-bold">{{ hours }}</p>
           <p class="text-xs">HEURES</p>
         </div>
-
         <div>
           <p class="text-sm font-bold">{{ minutes }}</p>
           <p class="text-xs">MINUTES</p>
@@ -31,15 +30,6 @@
           <p class="text-sm font-bold">{{ seconds }}</p>
           <p class="text-xs">SECONDES</p>
         </div>
-        <!-- <div class="">
-        <a href="#">
-          <img
-            class="w-14 h-14"
-            src=".\..\assets\images\profil.png"
-            alt="logo profile"
-          />
-        </a>
-      </div> -->
       </div>
       <div class="flex flex-row gap-1 justify-end">
         <p class="px-1 text-center bg-_black01 text-_white03 rounded-full">
@@ -52,7 +42,7 @@
     </div>
   </div>
   <!-- Image principale -->
-  <div>
+  <div v-if="isHomeView">
     <img
       src="./../assets/images/frontImage.png"
       alt="Image principale"
@@ -61,34 +51,17 @@
   </div>
 </template>
 <script setup>
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, computed } from 'vue'
+import { useRoute } from 'vue-router'
 import Banner_comp from './Banner_comp.vue'
+
 const targetDate = new Date('2025-06-14T14:00:00+02:00')
 const days = ref('XXX')
 const hours = ref('XX')
 const minutes = ref('XX')
 const seconds = ref('XX')
 
-const dataLoaded = ref(null)
-const props = defineProps({
-  infos: {
-    type: Array,
-    required: false,
-    default: () => [],
-  },
-})
-
-watch(
-  () => props.infos,
-  newData => {
-    if (newData && Array.isArray(newData) && newData.length > 0) {
-      dataLoaded.value = true
-    } else {
-      dataLoaded.value = false
-    }
-  },
-  { immediate: true },
-)
+const route = useRoute()
 
 const updateCountdown = () => {
   const now = new Date()
@@ -109,5 +82,10 @@ const updateCountdown = () => {
 onMounted(() => {
   updateCountdown()
   setInterval(updateCountdown, 1000)
+})
+
+// Condition pour détecter une vue spécifique
+const isHomeView = computed(() => {
+  return route.name === 'home' // Remplace 'SpecialViewName' par le nom de ta vue
 })
 </script>

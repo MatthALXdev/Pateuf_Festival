@@ -1,8 +1,8 @@
 <template>
   <div class="">
-    <div v-if="dataLoaded">
+    <div v-if="faqStore.groupedFaq.length">
       <div
-        v-for="(themeGroup, index) in groupedFaqData"
+        v-for="(themeGroup, index) in faqStore.groupedFaq"
         :key="index"
         class="faq-theme relative"
         :style="{
@@ -61,47 +61,11 @@
 </template>
 
 <script setup>
-import { ref, computed, watch } from 'vue'
+import { ref } from 'vue'
+import { useFaqStore } from '@/stores/useFaqStore'
 
-// Props to receive FAQ data
-const props = defineProps({
-  faqData: {
-    type: Array,
-    required: false,
-    default: () => [],
-  },
-})
-
-// Reactive state to track the currently open question
+const faqStore = useFaqStore()
 const openQuestion = ref(null)
-const dataLoaded = ref(false)
-
-// Watch for changes in faqData prop
-watch(
-  () => props.faqData,
-  newData => {
-    if (newData && Array.isArray(newData) && newData.length > 0) {
-      dataLoaded.value = true
-    } else {
-      dataLoaded.value = false
-    }
-  },
-  { immediate: true },
-)
-
-// Computed property to group questions by theme
-const groupedFaqData = computed(() => {
-  if (!dataLoaded.value) return []
-  return props.faqData.reduce((acc, item) => {
-    let group = acc.find(g => g.theme === item.theme)
-    if (!group) {
-      group = { theme: item.theme, questions: [] }
-      acc.push(group)
-    }
-    group.questions.push(item)
-    return acc
-  }, [])
-})
 
 // Toggle the open state of a question
 const toggleQuestion = theme => {
@@ -116,6 +80,8 @@ const toggleQuestion = theme => {
 const isQuestionOpen = theme => {
   return openQuestion.value === theme
 }
+
+faqStore.fetchFaq()
 </script>
 
 <style scoped>
