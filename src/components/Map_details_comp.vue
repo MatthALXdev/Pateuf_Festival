@@ -59,7 +59,7 @@ import { getTestDateTime } from '@/services/testHandler'
 import GroupCard from '@/components/Group_card.vue'
 import { useScheduleStore } from '@/stores/useScheduleStore'
 
-defineProps({
+const props = defineProps({
   feature: Object,
   currentlyOnStage: Boolean,
 })
@@ -77,14 +77,17 @@ const currentGroup = ref({
   description: '',
   order: 0,
 })
-const currentScene = ref(scheduleStore.getsheduleData?.[0]?.location || '')
+// const currentScene = ref(scheduleStore.getScheduleData?.[0]?.location || '')
+const currentScene = ref(props.feature?.properties?.name || '')
+
 const pathImage = ref('pathImage vide')
 
 const { testDate, testTime } = getTestDateTime()
 const now = testTime
 const today = testDate
+console.log(scheduleStore.getScheduleData)
 
-const group = scheduleStore.getsheduleData?.find(groupe => {
+const group = scheduleStore.getScheduleData?.find(groupe => {
   return (
     currentScene.value &&
     groupe.location === currentScene.value &&
@@ -109,7 +112,7 @@ pathImage.value = currentGroup.value?.image || 'pathImage vide'
 
 function getCurrentLiveGroups(location) {
   return (
-    scheduleStore.getsheduleData?.filter(group => {
+    scheduleStore.getScheduleData?.filter(group => {
       return (
         group.location === location &&
         group.date === today &&

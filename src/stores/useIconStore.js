@@ -1,27 +1,31 @@
 import { defineStore } from 'pinia'
-import { SANITY_ACCESS_TOKEN } from '@/config/constants'
 
 export const useIconStore = defineStore('IconStore', {
   state: () => ({
     iconData: null, // Données combinées de Sanity et statiques
     staticData: [], // Données statiques pour compléter les données Sanity
+    loading: false,
+    error: null,
   }),
   actions: {
     // Charger les données de Sanity et les fusionner avec les données statiques
     async fetchIconData() {
+      this.loading = true
+      this.error = null
       try {
-        // Récupération des données depuis Sanity
-        const response = await fetch(
-          "https://rgoopuri.api.sanity.io/v2022-03-07/data/query/pateuf_private?query=*[_type == 'iconFeature']",
-          {
-            headers: {
-              Authorization: `Bearer ${SANITY_ACCESS_TOKEN}`,
-            },
-          },
-        )
+        const response = await fetch('/.netlify/functions/fetchSanityData', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            dataset: 'pateuf_private',
+            query: "*[_type == 'iconFeature']",
+          }),
+        })
 
         if (!response.ok) {
-          throw new Error('Failed to fetch icon data from Sanity')
+          throw new Error(
+            'Erreur lors de la récupération des données des icônes depuis Sanity',
+          )
         }
 
         const data = await response.json()
@@ -52,6 +56,9 @@ export const useIconStore = defineStore('IconStore', {
         }
       } catch (error) {
         console.error('Error loading icon data:', error)
+        this.error = error.message
+      } finally {
+        this.loading = false
       }
     },
 

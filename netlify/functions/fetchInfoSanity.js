@@ -1,5 +1,3 @@
-import fetch from 'node-fetch'
-
 export const handler = async () => {
   console.log("🔍 Vérification des variables d'environnement Netlify")
   console.log('SANITY_PROJECT_ID:', process.env.SANITY_PROJECT_ID)

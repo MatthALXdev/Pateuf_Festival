@@ -1,39 +1,36 @@
 import { defineStore } from 'pinia'
-import { SANITY_ACCESS_TOKEN } from '@/config/constants'
 
 export const useBorderStore = defineStore('borderStore', {
   state: () => ({
     festivalBorder: null, // Contiendra les données GeoJSON des bordures
+    loading: false,
+    error: null,
   }),
 
   actions: {
     // Charger les données des bordures depuis Sanity et fusionner avec les données statiques
     async fetchFestivalBorder() {
+      this.loading = true
+      this.error = null
       try {
-        const SANITY_PROJECT_ID = 'rgoopuri' // Remplacez par votre ID de projet
-        const SANITY_DATASET = 'pateuf_private' // Dataset utilisé
-
-        // Construire l'URL de la requête Sanity
-        const query = encodeURIComponent(
-          `*[_type == "festivalBorderCoordinates"][0]`,
-        )
-        const url = `https://${SANITY_PROJECT_ID}.api.sanity.io/v2022-03-07/data/query/${SANITY_DATASET}?query=${query}`
-
-        // Effectuer la requête avec fetch
-        const response = await fetch(url, {
-          headers: {
-            Authorization: `Bearer ${SANITY_ACCESS_TOKEN}`,
-          },
+        const response = await fetch('/.netlify/functions/fetchSanityData', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            dataset: 'pateuf_private',
+            query: "*[_type == 'festivalBorderCoordinates'][0]",
+          }),
         })
 
         if (!response.ok) {
-          throw new Error('Failed to fetch festival border data from Sanity')
+          throw new Error(
+            'Erreur lors de la récupération des données de bordure depuis Sanity',
+          )
         }
 
         const data = await response.json()
-
         if (!data.result || !data.result.coordinates) {
-          throw new Error('No coordinates found in the response.')
+          throw new Error('Aucune coordonnée trouvée dans la réponse.')
         }
 
         // Transformer les coordonnées pour correspondre au format attendu par Mapbox
@@ -41,6 +38,7 @@ export const useBorderStore = defineStore('borderStore', {
           coord.longitude,
           coord.latitude,
         ])
+
         // Données statiques définies localement
         const staticData = {
           type: 'FeatureCollection',
@@ -50,7 +48,7 @@ export const useBorderStore = defineStore('borderStore', {
               properties: { name: 'background' },
               geometry: {
                 type: 'Polygon',
-                coordinates: [transformedCoordinates], // Les coordonnées seront remplacées dynamiquement
+                coordinates: [transformedCoordinates],
               },
               id: 13,
             },
@@ -59,20 +57,19 @@ export const useBorderStore = defineStore('borderStore', {
 
         // Assigner les données fusionnées au store
         this.festivalBorder = staticData
-
-        // Log des données fusionnées
-        // console.log('Données GeoJSON fusionnées :', this.festivalBorder)
       } catch (error) {
         console.error(
           'Erreur lors du chargement des données de bordure:',
           error,
         )
+        this.error = error.message
+      } finally {
+        this.loading = false
       }
     },
   },
 
   getters: {
-    // Exemple de getter pour accéder aux données formatées
     formattedBorder(state) {
       return state.festivalBorder
     },

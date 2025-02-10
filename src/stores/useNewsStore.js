@@ -3,52 +3,59 @@ import { defineStore } from 'pinia'
 export const useNewsStore = defineStore('news', {
   state: () => ({
     newsData: [],
+    loading: false,
+    error: null,
   }),
   actions: {
     async fetchNews() {
+      this.loading = true
+      this.error = null
       try {
-        const response = await fetch('/.netlify/functions/fetchInfoSanity') // ✅ Correction de l'URL (sans .js)
-        if (!response.ok) {
-          throw new Error('Failed to fetch news data from Sanity')
-        }
-        const data = await response.json()
+        const response = await fetch('/.netlify/functions/fetchSanityData', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            dataset: 'pateuf_private',
+            query:
+              '*[_type == "info"]{infoID, logo{asset->{url}}, infoDescription}',
+          }),
+        })
 
-        // Mapper les données pour qu'elles correspondent à la structure attendue
-        this.newsData = data.result.map(item => ({
-          infoID: item.infoID,
-          logoURL: item.logo ? item.logo.asset.url : null, // URL complète de l'image
-          infoDescription: item.infoDescription,
-        }))
+        if (!response.ok) {
+          throw new Error(
+            'Erreur lors de la récupération des données depuis Sanity',
+          )
+        }
+
+        const data = await response.json()
+        this.newsData = data.result || []
       } catch (error) {
         console.error('Error loading news from Sanity:', error)
+        this.error = error.message
+      } finally {
+        this.loading = false
       }
     },
     addNewsItem(item) {
-      this.news.push(item)
+      this.newsData.push(item)
     },
     removeNewsItem(infoID) {
-      this.news = this.news.filter(item => item.infoID !== infoID)
+      this.newsData = this.newsData.filter(item => item.infoID !== infoID)
     },
     updateNewsItem(updatedItem) {
-      if (!this.newsData || this.newsData.length === 0) {
-        console.error('Erreur : newsData est vide ou non initialisé.')
-        return
-      }
-
       const index = this.newsData.findIndex(
         item => item.infoID === updatedItem.infoID,
       )
-      if (index === -1) {
+      if (index !== -1) {
+        this.newsData[index] = updatedItem
+      } else {
         console.error(`Erreur : infoID ${updatedItem.infoID} non trouvé.`)
-        return
       }
-
-      this.newsData[index] = updatedItem
     },
   },
   getters: {
     getNewsByID: state => id => {
-      return state.news.find(item => item.infoID === id)
+      return state.newsData.find(item => item.infoID === id)
     },
   },
 })

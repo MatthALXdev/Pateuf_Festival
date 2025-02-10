@@ -1,28 +1,25 @@
 import { defineStore } from 'pinia'
-import { SANITY_ACCESS_TOKEN } from '@/config/constants'
 
 export const useMapZoneStore = defineStore('mapZoneStore', {
   state: () => ({
     mapZone: null, // Contiendra les données GeoJSON des zones du festival
+    loading: false,
+    error: null,
   }),
 
   actions: {
     // Charger les données des zones depuis Sanity
     async fetchMapZone() {
+      this.loading = true
+      this.error = null
       try {
-        const SANITY_PROJECT_ID = 'rgoopuri' // Remplacez par votre ID de projet
-        const SANITY_DATASET = 'pateuf_private' // Dataset utilisé
-
-        // Construire l'URL de la requête Sanity
-        const query = encodeURIComponent(
-          `*[_type == "zone"]{name, ActivityGroupName, id, geometry}`,
-        )
-        const url = `https://${SANITY_PROJECT_ID}.api.sanity.io/v2022-03-07/data/query/${SANITY_DATASET}?query=${query}`
-
-        const response = await fetch(url, {
-          headers: {
-            Authorization: `Bearer ${SANITY_ACCESS_TOKEN}`,
-          },
+        const response = await fetch('/.netlify/functions/fetchSanityData', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            dataset: 'pateuf_private',
+            query: "*[_type == 'zone']{name, ActivityGroupName, id, geometry}",
+          }),
         })
 
         if (!response.ok) {
@@ -30,8 +27,8 @@ export const useMapZoneStore = defineStore('mapZoneStore', {
             'Échec du chargement des données des zones du festival',
           )
         }
-        const data = await response.json()
 
+        const data = await response.json()
         if (!data.result || !Array.isArray(data.result)) {
           throw new Error('Aucune donnée valide trouvée dans la réponse.')
         }
@@ -60,11 +57,11 @@ export const useMapZoneStore = defineStore('mapZoneStore', {
           type: 'FeatureCollection',
           features: transformedFeatures,
         }
-
-        // Log des données transformées
-        console.log('Données GeoJSON des zones :', this.mapZone)
       } catch (error) {
         console.error('Erreur lors du chargement des zones :', error)
+        this.error = error.message
+      } finally {
+        this.loading = false
       }
     },
   },

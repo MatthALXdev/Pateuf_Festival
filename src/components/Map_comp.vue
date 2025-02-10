@@ -100,7 +100,6 @@ import { onMounted, ref, watch, nextTick, inject, computed } from 'vue'
 import mapboxgl from 'mapbox-gl'
 import { setupLayerEvents, selectFeature } from '@/services/layerHandler'
 import { initializeMapSources } from '@/services/mapInit'
-import { MAPBOX_ACCESS_TOKEN } from '@/config/constants'
 import {
   closeDetails,
   toggleSelectAllAndUpdateLayers,
@@ -181,37 +180,50 @@ function showOnStage() {
   }
 }
 
-onMounted(() => {
-  mapboxgl.accessToken = MAPBOX_ACCESS_TOKEN
-  map.value = new mapboxgl.Map({
-    container: mapContainer.value,
-    style: 'mapbox://styles/devamalix/cm3r6hztm004l01s67dy67elp/draft',
-    center: [1.1451961205377867, 47.45770024379996],
-    zoom: 14.7,
-  })
-  map.value.on('load', async () => {
-    initializeMapSources(
-      map.value,
-      borderStore.festivalBorder,
-      mapZoneStore.mapZone,
-      iconStore.iconData,
-    )
-    map.value.once('idle', () => {
-      checkedGroups.value = ActivityGroupsArray.value
-      setupLayerEvents(map.value, feature =>
-        selectFeature(
-          feature,
-          selectedFeature,
-          isExpanded,
-          coordinates,
-          overlay.value,
-        ),
-      )
-      isLoaded.value = true
-      emit('is-loaded', isLoaded.value)
+async function initMap() {
+  try {
+    const response = await fetch('/.netlify/functions/fetchMapboxData')
+    if (!response.ok) throw new Error('Erreur de récupération du token Mapbox')
+
+    const data = await response.json()
+    const mapboxAccessToken = data.accessToken
+
+    mapboxgl.accessToken = mapboxAccessToken
+    map.value = new mapboxgl.Map({
+      container: mapContainer.value,
+      style: 'mapbox://styles/devamalix/cm3r6hztm004l01s67dy67elp',
+      center: [1.1451961205377867, 47.45770024379996],
+      zoom: 14.7,
     })
-  })
-})
+
+    map.value.on('load', async () => {
+      initializeMapSources(
+        map.value,
+        borderStore.festivalBorder,
+        mapZoneStore.mapZone,
+        iconStore.iconData,
+      )
+      map.value.once('idle', () => {
+        checkedGroups.value = ActivityGroupsArray.value
+        setupLayerEvents(map.value, feature =>
+          selectFeature(
+            feature,
+            selectedFeature,
+            isExpanded,
+            coordinates,
+            overlay.value,
+          ),
+        )
+        isLoaded.value = true
+        emit('is-loaded', isLoaded.value)
+      })
+    })
+  } catch (error) {
+    console.error('Erreur de chargement du token Mapbox:', error)
+  }
+}
+
+onMounted(initMap)
 
 watch(checkedGroups, newCheckedGroups => {
   allSelected.value =

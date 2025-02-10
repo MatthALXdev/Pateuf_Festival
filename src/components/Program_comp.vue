@@ -172,7 +172,6 @@ import { useWindowSize } from '@/composables/useWindowSize'
 const scheduleStore = useScheduleStore()
 // ⚡️ On encapsule `scheduleStore.getScheduleData` dans un `computed` ⚡️
 const scheduleData = computed(() => scheduleStore.getScheduleData)
-console.log(scheduleStore.getScheduleData)
 
 const scrollbarClass = inject('scrollbarClass')
 // Filtres réactifs

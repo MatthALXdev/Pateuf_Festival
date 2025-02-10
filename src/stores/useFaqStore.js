@@ -1,36 +1,40 @@
 // src/store/useFaqStore.js
 import { defineStore } from 'pinia'
-import { SANITY_ACCESS_TOKEN } from '@/config/constants'
 
 export const useFaqStore = defineStore('faq', {
   state: () => ({
     faq: [],
+    loading: false,
+    error: null,
   }),
   actions: {
     async fetchFaq() {
+      this.loading = true
+      this.error = null
       try {
-        const response = await fetch(
-          "https://rgoopuri.api.sanity.io/v2022-03-07/data/query/pateuf_private?query=*[_type == 'faq']",
-          {
-            headers: {
-              Authorization: `Bearer ${SANITY_ACCESS_TOKEN}`,
-            },
-          },
-        )
+        const response = await fetch('/.netlify/functions/fetchSanityData', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            dataset: 'pateuf_private',
+            query:
+              "*[_type == 'faq']{faq, questionId, theme, question, reponse}",
+          }),
+        })
+
         if (!response.ok) {
-          throw new Error('Failed to fetch FAQ data from Sanity')
+          throw new Error(
+            'Erreur lors de la récupération des données FAQ depuis Sanity',
+          )
         }
+
         const data = await response.json()
-        // Mapper les données pour qu'elles correspondent à la structure attendue
-        this.faq = data.result.map(item => ({
-          faq: item.faq,
-          questionId: item.questionId,
-          theme: item.theme,
-          question: item.question,
-          reponse: item.reponse,
-        }))
+        this.faq = data.result || []
       } catch (error) {
         console.error('Error loading FAQ:', error)
+        this.error = error.message
+      } finally {
+        this.loading = false
       }
     },
     addFaqItem(item) {
