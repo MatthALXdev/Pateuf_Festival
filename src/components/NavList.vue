@@ -29,6 +29,9 @@
 <script setup>
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
+import { useAuth } from '@/composables/useAuth'
+
+const { login, logout, user } = useAuth()
 
 // Hook to handle routing
 const router = useRouter()

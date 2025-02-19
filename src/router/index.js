@@ -22,6 +22,7 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
+  document.head.innerHTML += '<meta name="robots" content="noindex, nofollow">'
   if (to.meta.requiresAuth && !sessionStorage.getItem('authenticated')) {
     next('/adminAuth')
   } else {
