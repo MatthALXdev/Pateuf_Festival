@@ -19,12 +19,12 @@
       </div>
 
       <!-- Composant concert -->
-      <div class="flex justify-center w-[90%]">
+      <div id="concert" class="flex justify-center w-[90%]">
         <Concert />
       </div>
 
       <!-- Composant program -->
-      <div class="bg-_beige02 w-[90%]">
+      <div id="programmation" class="bg-_beige02 w-[90%]">
         <h2 class="text-xl">Liste des activitées</h2>
         <div
           class="m-4 h-96 md:h-[26rem] lg:h-[34rem] xl:h-[48rem] mx-auto overflow-y-auto md:overflow-y-hidden"
@@ -35,7 +35,7 @@
       </div>
 
       <!-- Composant map -->
-      <div class="bg-_beige02 w-[90%] z-20">
+      <div id="carte" class="bg-_beige02 w-[90%] z-20">
         <h2 class="text-xl">Carte</h2>
         <div class="m-4 h-96 mx-auto lg:h-[34rem] xl:h-[40rem]">
           <!-- Conteneur principal centré avec une bordure verte -->
@@ -55,7 +55,7 @@
       </div>
 
       <!-- Composant tickets -->
-      <div class="bg-_beige02 w-screen xl:w-1/2 px-4">
+      <div id="billeterie" class="bg-_beige02 w-screen xl:w-1/2 px-4">
         <h2 class="text-xl">Billeterie</h2>
         <div class="m-4 h-fit mx-auto">
           <Tickets_comp />
@@ -63,7 +63,7 @@
       </div>
 
       <!-- Composant faq -->
-      <div class="bg-_beige02 w-[90%] xl:w-[45%] self-start">
+      <div id="forum" class="bg-_beige02 w-[90%] xl:w-[45%] self-start">
         <h2 class="text-xl">FAQ</h2>
         <div class="mx-auto h-fit">
           <Faq_comp />
@@ -71,12 +71,12 @@
       </div>
 
       <!-- Composant socialMedia -->
-      <div class="bg-_beige02 w-screen lg:w-1/6">
+      <div id="reseaux" class="bg-_beige02 w-screen lg:w-1/6">
         <Social_comp />
       </div>
 
       <!-- Composant partners -->
-      <div class="bg-_beige02 w-screen lg:w-[80%]">
+      <div id="partenaires" class="bg-_beige02 w-screen lg:w-[80%]">
         <Partners_comp />
       </div>
     </div>

@@ -8,10 +8,10 @@
     </h1>
 
     <!-- Vérification de l'authentification -->
-    <div v-if="!isAuthenticated" class="text-red-500 font-semibold">
+    <div v-if="!store.isAuthenticated" class="text-red-500 font-semibold">
       <p>Accès restreint. Veuillez vous connecter.</p>
       <button
-        @click="login"
+        @click="store.login"
         class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700"
       >
         Se connecter
@@ -36,7 +36,7 @@
 
       <!-- Bouton de déconnexion -->
       <button
-        @click="logout"
+        @click="store.logout"
         class="mt-6 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-700"
       >
         Se déconnecter
@@ -46,18 +46,26 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
-import { useAuthStore } from '@/stores/auth'
+import { ref, computed, onMounted } from 'vue'
+import { useAuthStore } from '@/stores/authStore'
 import EditFaq from '@/components/Gestion/EditFaq.vue'
 import EditFestivalBorder from '@/components/Gestion/EditFestivalBorder.vue'
 import EditInfo from '@/components/Gestion/EditInfo.vue'
 import EditLocation from '@/components/Gestion/EditLocation.vue'
 import EditSchedule from '@/components/Gestion/EditSchedule.vue'
 
-const authStore = useAuthStore()
-const isAuthenticated = authStore.authenticated
+// Récupération du store
+const store = useAuthStore()
+
+// Initialiser Netlify Identity lorsque la vue est montée (au besoin)
+onMounted(() => {
+  store.init()
+})
+
+// État local pour suivre la vue de gestion sélectionnée
 const currentView = ref(null)
 
+// Définition des sections de gestion
 const sections = [
   {
     key: 'info',
@@ -86,12 +94,9 @@ const sections = [
   },
 ]
 
+// Calculer dynamiquement le composant de gestion à afficher
 const currentComponent = computed(() => {
   const selected = sections.find(section => section.key === currentView.value)
   return selected ? selected.component : null
 })
-
-const logout = () => {
-  authStore.logout()
-}
 </script>

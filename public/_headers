@@ -1,2 +1,10 @@
 /*
-  X-Robots-Tag: noindex, nofollow
+  X-Frame-Options: DENY
+  X-XSS-Protection: 1; mode=block
+  Content-Security-Policy: default-src 'self'; 
+    img-src 'self' data: https://api.mapbox.com https://cdn.sanity.io; 
+    script-src 'self' https://api.mapbox.com https://cdn.sanity.io; 
+    style-src 'self' 'unsafe-inline'; 
+    connect-src 'self' https://api.mapbox.com https://*.api.sanity.io;
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+

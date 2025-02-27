@@ -14,25 +14,35 @@
         </p>
       </div>
     </button>
-    <transition name="slide-left">
+    <transition :name="transitionName">
       <div
         class="w-screen h-full z-40 fixed top-[60px] bg-_brown01 bg-opacity-60 flex items-center flex-wrap justify-evenly flex-col font-title backdrop-blur"
         v-if="showNavBar"
       >
-        <NavList />
+        <NavList @linkClicked="handleLinkClick" />
       </div>
     </transition>
   </div>
 </template>
+
 <script setup>
 import NavList from './NavList.vue'
 import { ref } from 'vue'
 
 const showNavBar = ref(false)
+const transitionName = ref('slide-left')
+
 function toggleNavBar() {
   showNavBar.value = !showNavBar.value
+  transitionName.value = showNavBar.value ? 'slide-left' : 'slide-right'
+}
+
+function handleLinkClick() {
+  transitionName.value = 'slide-right'
+  showNavBar.value = false
 }
 </script>
+
 <style>
 .slide-left-enter-active,
 .slide-left-leave-active {
@@ -41,5 +51,14 @@ function toggleNavBar() {
 .slide-left-enter-from,
 .slide-left-leave-to {
   transform: translateX(-100%);
+}
+
+.slide-right-enter-active,
+.slide-right-leave-active {
+  transition: transform 0.3s ease;
+}
+.slide-right-enter-from,
+.slide-right-leave-to {
+  transform: translateX(100%);
 }
 </style>

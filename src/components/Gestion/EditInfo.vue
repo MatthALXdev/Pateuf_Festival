@@ -16,13 +16,13 @@
         class="flex flex-col p-2 border rounded"
       >
         <div class="flex justify-between items-center">
-          <div>
+          <div class="bg-green-200">
             <span class="font-bold">{{ info.infoID }}. </span>
             <span v-if="!editingInfo || editingInfo.infoID !== info.infoID">{{
               info.infoDescription
             }}</span>
           </div>
-          <div class="space-x-2">
+          <div class="flex space-x-2 justify-end bg-yellow-200">
             <button
               @click="moveUp(info.infoID)"
               :disabled="index === 0"

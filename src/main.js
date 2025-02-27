@@ -8,6 +8,8 @@ import router from './router'
 import './assets/global.css'
 import './assets/tailwind.css'
 import { useFaqStore } from '@/stores/useFaqStore'
+import { useNavigationStore } from '@/stores/useNavigationStore'
+import { useAuthStore } from '@/stores/authStore'
 import { useBorderStore } from '@/stores/useBorderStore'
 import { useIconStore } from '@/stores/useIconStore'
 import { useMapZoneStore } from '@/stores/useMapZoneStore'
@@ -22,6 +24,8 @@ export { netlifyIdentity }
 
 // Précharger les données nécessaires pour les stores
 async function preloadStores() {
+  const authStore = useAuthStore(pinia)
+  const navigationStore = useNavigationStore(pinia)
   const borderStore = useBorderStore(pinia)
   const faq = useFaqStore(pinia)
   const iconStore = useIconStore(pinia)
