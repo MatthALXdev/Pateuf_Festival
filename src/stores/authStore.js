@@ -8,32 +8,59 @@ export const useAuthStore = defineStore('authStore', {
   }),
   actions: {
     init() {
+      if (!window.netlifyIdentity) {
+        netlifyIdentity.init({
+          APIUrl: 'https://pateuf-dev.netlify.app/.netlify/identity',
+        })
+      }
+
       netlifyIdentity.on('init', u => {
-        this.user = u
-        this.authenticated = !!u
+        this.setUser(u)
       })
 
       netlifyIdentity.on('login', u => {
-        this.user = u
-        this.authenticated = !!u
+        this.setUser(u)
         netlifyIdentity.close()
       })
 
       netlifyIdentity.on('logout', () => {
-        this.user = null
-        this.authenticated = false
+        this.clearUser()
       })
-      // En mode développement, on force l'URL Netlify Identity
-      // (À supprimer ou masquer en prod si la détection automatique fonctionne)
-      netlifyIdentity.init({
-        APIUrl: 'https://pateuf-dev.netlify.app/.netlify/identity',
+
+      netlifyIdentity.on('user', u => {
+        // ✅ Écoute les changements de session
+        this.setUser(u)
       })
+    },
+    setUser(user) {
+      this.user = user
+      this.authenticated = !!user
+      if (user) {
+        sessionStorage.setItem('authUser', JSON.stringify(user)) // ✅ Stocke dans sessionStorage
+      } else {
+        sessionStorage.removeItem('authUser')
+      }
+    },
+    clearUser() {
+      this.user = null
+      this.authenticated = false
+      sessionStorage.removeItem('authUser') // ✅ Supprime après déconnexion
     },
     login() {
       netlifyIdentity.open('login')
     },
     logout() {
       netlifyIdentity.logout()
+      this.clearUser()
+    },
+    restoreSession() {
+      const storedUser = sessionStorage.getItem('authUser')
+      if (storedUser) {
+        this.user = JSON.parse(storedUser)
+        this.authenticated = true
+      } else {
+        this.authenticated = false // ✅ Assurer la mise à jour correcte
+      }
     },
   },
   getters: {

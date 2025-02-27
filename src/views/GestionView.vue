@@ -8,10 +8,10 @@
     </h1>
 
     <!-- Vérification de l'authentification -->
-    <div v-if="!store.isAuthenticated" class="text-red-500 font-semibold">
+    <div v-if="!authStore.isAuthenticated" class="text-red-500 font-semibold">
       <p>Accès restreint. Veuillez vous connecter.</p>
       <button
-        @click="store.login"
+        @click="authStore.login"
         class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700"
       >
         Se connecter
@@ -36,7 +36,7 @@
 
       <!-- Bouton de déconnexion -->
       <button
-        @click="store.logout"
+        @click="handleLogout"
         class="mt-6 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-700"
       >
         Se déconnecter
@@ -46,7 +46,8 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, watch } from 'vue'
+import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/authStore'
 import EditFaq from '@/components/Gestion/EditFaq.vue'
 import EditFestivalBorder from '@/components/Gestion/EditFestivalBorder.vue'
@@ -54,13 +55,8 @@ import EditInfo from '@/components/Gestion/EditInfo.vue'
 import EditLocation from '@/components/Gestion/EditLocation.vue'
 import EditSchedule from '@/components/Gestion/EditSchedule.vue'
 
-// Récupération du store
-const store = useAuthStore()
-
-// Initialiser Netlify Identity lorsque la vue est montée (au besoin)
-onMounted(() => {
-  store.init()
-})
+const router = useRouter()
+const authStore = useAuthStore()
 
 // État local pour suivre la vue de gestion sélectionnée
 const currentView = ref(null)
@@ -99,4 +95,18 @@ const currentComponent = computed(() => {
   const selected = sections.find(section => section.key === currentView.value)
   return selected ? selected.component : null
 })
+
+// Surveiller l'état d'authentification et rediriger si l'utilisateur se déconnecte
+watch(
+  () => authStore.isAuthenticated,
+  newVal => {
+    if (!newVal) {
+      router.push('/adminAuth')
+    }
+  },
+)
+
+const handleLogout = async () => {
+  authStore.logout()
+}
 </script>

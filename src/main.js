@@ -2,14 +2,13 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 
-import netlifyIdentity from 'netlify-identity-widget'
 import App from './App.vue'
 import router from './router'
 import './assets/global.css'
 import './assets/tailwind.css'
 import { useFaqStore } from '@/stores/useFaqStore'
 import { useNavigationStore } from '@/stores/useNavigationStore'
-import { useAuthStore } from '@/stores/authStore'
+import { useAuthStore } from './stores/authStore'
 import { useBorderStore } from '@/stores/useBorderStore'
 import { useIconStore } from '@/stores/useIconStore'
 import { useMapZoneStore } from '@/stores/useMapZoneStore'
@@ -17,14 +16,12 @@ import { useScheduleStore } from '@/stores/useScheduleStore'
 
 const pinia = createPinia()
 const app = createApp(App)
-netlifyIdentity.init({
-  APIUrl: 'https://pateuf-dev.netlify.app/.netlify/identity',
-})
-export { netlifyIdentity }
+
+const authStore = useAuthStore(pinia)
+authStore.restoreSession() // ✅ Récupère la session stockée en mémoire
 
 // Précharger les données nécessaires pour les stores
 async function preloadStores() {
-  const authStore = useAuthStore(pinia)
   const navigationStore = useNavigationStore(pinia)
   const borderStore = useBorderStore(pinia)
   const faq = useFaqStore(pinia)
