@@ -1,45 +1,47 @@
-# pateuf-festival - dev04
+# 🚀 Pateuf Festival - dev04
 
-- [ ] Implementation CMS
-- Choose CMS and justification
-- Host json
-- Connect to the project
-- Test and document
-- [ ] Comment the code
+## 📌 Suivi des correctifs en cours
 
-## Ways to improve the design
+🔹 **Version en cours de correction : [`fix/v0.2.1`](https://github.com/ton-repo/pateuf-festival/tree/fix/v0.2.1)**  
+🔹 **Consulter les correctifs en cours : [`FIX-REPORT.md`](./FIX-REPORT.md)**
 
-- Implementation of a new, more advanced design for the map detail
-  component - **medium priority**
-- Banner_comp font size on large screen - **minimum priority**
-- Make the background colors of the components clearer and more natural **medium priority**
-- Loading screen **minimum priority**
+---
 
-## Upgrade to be done:
+## 🎯 Objectif du dépôt
 
-- Comment the code **high priority**
-- Identify the code that can be refactored (redundancy and modularity)**medium priority**
-- Nav_bar component link **medium priority**
-- Network and partner link**medium priority**
-- Management of a global state with store **medium priority**
-- Implementation CMS **high priority**
+📌 **Ce dépôt sert à suivre l’évolution du développement du projet Pateuf Festival.**  
+📌 **Il permet de documenter les choix techniques et l'avancement du projet pour une présentation au jury.**  
+📌 **Ce projet n'est pas encore stable et n'est pas destiné à être cloné pour le moment.**
 
-## Configuration
+---
 
-1. Créez un compte sur [Mapbox](https://www.mapbox.com/) si vous n'en avez pas déjà un.
-2. Générez une clé d'accès en suivant les instructions sur le tableau de bord Mapbox.
-3. Clonez ce dépôt.
-4. Créez un fichier `.env` à la racine du projet en utilisant le fichier `.env.example` comme modèle.
-5. Remplissez votre clé d'accès dans le fichier `.env` :
+## ✅ Tâches de développement
 
-   ```plaintext
-   VITE_APP_MAPBOX_ACCESS_TOKEN=your_mapbox_access_token_here
+### **Implementation CMS**
 
-   ```
+- [ ] Choix du CMS et justification
+- [ ] Hébergement des fichiers JSON
+- [ ] Connexion au projet
+- [ ] Tests et documentation
 
-6. Lancez le projet avec les commandes habituelles :
+### **Améliorations possibles du design**
 
-```sh
-npm install
-npm run dev
-```
+- Refonte avancée du design du composant **map detail** - **priorité moyenne**
+- Ajustement de la taille de la police du composant **Banner_comp** sur grand écran - **priorité minimale**
+- Amélioration des couleurs d'arrière-plan pour les rendre plus claires et naturelles - **priorité moyenne**
+- Écran de chargement - **priorité minimale**
+
+### **Mises à niveau à effectuer**
+
+- Commenter le code - **priorité haute**
+- Identifier et refactoriser le code redondant ou modulaire - **priorité moyenne**
+- Correction des liens du composant **Nav_bar** - **priorité moyenne**
+- Gestion des liens **Network et partenaires** - **priorité moyenne**
+- Implémentation d'un **global store** pour la gestion d'état - **priorité moyenne**
+- Intégration du CMS - **priorité haute**
+
+---
+
+## 🔍 Informations supplémentaires
+
+📌 Pour voir les correctifs en cours, consultez [`FIX-REPORT.md`](./FIX-REPORT.md).
