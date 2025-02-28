@@ -1,21 +1,47 @@
-# pateuf-festival
+# 🚀 Pateuf Festival - dev04
 
-## Configuration
+## 📌 Suivi des correctifs en cours
 
-1. Créez un compte sur [Mapbox](https://www.mapbox.com/) si vous n'en avez pas déjà un.
-2. Générez une clé d'accès en suivant les instructions sur le tableau de bord Mapbox.
-3. Clonez ce dépôt.
-4. Créez un fichier `.env` à la racine du projet en utilisant le fichier `.env.example` comme modèle.
-5. Remplissez votre clé d'accès dans le fichier `.env` :
+🔹 **Version en cours de correction : [`fix/v0.2.1`](https://github.com/ton-repo/pateuf-festival/tree/fix/v0.2.1)**  
+🔹 **Consulter les correctifs en cours : [`FIX-REPORT.md`](./FIX-REPORT.md)**
 
-   ```plaintext
-   VITE_APP_MAPBOX_ACCESS_TOKEN=your_mapbox_access_token_here
+---
 
-   ```
+## 🎯 Objectif du dépôt
 
-6. Lancez le projet avec les commandes habituelles :
+📌 **Ce dépôt sert à suivre l’évolution du développement du projet Pateuf Festival.**  
+📌 **Il permet de documenter les choix techniques et l'avancement du projet pour une présentation au jury.**  
+📌 **Ce projet n'est pas encore stable et n'est pas destiné à être cloné pour le moment.**
 
-```sh
-npm install
-npm run dev
-```
+---
+
+## ✅ Tâches de développement
+
+### **Implementation CMS**
+
+- [ ] Choix du CMS et justification
+- [ ] Hébergement des fichiers JSON
+- [ ] Connexion au projet
+- [ ] Tests et documentation
+
+### **Améliorations possibles du design**
+
+- Refonte avancée du design du composant **map detail** - **priorité moyenne**
+- Ajustement de la taille de la police du composant **Banner_comp** sur grand écran - **priorité minimale**
+- Amélioration des couleurs d'arrière-plan pour les rendre plus claires et naturelles - **priorité moyenne**
+- Écran de chargement - **priorité minimale**
+
+### **Mises à niveau à effectuer**
+
+- Commenter le code - **priorité haute**
+- Identifier et refactoriser le code redondant ou modulaire - **priorité moyenne**
+- Correction des liens du composant **Nav_bar** - **priorité moyenne**
+- Gestion des liens **Network et partenaires** - **priorité moyenne**
+- Implémentation d'un **global store** pour la gestion d'état - **priorité moyenne**
+- Intégration du CMS - **priorité haute**
+
+---
+
+## 🔍 Informations supplémentaires
+
+📌 Pour voir les correctifs en cours, consultez [`FIX-REPORT.md`](./FIX-REPORT.md).
