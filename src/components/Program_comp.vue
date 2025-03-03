@@ -65,7 +65,7 @@
             <div class="flex items-center space-x-4">
               <!-- Image -->
               <img
-                :src="activity.logoURL"
+                :src="activity.category?.logo?.asset?.url"
                 alt="Activity Logo"
                 class="w-8 h-8 object-cover"
               />
@@ -111,7 +111,7 @@
               class="flex lg:flex-col items-center space-x-4 mt-2 lg:justify-around flex-grow"
             >
               <img
-                :src="activity.image"
+                :src="activity.image?.asset?.url"
                 alt="Activity Image"
                 class="w-14 object-cover rounded"
               />
@@ -135,16 +135,16 @@
             <!-- Image floue en arrière-plan (agrandie) -->
             <div class="absolute blur-sm w-52 z-0">
               <img
-                v-if="activeActivity.image"
-                :src="activeActivity.image"
+                v-if="activeActivity.image?.asset?.url"
+                :src="activeActivity.image?.asset?.url"
                 alt="Activity Image"
                 class="object-cover opacity-70 scale-150"
               />
             </div>
             <!-- Image nette au premier plan -->
             <img
-              v-if="activeActivity.image"
-              :src="activeActivity.image"
+              v-if="activeActivity.image?.asset?.url"
+              :src="activeActivity.image?.asset?.url"
               alt="Activity Image"
               class="z-10 w-36 h-auto object-cover rounded-md mt-4"
             />
