@@ -1,47 +1,69 @@
-# 🚀 Pateuf Festival - dev04
+# 📘 README - Branche `dev04`
 
-## 📌 Suivi des correctifs en cours
+## 🧭 Objectif de la branche `dev04`
 
-🔹 **Version en cours de correction : [`fix/v0.2.1`](https://github.com/ton-repo/pateuf-festival/tree/fix/v0.2.1)**  
-🔹 **Consulter les correctifs en cours : [`FIX-REPORT.md`](./FIX-REPORT.md)**
+Branche principale de **staging** :
 
----
-
-## 🎯 Objectif du dépôt
-
-📌 **Ce dépôt sert à suivre l’évolution du développement du projet Pateuf Festival.**  
-📌 **Il permet de documenter les choix techniques et l'avancement du projet pour une présentation au jury.**  
-📌 **Ce projet n'est pas encore stable et n'est pas destiné à être cloné pour le moment.**
+- Sert de base pour tester les fonctionnalités en condition réelle sur Netlify.
+- Déploiement continu activé sur : [https://pateuf-dev.netlify.app](https://pateuf-dev.netlify.app)
+- Connectée à Netlify Identity ✅
 
 ---
 
-## ✅ Tâches de développement
+## 🔒 Fonctionnalités critiques à tester ici
 
-### **Implementation CMS**
-
-- [ ] Choix du CMS et justification
-- [ ] Hébergement des fichiers JSON
-- [ ] Connexion au projet
-- [ ] Tests et documentation
-
-### **Améliorations possibles du design**
-
-- Refonte avancée du design du composant **map detail** - **priorité moyenne**
-- Ajustement de la taille de la police du composant **Banner_comp** sur grand écran - **priorité minimale**
-- Amélioration des couleurs d'arrière-plan pour les rendre plus claires et naturelles - **priorité moyenne**
-- Écran de chargement - **priorité minimale**
-
-### **Mises à niveau à effectuer**
-
-- Commenter le code - **priorité haute**
-- Identifier et refactoriser le code redondant ou modulaire - **priorité moyenne**
-- Correction des liens du composant **Nav_bar** - **priorité moyenne**
-- Gestion des liens **Network et partenaires** - **priorité moyenne**
-- Implémentation d'un **global store** pour la gestion d'état - **priorité moyenne**
-- Intégration du CMS - **priorité haute**
+| Fonctionnalité         | Testable localement | Testable via `dev04` | Commentaire                              |
+| ---------------------- | ------------------- | -------------------- | ---------------------------------------- |
+| Netlify Identity       | ⚠️ Partiellement    | ✅ Oui               | Token, redirection, sessionStorage       |
+| CRUD Sanity (admin)    | ⚠️ Pas sécurisé     | ✅ Oui               | Utilise Netlify Functions + Identity     |
+| Affichage conditionnel | ✅ Oui              | ✅ Oui               | Lié aux rôles utilisateurs (admin, etc.) |
+| Sécurité CSP           | ❌ Non              | ✅ Oui               | Vérifiable uniquement via headers        |
 
 ---
 
-## 🔍 Informations supplémentaires
+## 🔄 Flux de développement recommandé
 
-📌 Pour voir les correctifs en cours, consultez [`FIX-REPORT.md`](./FIX-REPORT.md).
+### 1. Travailler sur une branche fonctionnelle locale
+
+```bash
+git checkout dev04
+git pull origin dev04
+git checkout -b feat/crud-schedule
+```
+
+### 2. Développer localement + tester
+
+- Utiliser `netlify dev` pour les Netlify Functions
+- Utiliser `sessionStorage` pour simuler l'utilisateur si nécessaire
+
+### 3. Fusionner dans `dev04` pour test Netlify
+
+```bash
+git checkout dev04
+git merge feat/crud-schedule
+git push origin dev04
+```
+
+---
+
+## 🧪 Suivi des tests `dev04`
+
+| Feature            | Branche source       | Statut      | Test Netlify   |
+| ------------------ | -------------------- | ----------- | -------------- |
+| Authentification   | `dev04`              | ✅ Stable   | ✅ OK          |
+| Schedule CRUD      | `feat/crud-schedule` | 🔄 En cours | 🔄 À fusionner |
+| Filtres Mapbox     | `fix/v0.2.1`         | ✅ Validé   | ✅ Corrigé     |
+| Filtrage par rôles | `feat/roles-access`  | 🔜 À tester | 🔄 Prévu       |
+
+---
+
+## 🧼 Bonnes pratiques
+
+- Toujours **pull la dernière version de \*\***`dev04`\*\* avant de créer une nouvelle branche
+- Ne pas coder de fonctionnalités complexes directement sur `dev04`
+- Tester localement avant de merge
+- Fusionner **uniquement quand la fonctionnalité est prête à être testée sur Netlify**
+
+---
+
+📦 Fichier mis à jour le : 21 avril 2025
