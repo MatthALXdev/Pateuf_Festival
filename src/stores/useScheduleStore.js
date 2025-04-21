@@ -23,8 +23,27 @@ export const useScheduleStore = defineStore('scheduleStore', {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             dataset: 'pateuf_private',
-            query:
-              "*[_type == 'schedule']{id, name, order, duration, preptime, location, date, labels, day, start, end, description, image, logoURL, backGroundActivity}",
+            query: `
+        *[_type == 'schedule']{
+          id, 
+          name, 
+          order, 
+          duration, 
+          preptime, 
+          location, 
+          date, 
+          day, 
+          start, 
+          end, 
+          description, 
+          image{asset->{url}}, 
+          category->{
+            title, 
+            logo{asset->{url}}
+          }, 
+          backGroundActivity
+        }
+      `,
           }),
         })
 

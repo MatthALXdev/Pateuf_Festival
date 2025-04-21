@@ -1,45 +1,69 @@
-# pateuf-festival - dev04
+# 📘 README - Branche `dev04`
 
-- [ ] Implementation CMS
-- Choose CMS and justification
-- Host json
-- Connect to the project
-- Test and document
-- [ ] Comment the code
+## 🧭 Objectif de la branche `dev04`
 
-## Ways to improve the design
+Branche principale de **staging** :
 
-- Implementation of a new, more advanced design for the map detail
-  component - **medium priority**
-- Banner_comp font size on large screen - **minimum priority**
-- Make the background colors of the components clearer and more natural **medium priority**
-- Loading screen **minimum priority**
+- Sert de base pour tester les fonctionnalités en condition réelle sur Netlify.
+- Déploiement continu activé sur : [https://pateuf-dev.netlify.app](https://pateuf-dev.netlify.app)
+- Connectée à Netlify Identity ✅
 
-## Upgrade to be done:
+---
 
-- Comment the code **high priority**
-- Identify the code that can be refactored (redundancy and modularity)**medium priority**
-- Nav_bar component link **medium priority**
-- Network and partner link**medium priority**
-- Management of a global state with store **medium priority**
-- Implementation CMS **high priority**
+## 🔒 Fonctionnalités critiques à tester ici
 
-## Configuration
+| Fonctionnalité         | Testable localement | Testable via `dev04` | Commentaire                              |
+| ---------------------- | ------------------- | -------------------- | ---------------------------------------- |
+| Netlify Identity       | ⚠️ Partiellement    | ✅ Oui               | Token, redirection, sessionStorage       |
+| CRUD Sanity (admin)    | ⚠️ Pas sécurisé     | ✅ Oui               | Utilise Netlify Functions + Identity     |
+| Affichage conditionnel | ✅ Oui              | ✅ Oui               | Lié aux rôles utilisateurs (admin, etc.) |
+| Sécurité CSP           | ❌ Non              | ✅ Oui               | Vérifiable uniquement via headers        |
 
-1. Créez un compte sur [Mapbox](https://www.mapbox.com/) si vous n'en avez pas déjà un.
-2. Générez une clé d'accès en suivant les instructions sur le tableau de bord Mapbox.
-3. Clonez ce dépôt.
-4. Créez un fichier `.env` à la racine du projet en utilisant le fichier `.env.example` comme modèle.
-5. Remplissez votre clé d'accès dans le fichier `.env` :
+---
 
-   ```plaintext
-   VITE_APP_MAPBOX_ACCESS_TOKEN=your_mapbox_access_token_here
+## 🔄 Flux de développement recommandé
 
-   ```
+### 1. Travailler sur une branche fonctionnelle locale
 
-6. Lancez le projet avec les commandes habituelles :
-
-```sh
-npm install
-npm run dev
+```bash
+git checkout dev04
+git pull origin dev04
+git checkout -b feat/crud-schedule
 ```
+
+### 2. Développer localement + tester
+
+- Utiliser `netlify dev` pour les Netlify Functions
+- Utiliser `sessionStorage` pour simuler l'utilisateur si nécessaire
+
+### 3. Fusionner dans `dev04` pour test Netlify
+
+```bash
+git checkout dev04
+git merge feat/crud-schedule
+git push origin dev04
+```
+
+---
+
+## 🧪 Suivi des tests `dev04`
+
+| Feature            | Branche source       | Statut      | Test Netlify   |
+| ------------------ | -------------------- | ----------- | -------------- |
+| Authentification   | `dev04`              | ✅ Stable   | ✅ OK          |
+| Schedule CRUD      | `feat/crud-schedule` | 🔄 En cours | 🔄 À fusionner |
+| Filtres Mapbox     | `fix/v0.2.1`         | ✅ Validé   | ✅ Corrigé     |
+| Filtrage par rôles | `feat/roles-access`  | 🔜 À tester | 🔄 Prévu       |
+
+---
+
+## 🧼 Bonnes pratiques
+
+- Toujours **pull la dernière version de \*\***`dev04`\*\* avant de créer une nouvelle branche
+- Ne pas coder de fonctionnalités complexes directement sur `dev04`
+- Tester localement avant de merge
+- Fusionner **uniquement quand la fonctionnalité est prête à être testée sur Netlify**
+
+---
+
+📦 Fichier mis à jour le : 21 avril 2025
