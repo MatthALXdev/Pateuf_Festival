@@ -65,9 +65,9 @@
             <div class="flex items-center space-x-4">
               <!-- Image -->
               <img
-                :src="activity.category?.logo?.asset?.url"
-                alt="Activity Logo"
-                class="w-8 h-8 object-cover"
+                :src="activity.imageURL"
+                alt="Activity Image"
+                class="w-14 object-cover rounded"
               />
               <div class="flex flex-col flex-grow">
                 <div class="flex justify-between">
@@ -111,7 +111,7 @@
               class="flex lg:flex-col items-center space-x-4 mt-2 lg:justify-around flex-grow"
             >
               <img
-                :src="activity.image?.asset?.url"
+                :src="activity.imageURL"
                 alt="Activity Image"
                 class="w-14 object-cover rounded"
               />
