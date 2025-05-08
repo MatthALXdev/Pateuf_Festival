@@ -3,7 +3,7 @@
     <button class="fixed z-50 bottom-8 right-8 flex-row" @click="toggleNavBar">
       <div v-if="showNavBar">
         <img
-          src="/src/assets/images/svg/cancel.svg"
+          src="/src/assets/images/cancel.svg"
           class="w-8 bg-_blue03 rounded-full"
           alt=""
         />

@@ -41,6 +41,10 @@ export const useScheduleStore = defineStore('scheduleStore', {
             title, 
             logo{asset->{url}}
           }, 
+          zoneRef->{
+            name,
+            image{asset->{url}}
+          },
           backGroundActivity
         }
       `,
@@ -64,13 +68,10 @@ export const useScheduleStore = defineStore('scheduleStore', {
             ...item,
             imageURL: item.image?.asset?.url || null,
             categoryLogoURL: item.category?.logo?.asset?.url || null,
+            zoneImageURL: item.zoneRef?.image?.asset?.url || null,
+            zoneName: item.zoneRef?.name || null,
           }
-          console.log(
-            'ImageURL pour',
-            mappedItem.name,
-            ':',
-            mappedItem.imageURL,
-          )
+
           return mappedItem
         })
       } catch (error) {

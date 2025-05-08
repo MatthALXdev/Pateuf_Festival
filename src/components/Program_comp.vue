@@ -65,7 +65,7 @@
             <div class="flex items-center space-x-4">
               <!-- Image -->
               <img
-                :src="activity.imageURL"
+                :src="activity.categoryLogoURL"
                 alt="Activity Image"
                 class="w-14 object-cover rounded"
               />
@@ -111,8 +111,12 @@
               class="flex lg:flex-col items-center space-x-4 mt-2 lg:justify-around flex-grow"
             >
               <img
-                :src="activity.imageURL"
-                alt="Activity Image"
+                :src="
+                  activity.labels === 'music'
+                    ? activity.imageURL
+                    : activity.zoneImageURL
+                "
+                :alt="activity.name"
                 class="w-14 object-cover rounded"
               />
               <p class="text-sm text-gray-700 lg:self-center">
@@ -135,17 +139,23 @@
             <!-- Image floue en arrière-plan (agrandie) -->
             <div class="absolute blur-sm w-52 z-0">
               <img
-                v-if="activeActivity.image?.asset?.url"
-                :src="activeActivity.image?.asset?.url"
-                alt="Activity Image"
+                :src="
+                  activeActivity.labels === 'music'
+                    ? activeActivity.imageURL
+                    : activeActivity.zoneImageURL
+                "
+                :alt="activeActivity.name"
                 class="object-cover opacity-70 scale-150"
               />
             </div>
             <!-- Image nette au premier plan -->
             <img
-              v-if="activeActivity.image?.asset?.url"
-              :src="activeActivity.image?.asset?.url"
-              alt="Activity Image"
+              :src="
+                activeActivity.labels === 'music'
+                  ? activeActivity.imageURL
+                  : activeActivity.zoneImageURL
+              "
+              :alt="activeActivity.name"
               class="z-10 w-36 h-auto object-cover rounded-md mt-4"
             />
           </div>
@@ -225,9 +235,6 @@ const setActiveActivity = activity => {
   } else {
     activeActivity.value = activity
   }
-  console.log('scheduleData:', scheduleData.value)
-  console.log('filteredActivities:', filteredActivities.value)
-  console.log('activeActivity:', activeActivity.value.id)
 }
 
 // Formate la date

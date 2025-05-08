@@ -66,7 +66,7 @@ const props = defineProps({
 
 const scheduleStore = useScheduleStore()
 const scrollbarClass = inject('scrollbarClass')
-console.log(scrollbarClass.value)
+// console.log(scrollbarClass.value)
 
 const currentGroup = ref({
   name: '',
@@ -85,7 +85,7 @@ const pathImage = ref('pathImage vide')
 const { testDate, testTime } = getTestDateTime()
 const now = testTime
 const today = testDate
-console.log(scheduleStore.getScheduleData)
+// console.log(scheduleStore.getScheduleData)
 
 const group = scheduleStore.getScheduleData?.find(groupe => {
   return (
@@ -97,7 +97,7 @@ const group = scheduleStore.getScheduleData?.find(groupe => {
   )
 })
 
-console.log(group)
+// console.log(group)
 
 currentGroup.value = group || {
   name: 'Aucun groupe',

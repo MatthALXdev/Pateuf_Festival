@@ -13,6 +13,8 @@ import { useBorderStore } from '@/stores/useBorderStore'
 import { useIconStore } from '@/stores/useIconStore'
 import { useMapZoneStore } from '@/stores/useMapZoneStore'
 import { useScheduleStore } from '@/stores/useScheduleStore'
+import { useBrandingStore } from '@/stores/useBrandingStore'
+import { useSponsorStore } from '@/stores/useSponsorStore'
 
 const pinia = createPinia()
 const app = createApp(App)
@@ -28,17 +30,22 @@ async function preloadStores() {
   const iconStore = useIconStore(pinia)
   const mapZoneStore = useMapZoneStore(pinia)
   const scheduleStore = useScheduleStore(pinia)
+  const brandingStore = useBrandingStore(pinia)
+  const sponsorStore = useSponsorStore(pinia)
   await borderStore.fetchFestivalBorder()
   await faq.fetchFaq()
   await iconStore.fetchIconData()
   await mapZoneStore.fetchMapZone()
   await scheduleStore.fetchScheduleData()
+  await brandingStore.fetchBranding()
+  await sponsorStore.fetchSponsors()
 }
 
 // Préchargement avant le montage de l'application
 preloadStores()
   .then(() => {
     app.use(pinia).use(router).mount('#app')
+    console.log('Montage app')
   })
   .catch(error => {
     console.error('Erreur lors du préchargement des stores:', error)
