@@ -54,5 +54,13 @@ export default {
       title: 'Identifiant de la zone',
       type: 'number',
     },
+    {
+      name: 'image',
+      title: 'Image illustrant la zone',
+      type: 'image',
+      options: {
+        hotspot: true,
+      },
+    },
   ],
 }

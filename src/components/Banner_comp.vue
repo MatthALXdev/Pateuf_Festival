@@ -24,6 +24,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useNewsStore } from '@/stores/useNewsStore'
+
 const newsStore = useNewsStore()
 const currentSlide = ref(0)
 

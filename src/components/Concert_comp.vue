@@ -48,8 +48,8 @@
               class="border-2 border-_darkBlue01 p-2 rounded-lg mb-2 w-full flex items-center"
             >
               <img
-                :src="group.image"
-                alt="Logo de {{ group.name }}"
+                :src="group.imageURL"
+                :alt="`Logo de ${group.name}`"
                 class="w-12 h-12 rounded-md border border-black shadow-lg mr-4"
               />
               <div class="flex-1">
@@ -140,8 +140,8 @@
               class="border-2 border-_darkBlue01 p-2 rounded-lg mb-2 w-full flex items-center"
             >
               <img
-                :src="group.image"
-                alt="Logo de {{ group.name }}"
+                :src="group.imageURL"
+                :alt="`Logo de ${group.name}`"
                 class="w-12 h-12 rounded-md border border-black shadow-lg mr-4"
               />
               <div class="flex-1">
@@ -222,8 +222,8 @@
               class="border-2 border-_darkBlue01 p-2 rounded-lg mb-2 w-full flex items-center transition duration-300 ease-in-out hover:bg-_green03 hover:shadow hover:bg-opacity-80"
             >
               <img
-                :src="group.image"
-                alt="Logo de {{ group.name }}"
+                :src="group.imageURL"
+                :alt="`Logo de ${group.name}`"
                 class="w-12 h-12 rounded-md border border-black shadow-lg mr-4"
               />
               <div class="flex-1">

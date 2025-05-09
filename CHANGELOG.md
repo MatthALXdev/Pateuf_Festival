@@ -4,6 +4,41 @@ Toutes les modifications notables du projet **Pateuf Festival** sont documentée
 
 ---
 
+## [v0.2.2] - 2025-05-08
+
+### 🚀 Fonctionnalités
+
+- Centralisation des images dynamiques (logo, fond, tickets, sponsors, zones) via Sanity
+- Création du schéma `siteBranding` dans Sanity pour la gestion du logo, fond et visuels de ticket
+- Ajout du champ `image` dans le schéma `zone` pour illustrer les lieux
+- Ajout du champ `zoneRef` dans `schedule` (référence à une `zone` Sanity)
+- Refactor du store `useScheduleStore` pour inclure les données de `zoneRef` (nom + image)
+- Refactor du composant `Program.vue` : affichage conditionnel de l'image `schedule.image` ou `zone.image` selon la catégorie
+- Nouveau composant dynamique pour les sponsors : récupération via le store `useSponsorStore` et Sanity
+
+### 🔄 Refactorisation
+
+- Refactor des stores `useBrandingStore`, `useSponsorStore`, `useScheduleStore` pour utiliser une Netlify Function unique : `fetchSanityData.js`
+- Suppression des fonctions spécifiques obsolètes : `fetchBranding.js`, `fetchSponsors.js`
+- Nettoyage du dossier `src/assets/images` : il ne reste que les fichiers SVG essentiels (marker, cancel, réseaux sociaux)
+
+### 🌎 Migration & Données
+
+- Création du script `migrateZoneRef.js` permettant de remplir automatiquement `zoneRef` à partir du champ `location` (83 entrées traitées)
+
+### 🏙️ Composants modifiés
+
+- `Header_comp.vue`, `Banner_comp.vue`, `TicketCarousel.vue`, `Partners_comp.vue`, `Program_comp.vue`
+  → Tous utilisent désormais les images dynamiques issues de Sanity
+
+### 📅 Déploiement
+
+- Branche : `fix/dev04-images-sanity`
+- Fusion prévue dans `dev04`
+- En attente de tag `v0.2.2`
+
+---
+
 ## [v0.2.1] - 2025-04-21
 
 ### ✅ Correctifs
@@ -13,7 +48,7 @@ Toutes les modifications notables du projet **Pateuf Festival** sont documentée
 - **BUG-003** : La carte Mapbox se charge correctement sur Netlify (correction des sources/layers)
 - **BUG-004** : Problèmes d'affichage des iframes Netlify Identity résolus (styles + dimensions)
 
-### 🧼 Nettoyage
+### 𞷼 Nettoyage
 
 - Suppression des fichiers obsolètes : `public/data/*.ndjson` et `public/data/*.json`
 - Refactorisation du schéma `schedule.js` (Sanity) et ajout du type `category.js`
@@ -55,9 +90,9 @@ Toutes les modifications notables du projet **Pateuf Festival** sont documentée
 
 ## 📌 À venir
 
-- [ ] `v0.2.2` : Gestion améliorée des erreurs côté back et authentification
+- [ ] `v0.2.3` : Internationalisation partielle des vues principales
 - [ ] `v0.3.0` : Interface d’édition sécurisée en production (CRUD sur Sanity via fonctions Netlify + JWT)
 
 ---
 
-🗓️ Mis à jour le : 21 avril 2025
+🗓️ Mis à jour le : 8 mai 2025

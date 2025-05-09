@@ -34,6 +34,12 @@ export default {
       type: 'string',
     },
     {
+      name: 'zoneRef',
+      title: 'Zone du festival (référence)',
+      type: 'reference',
+      to: [{type: 'zone'}],
+    },
+    {
       name: 'date',
       title: 'Date',
       type: 'date',

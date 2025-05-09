@@ -1,39 +1,44 @@
-# 🛠️ Pateuf Festival - Correctif v0.2.1
+# 🛠️ Pateuf Festival - Correctif v0.2.2
 
-## 📌 Bugs corrigés dans cette version
+## 📌 Bugs et améliorations dans cette version
 
-- ✅ **BUG-001** : Correction des polices Google Fonts (CSP)
-- ✅ **BUG-004** : Correction des styles et de l’affichage des iframes Netlify Identity
-- ✅ **BUG-002** : Correction des logos non affichés
-- 🔄 **BUG-003** : Correction de la carte Mapbox qui ne charge pas (Test en cours sur Netlify)
+- ✅ **IMG-001** : Suppression des redondances d'images (logo, fond, tickets, sponsors, zones)
+- ✅ **IMG-002** : Centralisation des images dans Sanity via `siteBranding` et `zone`
+- ✅ **IMG-003** : Ajout du champ `zoneRef` dans `schedule` et migration auto via script
+- ✅ **IMG-004** : Refactor des stores pour utiliser `fetchSanityData.js` (function générique)
+- ✅ **IMG-005** : Nettoyage des fonctions Netlify inutiles (`fetchSponsors.js`, etc.)
+- ✅ **IMG-006** : Réduction des assets à 6 SVG essentiels (`marker.svg`, `cancel.svg`, réseaux sociaux)
+- ✅ **IMG-007** : Images conditionnelles dans `Program_comp.vue` (catégorie music vs. zone)
 
-## 🚀 Plan d'action
+## 🚀 Plan d'action pour `fix/dev04-images-sanity`
 
-1. **Tester et valider chaque correction en local (`netlify dev`).**
-2. **Déployer une première itération sur Netlify pour vérification.**
-3. **Fusionner `fix/v0.2.1` dans `dev04` une fois tous les tests validés.**
-4. **Taguer `v0.2.1` et la déployer en production.**
+1. **Vérifier tous les composants affectés : `Program`, `Partners`, `Header`, `TicketCarousel`**
+2. **Tester la récupération et l’affichage correct des images sur Netlify (`netlify dev` + Deploy Preview)**
+3. **Supprimer les fonctions inutiles après refactor**
+4. **Fusionner `fix/dev04-images-sanity` dans `dev04`**
+5. **Taguer `v0.2.2` et documenter les évolutions dans `CHANGELOG.md`**
 
 ## 🔍 Suivi des tests
 
-| Bug     | Correction appliquée | Test Netlify Deploy Preview | Résultat     |
-| ------- | -------------------- | --------------------------- | ------------ |
-| BUG-001 | ✅ Oui               | ✅ Testé sur Netlify        | ✅ Corrigé   |
-| BUG-004 | ✅ Oui               | ✅ Testé sur Netlify        | ✅ Corrigé   |
-| BUG-002 | ✅ Oui               | ✅ Testé sur Netlify        | ✅ Corrigé   |
-| BUG-003 | 🔄 En cours          | 🔄 Tentative en cours       | ❌ Non testé |
+| Ticket  | Implémenté | Test local (`netlify dev`) | Test Netlify | Résultat   |
+| ------- | ---------- | -------------------------- | ------------ | ---------- |
+| IMG-001 | ✅ Oui     | ✅                         | ✅           | ✅ Corrigé |
+| IMG-002 | ✅ Oui     | ✅                         | ✅           | ✅ Corrigé |
+| IMG-003 | ✅ Oui     | ✅ via script Node         | ✅           | ✅ Corrigé |
+| IMG-004 | ✅ Oui     | ✅                         | ✅           | ✅ Corrigé |
+| IMG-005 | ✅ Oui     | ✅                         | ✅           | ✅ Corrigé |
+| IMG-006 | ✅ Oui     | ✅                         | ✅           | ✅ Corrigé |
+| IMG-007 | ✅ Oui     | ✅                         | ✅           | ✅ Corrigé |
 
 ---
 
-📌 **Tous les correctifs liés à la CSP sont faits dans `_headers`**.
+### **📅 Modifications techniques principales :**
 
-### **📌 Modifications principales :**
+- ✅ **Ajout de `zone.image` dans Sanity**
+- ✅ **Refactor complet de `useScheduleStore.js` pour intégrer `zoneRef`**
+- ✅ **Script `migrateZoneRef.js` pour faire correspondre `location` → `zoneRef` automatiquement (83 entrées)**
+- ✅ **Mise à jour des composants `Program_comp.vue`, `Partners_comp.vue`, `TicketCarousel.vue`, `Header_comp.vue`**
+- ✅ **Ajout d'une logique conditionnelle : si `music` → `schedule.image`, sinon → `zone.image`**
 
-- ✅ **Suppression des anciens fichiers `public/data/*.ndjson` et `public/data/*.json` obsolètes.**
-- ✅ **Mise à jour de `sanity/schemaTypes/schedule.js` pour corriger la gestion des images et catégories.**
-- ✅ **Ajout de `sanity/schemaTypes/category.js` pour structurer les catégories et leurs logos.**
-- ✅ **Mise à jour de `useScheduleStore.js` pour refléter les changements dans `schedule.js`.**
-- ✅ **Modification de `Program_comp.vue` pour s'adapter aux nouvelles références `category.logo`.**
-
-📌 **Cette branche `fix/v0.2.1` est dédiée à la correction des bugs de `v0.2.0`.**  
-📌 **Une fois stable, elle sera fusionnée dans `dev04` pour la sortie officielle de `v0.2.1`.**
+📌 **Branche** : `fix/dev04-images-sanity`  
+🌐 **Objectif** : préparer la version `v0.2.2` avant fusion vers `dev04` et publication.

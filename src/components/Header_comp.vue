@@ -44,7 +44,8 @@
   <!-- Image principale -->
   <div v-if="isHomeView">
     <img
-      src="./../assets/images/frontImage.png"
+      v-if="brandingStore.backgroundURL"
+      :src="brandingStore.backgroundURL"
       alt="Image principale"
       class="w-full mt-[60px]"
     />
@@ -54,6 +55,9 @@
 import { ref, onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import Banner_comp from './Banner_comp.vue'
+import { useBrandingStore } from '@/stores/useBrandingStore'
+
+const brandingStore = useBrandingStore()
 
 const targetDate = new Date('2025-06-14T14:00:00+02:00')
 const days = ref('XXX')
@@ -80,12 +84,14 @@ const updateCountdown = () => {
   }
 }
 onMounted(() => {
+  brandingStore.fetchBranding()
+  console.log('✅ HEADER - Background URL:', brandingStore.backgroundURL)
   updateCountdown()
   setInterval(updateCountdown, 1000)
 })
 
 // Condition pour détecter une vue spécifique
 const isHomeView = computed(() => {
-  return route.name === 'home' // Remplace 'SpecialViewName' par le nom de ta vue
+  return route.name === 'home'
 })
 </script>

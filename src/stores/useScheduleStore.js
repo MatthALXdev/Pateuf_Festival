@@ -41,6 +41,10 @@ export const useScheduleStore = defineStore('scheduleStore', {
             title, 
             logo{asset->{url}}
           }, 
+          zoneRef->{
+            name,
+            image{asset->{url}}
+          },
           backGroundActivity
         }
       `,
@@ -58,8 +62,18 @@ export const useScheduleStore = defineStore('scheduleStore', {
           throw new Error('Aucune donnée valide trouvée dans la réponse.')
         }
 
-        // Assigner les données récupérées au store
-        this.scheduleData = data.result
+        // Mapper proprement les données pour extraire les URLs directement
+        this.scheduleData = data.result.map(item => {
+          const mappedItem = {
+            ...item,
+            imageURL: item.image?.asset?.url || null,
+            categoryLogoURL: item.category?.logo?.asset?.url || null,
+            zoneImageURL: item.zoneRef?.image?.asset?.url || null,
+            zoneName: item.zoneRef?.name || null,
+          }
+
+          return mappedItem
+        })
       } catch (error) {
         console.error('Erreur lors du chargement de la programmation :', error)
         this.error = error.message
