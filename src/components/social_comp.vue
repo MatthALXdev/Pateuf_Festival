@@ -5,8 +5,8 @@
       <img
         v-for="img in imgSocialMedia"
         :key="img"
-        :src="`/src/assets/images/${img}.svg`"
-        alt="logo de réseaux social"
+        :src="`/images/social/${img}.svg`"
+        :alt="`logo de ${img}`"
         class="h-12"
       />
     </div>
@@ -14,5 +14,5 @@
 </template>
 
 <script setup>
-const imgSocialMedia = ['instagram', 'tiktok', 'x', 'youtube']
+const imgSocialMedia = ['instagram', 'tiktok', 'X', 'youtube']
 </script>

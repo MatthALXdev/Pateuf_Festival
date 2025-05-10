@@ -16,13 +16,14 @@
         class="flex flex-col p-2 border rounded"
       >
         <div class="flex justify-between items-center">
-          <div class="bg-green-200">
+          <div>
             <span class="font-bold">{{ info.infoID }}. </span>
-            <span v-if="!editingInfo || editingInfo.infoID !== info.infoID">{{
-              info.infoDescription
-            }}</span>
+            <span v-if="!editingInfo || editingInfo.infoID !== info.infoID">
+              {{ info.infoDescription }}
+            </span>
           </div>
-          <div class="flex space-x-2 justify-end bg-yellow-200">
+
+          <div class="flex space-x-2">
             <button
               @click="moveUp(info.infoID)"
               :disabled="index === 0"
@@ -51,6 +52,7 @@
             </button>
           </div>
         </div>
+
         <div
           v-if="editingInfo && editingInfo.infoID === info.infoID"
           class="mt-2"
@@ -59,18 +61,24 @@
             v-model="editingInfo.infoDescription"
             class="w-full p-2 border rounded"
           ></textarea>
-          <button
-            @click="saveEdit"
-            class="mt-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-700"
-          >
-            Enregistrer
-          </button>
-          <button
-            @click="cancelEdit"
-            class="mt-2 px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-700"
-          >
-            Annuler
-          </button>
+
+          <div class="flex gap-2 mt-2">
+            <button
+              @click="saveEdit"
+              :disabled="loading"
+              class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-700"
+            >
+              {{ loading ? 'Enregistrement...' : 'Enregistrer' }}
+            </button>
+            <button
+              @click="cancelEdit"
+              class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-700"
+            >
+              Annuler
+            </button>
+          </div>
+
+          <p v-if="error" class="text-red-500 mt-2">❌ {{ error }}</p>
         </div>
       </li>
     </ul>
@@ -81,10 +89,34 @@
 import { ref } from 'vue'
 import { useNewsStore } from '@/stores/useNewsStore'
 import { storeToRefs } from 'pinia'
+import { useSanityCrud } from '@/composables/useSanityCrud'
 
 const newsStore = useNewsStore()
 const { newsData } = storeToRefs(newsStore)
+
 const editingInfo = ref(null)
+const { updateDoc, loading, error } = useSanityCrud()
+
+const startEditing = info => {
+  editingInfo.value = { ...info }
+}
+
+const cancelEdit = () => {
+  editingInfo.value = null
+}
+
+const saveEdit = async () => {
+  if (!editingInfo.value) return
+
+  const updated = await updateDoc('info', editingInfo.value.infoID, {
+    infoDescription: editingInfo.value.infoDescription,
+  })
+
+  if (updated) {
+    newsStore.updateNewsItem(editingInfo.value)
+    editingInfo.value = null
+  }
+}
 
 const addInfo = () => {
   newsStore.addNewsItem({
@@ -95,22 +127,6 @@ const addInfo = () => {
 
 const deleteInfo = id => {
   newsStore.removeNewsItem(id)
-}
-
-const startEditing = info => {
-  editingInfo.value = { ...info }
-}
-
-const saveEdit = () => {
-  if (!editingInfo.value) return
-
-  console.log('Mise à jour de', editingInfo.value)
-  newsStore.updateNewsItem(editingInfo.value)
-  editingInfo.value = null
-}
-
-const cancelEdit = () => {
-  editingInfo.value = null
 }
 
 const moveUp = infoID => {
