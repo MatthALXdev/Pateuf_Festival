@@ -1,3 +1,5 @@
+// Netlify Function: updateSanityDoc.js
+
 export const handler = async (event) => {
   // 🔐 Vérification des variables d'environnement
   const projectId = process.env.SANITY_PROJECT_ID
@@ -14,7 +16,17 @@ export const handler = async (event) => {
   }
 
   // 🔎 Extraction des données de la requête
-  const { schema, id, data } = JSON.parse(event.body || '{}')
+  let parsedBody
+  try {
+    parsedBody = JSON.parse(event.body || '{}')
+  } catch (e) {
+    return {
+      statusCode: 400,
+      body: JSON.stringify({ error: '⛔ JSON invalide dans la requête.' }),
+    }
+  }
+
+  const { schema, id, data } = parsedBody
 
   if (!schema || !id || !data || typeof data !== 'object') {
     return {
@@ -25,19 +37,18 @@ export const handler = async (event) => {
     }
   }
 
-  // 🔧 Construction de la mutation
   const mutation = {
     patch: {
       id,
       set: data,
-      // optional: if you want to auto-create if it doesn't exist
-      // ifMissing: 'create'
     },
   }
 
   const url = `https://${projectId}.api.sanity.io/v2022-03-07/data/mutate/${dataset}`
 
   try {
+    console.log('🔧 Envoi de mutation Sanity :', JSON.stringify(mutation))
+
     const response = await fetch(url, {
       method: 'POST',
       headers: {
@@ -50,6 +61,7 @@ export const handler = async (event) => {
     const result = await response.json()
 
     if (!response.ok || result.error) {
+      console.error('❌ Sanity API error:', result)
       throw new Error(result.error?.message || 'Erreur inconnue Sanity')
     }
 
@@ -61,7 +73,10 @@ export const handler = async (event) => {
     console.error('❌ Erreur updateSanityDoc.js:', error)
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: error.message }),
+      body: JSON.stringify({
+        error: error.message || 'Erreur serveur interne',
+        stack: error.stack,
+      }),
     }
   }
 }
