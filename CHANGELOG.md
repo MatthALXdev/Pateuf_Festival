@@ -3,6 +3,19 @@
 Toutes les modifications notables du projet **Pateuf Festival** sont documentées ici.
 
 ---
+
+## [v0.2.2] - 2025-05-10
+
+### 🔒 Correctifs de sécurité
+
+- ⬆️ **Mise à jour des dépendances suite aux alertes de GitHub Dependabot :**
+  - **`nanoid`** : correction d’un bug de génération non sécurisée avec des valeurs non entières ([GHSA-6vfc-qv3f-vr6c](https://github.com/ai/nanoid/security/advisories/GHSA-6vfc-qv3f-vr6c)).
+  - **`esbuild`** : vulnérabilité en mode développement permettant à un site externe d’envoyer des requêtes au serveur local ([GHSA-x7hw-8jhm-qq95](https://github.com/evanw/esbuild/security/advisories/GHSA-x7hw-8jhm-qq95)).
+  - **`vite`** : même faille que `esbuild`, corrigée dans la dernière version ([GHSA-6vfc-qv3f-vr6c](https://github.com/vitejs/vite/security/advisories/GHSA-6vfc-qv3f-vr6c)).
+
+> 🛡️ Ces vulnérabilités n'affectaient que l'environnement de développement (`netlify dev`) et **n'ont aucun impact sur la production**.
+
+
 ## [v0.2.2] - 2025-05-10
 
 ### 🚀 Fonctionnalités
@@ -144,4 +157,4 @@ Toutes les modifications notables du projet **Pateuf Festival** sont documentée
 
 ---
 
-🗓️ Mis à jour le : 10 mai 2025
+🗓️ Mis à jour le : 11 mai 2025
