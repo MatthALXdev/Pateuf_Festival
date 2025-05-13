@@ -52,6 +52,34 @@ export const useNewsStore = defineStore('news', {
         console.error(`Erreur : infoID ${updatedItem.infoID} non trouvé.`)
       }
     },
+    async updateNewsInSanity(infoID, updatedFields) {
+      try {
+        const payload = {
+          schema: 'info',
+          id: infoID,
+          data: updatedFields,
+        }
+
+        console.log('📦 Payload envoyé à updateSanityDoc:', payload)
+
+        const response = await fetch('/.netlify/functions/updateSanityDoc', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        })
+
+        const result = await response.json()
+
+        if (!response.ok) {
+          console.error('❌ Échec update Sanity:', result)
+          throw new Error(result.error || 'Erreur update inconnue')
+        }
+
+        console.log('✅ Update réussi Sanity:', result)
+      } catch (err) {
+        console.error('🔥 Erreur updateNewsInSanity:', err)
+      }
+    },
   },
   getters: {
     getNewsByID: state => id => {
