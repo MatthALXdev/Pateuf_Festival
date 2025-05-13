@@ -12,13 +12,13 @@
     <ul class="space-y-2">
       <li
         v-for="(info, index) in newsStore.newsData"
-        :key="info.infoID"
+        :key="info._id"
         class="flex flex-col p-2 border rounded"
       >
         <div class="flex justify-between items-center">
           <div>
             <span class="font-bold">{{ info.infoID }}. </span>
-            <span v-if="!editingInfo || editingInfo.infoID !== info.infoID">
+            <span v-if="!editingInfo || editingInfo._id !== info._id">
               {{ info.infoDescription }}
             </span>
           </div>
@@ -54,7 +54,7 @@
         </div>
 
         <div
-          v-if="editingInfo && editingInfo.infoID === info.infoID"
+          v-if="editingInfo && editingInfo._id === info._id"
           class="mt-2"
         >
           <textarea
@@ -112,7 +112,7 @@ const saveEdit = async () => {
   error.value = null
 
   try {
-    await newsStore.updateNewsInSanity(editingInfo.value.infoID, {
+    await newsStore.updateNewsInSanity(editingInfo.value._id, {
       infoDescription: editingInfo.value.infoDescription,
     })
 

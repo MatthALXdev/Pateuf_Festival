@@ -17,7 +17,7 @@ export const useNewsStore = defineStore('news', {
           body: JSON.stringify({
             dataset: 'pateuf_private',
             query:
-              '*[_type == "info"]{infoID, logo{asset->{url}}, infoDescription}',
+              '*[_type == "info"]{_id, infoID, logo{asset->{url}}, infoDescription}',
           }),
         })
 
@@ -28,7 +28,12 @@ export const useNewsStore = defineStore('news', {
         }
 
         const data = await response.json()
-        this.newsData = data.result || []
+        this.newsData = data.result.map(item => ({
+          _id: item._id,
+          infoID: item.infoID,
+          logoURL: item.logo?.asset?.url || null,
+          infoDescription: item.infoDescription,
+        }))
       } catch (error) {
         console.error('Error loading news from Sanity:', error)
         this.error = error.message

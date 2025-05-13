@@ -4,7 +4,7 @@ export const handler = async (event) => {
   // 🔐 Vérification des variables d'environnement
   const projectId = process.env.SANITY_PROJECT_ID
   const dataset = process.env.SANITY_DATASET
-  const token = process.env.SANITY_ACCESS_ADMIN_TOKEN
+  const oken = process.env.SANITY_ACCESS_ADMIN_TOKEN
 
   if (!projectId || !dataset || !token) {
     return {
