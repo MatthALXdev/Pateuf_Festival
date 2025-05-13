@@ -89,13 +89,13 @@
 import { ref } from 'vue'
 import { useNewsStore } from '@/stores/useNewsStore'
 import { storeToRefs } from 'pinia'
-import { useSanityCrud } from '@/composables/useSanityCrud'
 
 const newsStore = useNewsStore()
 const { newsData } = storeToRefs(newsStore)
 
 const editingInfo = ref(null)
-const { updateDoc, loading, error } = useSanityCrud()
+const loading = ref(false)
+const error = ref(null)
 
 const startEditing = info => {
   editingInfo.value = { ...info }
@@ -103,18 +103,25 @@ const startEditing = info => {
 
 const cancelEdit = () => {
   editingInfo.value = null
+  error.value = null
 }
 
 const saveEdit = async () => {
   if (!editingInfo.value) return
+  loading.value = true
+  error.value = null
 
-  const updated = await updateDoc('info', editingInfo.value.infoID, {
-    infoDescription: editingInfo.value.infoDescription,
-  })
+  try {
+    await newsStore.updateNewsInSanity(editingInfo.value.infoID, {
+      infoDescription: editingInfo.value.infoDescription,
+    })
 
-  if (updated) {
     newsStore.updateNewsItem(editingInfo.value)
     editingInfo.value = null
+  } catch (err) {
+    error.value = err.message || 'Erreur inconnue lors de la mise à jour'
+  } finally {
+    loading.value = false
   }
 }
 
