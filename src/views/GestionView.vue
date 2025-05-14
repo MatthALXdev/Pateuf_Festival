@@ -9,6 +9,7 @@
 
     <!-- Vérification de l'authentification -->
     <div v-if="!authStore.isAuthenticated" class="text-red-500 font-semibold">
+    <!-- <div class="text-red-500 font-semibold"> -->
       <p>Accès restreint. Veuillez vous connecter.</p>
       <button
         @click="authStore.login"
@@ -19,6 +20,7 @@
     </div>
 
     <div v-else class="w-full max-w-5xl">
+    <!-- <div class="w-full max-w-5xl"> -->
       <!-- Sélecteur de vue de gestion -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
         <button
