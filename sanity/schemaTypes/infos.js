@@ -25,6 +25,13 @@ export default {
       title: 'Description',
       description: "Texte descriptif de l'information",
       validation: (Rule) => Rule.required().min(10).max(200),
-    },
+    },{
+  name: 'order',
+  type: 'number',
+  title: 'Ordre d’apparition',
+  description: 'Plus petit = affiché en premier',
+  validation: Rule => Rule.required().min(0),
+  initialValue: 0,
+},
   ],
 }

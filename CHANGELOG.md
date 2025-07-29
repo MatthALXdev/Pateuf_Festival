@@ -3,6 +3,32 @@
 Toutes les modifications notables du projet **Pateuf Festival** sont documentées ici.
 
 ---
+## [v0.3.0] - 2025-07-29
+
+### 🚀 Fonctionnalités & Refactorisation
+
+- Suppression totale du champ `location` dans le schéma Sanity `schedule` et dans tout le code front/back.
+- Remplacement du champ `labels` par une référence `categoryRef` (vers `category`).
+- Migration du front pour exploiter `zoneRef` comme un objet Sanity (_id, name, title, image).
+- Correction de la projection GROQ dans le store pour inclure `_id` dans `zoneRef`.
+- Le carrousel des scènes musicales affiche désormais uniquement les zones utilisées par des activités de catégorie `music` (`category.name === 'music'`).
+- Nettoyage de tous les composants pour garantir l’utilisation cohérente de `categoryRef` et `zoneRef`.
+
+### 🛡️ Sécurité
+
+- Activation de la protection d’accès à la route `/gestion` (`meta: { requiresAuth: true }`).
+- Affichage conditionnel des boutons et formulaires de gestion selon l’authentification utilisateur.
+
+### 🏙️ Composants/Vues impactés
+
+- [Concert_comp.vue](cci:7://file:///c:/Users/matth/Pateuf_Festival/src/components/Concert_comp.vue:0:0-0:0), [Program_comp.vue](cci:7://file:///c:/Users/matth/Pateuf_Festival/src/components/Program_comp.vue:0:0-0:0), [SceneCarousel.vue](cci:7://file:///c:/Users/matth/Pateuf_Festival/src/components/SceneCarousel.vue:0:0-0:0)
+- [GestionView.vue](cci:7://file:///c:/Users/matth/Pateuf_Festival/src/views/GestionView.vue:0:0-0:0)
+- [useScheduleStore.js](cci:7://file:///c:/Users/matth/Pateuf_Festival/src/stores/useScheduleStore.js:0:0-0:0)
+- [router/index.js](cci:7://file:///c:/Users/matth/Pateuf_Festival/src/router/index.js:0:0-0:0)
+
+### 📅 Déploiement
+
+- Branche : `feature/gestion-crud-composants`
 
 ## [v0.2.2] - 2025-05-10
 

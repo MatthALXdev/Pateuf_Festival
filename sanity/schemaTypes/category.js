@@ -1,20 +1,34 @@
 export default {
   name: 'category',
-  type: 'document',
   title: 'Catégorie',
+  type: 'document',
   fields: [
     {
-      name: 'title',
-      title: 'Nom de la catégorie',
+      name: 'name',
+      title: 'Nom technique',
       type: 'string',
+      validation: Rule => Rule.required(),
+    },
+    {
+      name: 'title',
+      title: 'Nom affiché',
+      type: 'string',
+      validation: Rule => Rule.required(),
     },
     {
       name: 'logo',
-      title: 'Logo de la catégorie',
+      title: 'Icône / logo',
       type: 'image',
       options: {
         hotspot: true,
       },
-    },
+    }
   ],
+  preview: {
+    select: {
+      title: 'title',
+      subtitle: 'name',
+      media: 'logo',
+    },
+  }
 }

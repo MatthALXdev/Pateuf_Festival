@@ -17,7 +17,7 @@ export const useNewsStore = defineStore('news', {
           body: JSON.stringify({
             dataset: 'pateuf_private',
             query:
-              '*[_type == "info"]{_id, infoID, logo{asset->{url}}, infoDescription}',
+              '*[_type == "info"] | order(order asc){_id, infoID, logo{asset->{url}}, infoDescription, order}',
           }),
         })
 
@@ -33,6 +33,7 @@ export const useNewsStore = defineStore('news', {
           infoID: item.infoID,
           logoURL: item.logo?.asset?.url || null,
           infoDescription: item.infoDescription,
+          order: item.order ?? 0,
         }))
       } catch (error) {
         console.error('Error loading news from Sanity:', error)
@@ -41,12 +42,15 @@ export const useNewsStore = defineStore('news', {
         this.loading = false
       }
     },
+
     addNewsItem(item) {
       this.newsData.push(item)
     },
+
     removeNewsItem(infoID) {
       this.newsData = this.newsData.filter(item => item.infoID !== infoID)
     },
+
     updateNewsItem(updatedItem) {
       const index = this.newsData.findIndex(
         item => item.infoID === updatedItem.infoID,
@@ -57,6 +61,7 @@ export const useNewsStore = defineStore('news', {
         console.error(`Erreur : infoID ${updatedItem.infoID} non trouvé.`)
       }
     },
+
     async updateNewsInSanity(infoID, updatedFields) {
       try {
         const payload = {
@@ -64,8 +69,6 @@ export const useNewsStore = defineStore('news', {
           id: infoID,
           data: updatedFields,
         }
-
-        console.log('📦 Payload envoyé à updateSanityDoc:', payload)
 
         const response = await fetch('/.netlify/functions/updateSanityDoc', {
           method: 'POST',
@@ -85,7 +88,37 @@ export const useNewsStore = defineStore('news', {
         console.error('🔥 Erreur updateNewsInSanity:', err)
       }
     },
+
+    async submitNewInfoToSanity(item) {
+      try {
+        const timestamp = Date.now()
+        const id = `info-${timestamp}`
+        const payload = {
+          schema: 'info',
+          id,
+          data: {
+            ...item,
+          },
+        }
+
+        const response = await fetch('/.netlify/functions/createSanityDoc', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        })
+
+        const result = await response.json()
+        if (!response.ok) throw new Error(result.error)
+
+        console.log('✅ Nouvelle info ajoutée à Sanity', result)
+        await this.fetchNews()
+      } catch (err) {
+        console.error('❌ Erreur ajout info Sanity :', err)
+        this.error = err.message
+      }
+    },
   },
+
   getters: {
     getNewsByID: state => id => {
       return state.newsData.find(item => item.infoID === id)

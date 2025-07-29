@@ -1,5 +1,5 @@
 <template>
-  <div :class="class">
+  <div>
     <!-- Carrousel des scènes -->
     <div
       class="flex relative overflow-hidden"

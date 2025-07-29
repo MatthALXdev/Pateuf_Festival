@@ -1,5 +1,5 @@
 <template>
-  <div class="m-4 px-4 lg:bg-opacity-80 lg:bg-_beige01">
+  <div class="m-4 px-4 lg:bg-opacity-80 ">
     <h2 class="font-bold text-xl text-center pb-3">Nos réseaux</h2>
     <div class="flex lg:flex-col gap-6 justify-around">
       <img

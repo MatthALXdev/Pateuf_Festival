@@ -12,7 +12,9 @@
     </div>
 
     <!-- Contenu principal -->
-    <div v-else>
+    
+    <div v-else class="relative min-h-screen">
+      <ScrollBackground />
       <!-- Header -->
       <Header_comp />
       <!-- Navigation -->
@@ -32,6 +34,7 @@ import Footer_comp from '@/components/Footer_comp.vue'
 import { ref, onMounted, onUnmounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useNavigationStore } from '@/stores/useNavigationStore'
+import ScrollBackground from '@/components/ScrollBackground.vue'
 
 const isPortraitBlocked = ref(false)
 const route = useRoute()

@@ -28,11 +28,7 @@ export default {
       title: 'Temps de préparation (en minutes)',
       type: 'number',
     },
-    {
-      name: 'location',
-      title: 'Lieu',
-      type: 'string',
-    },
+
     {
       name: 'zoneRef',
       title: 'Zone du festival (référence)',
@@ -48,9 +44,10 @@ export default {
       },
     },
     {
-      name: 'labels',
+      name: 'categoryRef',
       title: 'Catégorie',
-      type: 'string',
+      type: 'reference',
+      to: [{ type: 'category' }],
     },
     {
       name: 'day',
@@ -87,6 +84,9 @@ export default {
       title: 'Logo de la catégorie',
       type: 'reference',
       to: [{type: 'category'}],
+      options: {
+    disableNew: true, // ✅ désactive la création d'une nouvelle référence à la volée
+  }
     },
     {
       name: 'backGroundActivity',

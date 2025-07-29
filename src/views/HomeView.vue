@@ -10,82 +10,85 @@
     </p>
   </div>
   <div v-else>
-    <div class="flex flex-wrap gap-3 justify-around items-center bg-_beige02">
-      <!-- Composant bannière -->
-      <div
-        class="bg-_beige02 w-screen sticky top-[58px] z-30 overflow-hidden px-2 sm:hidden"
-      >
-        <Banner_comp />
-      </div>
-
-      <!-- Composant concert -->
-      <div id="concert" class="flex justify-center w-[90%]">
-        <Concert />
-      </div>
-
-      <!-- Composant program -->
-      <div id="programmation" class="bg-_beige02 w-[90%]">
-        <h2 class="text-xl">Liste des activitées</h2>
+    <!-- Conteneur principal avec fond défilant -->
+    <div>
+      <div class="flex flex-wrap gap-3 justify-around items-center">
+        <!-- Composant bannière -->
         <div
-          class="m-4 h-96 md:h-[26rem] lg:h-[34rem] xl:h-[48rem] mx-auto overflow-y-auto md:overflow-y-hidden"
-          :class="scrollbarClass"
+          class="bg-_beige02 w-screen sticky top-[58px] z-30 overflow-hidden px-2 sm:hidden"
         >
-          <Program_comp :planningData="planningData" />
+          <Banner_comp />
         </div>
-      </div>
 
-      <!-- Composant map -->
-      <div id="carte" class="bg-_beige02 w-[90%] z-20">
-        <h2 class="text-xl">Carte</h2>
-        <div class="m-4 h-96 mx-auto lg:h-[34rem] xl:h-[40rem]">
-          <!-- Conteneur principal centré avec une bordure verte -->
+        <!-- Composant concert -->
+        <div id="concert" class="flex justify-center w-[90%] ">
+          <Concert />
+        </div>
+
+        <!-- Composant program -->
+        <div id="programmation" class=" w-[90%]">
+          <h2 class="text-xl">Liste des activitées</h2>
           <div
-            class="border-4 border-_darkBlue02 h-full w-full relative rounded-md"
+            class="m-4 h-96 md:h-[26rem] lg:h-[34rem] xl:h-[48rem] mx-auto overflow-y-auto md:overflow-y-hidden"
+            :class="scrollbarClass"
           >
-            <!-- Overlay blanc opaque -->
-            <div
-              v-if="showOverlay"
-              class="absolute inset-0 bg-_beige02 z-40 flex items-center justify-center"
-            >
-              <p class="text-xl font-bold">Chargement de la carte en cours</p>
-            </div>
-            <Map_comp @is-loaded="onMapLoaded" />
+            <Program_comp :planningData="planningData" />
           </div>
         </div>
-      </div>
 
-      <!-- Composant tickets -->
-      <div id="billeterie" class="bg-_beige02 w-screen xl:w-1/2 px-4">
-        <h2 class="text-xl">Billeterie</h2>
-        <div class="m-4 h-fit mx-auto">
-          <Tickets_comp />
+        <!-- Composant map -->
+        <div id="carte" class=" w-[90%] z-20">
+          <h2 class="text-xl">Carte</h2>
+          <div class="m-4 h-96 mx-auto lg:h-[34rem] xl:h-[40rem]">
+            <!-- Conteneur principal centré avec une bordure verte -->
+            <div
+              class="border-4 border-_darkBlue02 h-full w-full relative rounded-md"
+            >
+              <!-- Overlay blanc opaque -->
+              <div
+                v-if="showOverlay"
+                class="absolute inset-0 z-40 flex items-center justify-center"
+              >
+                <p class="text-xl font-bold">Chargement de la carte en cours</p>
+              </div>
+              <Map_comp @is-loaded="onMapLoaded" />
+            </div>
+          </div>
         </div>
-      </div>
 
-      <!-- Composant faq -->
-      <div id="forum" class="bg-_beige02 w-[90%] xl:w-[45%] self-start">
-        <h2 class="text-xl">FAQ</h2>
-        <div class="mx-auto h-fit">
-          <Faq_comp />
+        <!-- Composant tickets -->
+        <div id="billeterie" class=" w-screen xl:w-1/2 px-4">
+          <h2 class="text-xl">Billeterie</h2>
+          <div class="m-4 h-fit mx-auto">
+            <Tickets_comp />
+          </div>
         </div>
-      </div>
 
-      <!-- Composant socialMedia -->
-      <div id="reseaux" class="bg-_beige02 w-screen lg:w-1/6">
-        <Social_comp />
-      </div>
+        <!-- Composant faq -->
+        <div id="forum" class=" w-[90%] xl:w-[45%] self-start">
+          <h2 class="text-xl">FAQ</h2>
+          <div class="mx-auto h-fit">
+            <Faq_comp />
+          </div>
+        </div>
 
-      <!-- Composant partners -->
-      <div id="partenaires" class="bg-_beige02 w-screen lg:w-[80%]">
-        <Partners_comp />
+        <!-- Composant socialMedia -->
+        <div id="reseaux" class=" w-screen lg:w-1/6">
+          <Social_comp />
+        </div>
+
+        <!-- Composant partners -->
+        <div id="partenaires" class=" w-screen lg:w-[80%]">
+          <Partners_comp />
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, provide } from 'vue'
-
+import { ref, computed, provide, onMounted } from 'vue'
+import mapboxgl from 'mapbox-gl'
 import Map_comp from '@/components/Map_comp.vue'
 import Concert from '@/components/Concert_comp.vue'
 import Tickets_comp from '@/components/Tickets_comp.vue'
@@ -95,9 +98,37 @@ import Faq_comp from '@/components/Faq_comp.vue'
 import Partners_comp from '@/components/Partners_comp.vue'
 import Social_comp from '@/components/social_comp.vue'
 
+const isPortraitBlocked = ref(false)
 const showOverlay = ref(true)
 const isMapLoaded = ref(false)
 const planningData = ref(null)
+
+// Check device orientation only on mobile devices
+const isMobile = () => {
+  return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
+}
+
+const checkOrientation = () => {
+  if (!isMobile()) return // Skip orientation check on desktop
+  
+  if (window.innerHeight > window.innerWidth) {
+    isPortraitBlocked.value = true
+  } else {
+    isPortraitBlocked.value = false
+  }
+}
+
+// Listen for orientation changes
+onMounted(() => {
+  checkOrientation()
+  window.addEventListener('resize', checkOrientation)
+  return () => window.removeEventListener('resize', checkOrientation)
+})
+
+// Initialize Mapbox
+onMounted(() => {
+  mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN
+})
 
 function onMapLoaded(loaded) {
   isMapLoaded.value = loaded

@@ -17,3 +17,31 @@
     @apply font-body font-semibold; /* Utilise la classe définie pour "Special Elite" */
   }
 }
+
+@layer utilities {
+  .bg-parallax {
+    background-attachment: fixed;
+    background-position: top;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  .parallax-container {
+    position: relative;
+    z-index: 10;
+    transform: translateZ(0);
+    will-change: transform;
+    animation: floatParallax linear forwards;
+    animation-timeline: scroll();
+    animation-name: floatParallax;
+  }
+
+  @keyframes floatParallax {
+    0% {
+      transform: translateY(0);
+    }
+    100% {
+      transform: translateY(-30px);
+    }
+  }
+}

@@ -1,5 +1,5 @@
 <template>
-  <div class="max-w-96 max-h-96 md:hidden flex flex-col">
+  <div class="max-w-96 max-h-96 md:hidden flex flex-col ">
     <!-- Titre de la scène -->
     <p class="text-xl font-semibold mb-2 flex">
       <span class="flex-grow border-b-4 border-_black03">SCENE</span>
@@ -22,11 +22,7 @@
       >
         <!-- Listes des scènes -->
         <div
-          v-for="(location, index) in [
-            'La forge',
-            'Le repaire du kraken',
-            'Le Chaos Sonore',
-          ]"
+          v-for="(zone, index) in zones"
           :key="index"
           class="w-full flex-shrink-0 overflow-hidden border border-_beige02"
         >
@@ -43,7 +39,7 @@
           >
             <!-- Listes des groupes par scène -->
             <div
-              v-for="(group, index) in getSortedGroupsForScene(location)"
+              v-for="(group, index) in getSortedGroupsForScene(zone)"
               :key="index"
               class="border-2 border-_darkBlue01 p-2 rounded-lg mb-2 w-full flex items-center"
             >
@@ -72,11 +68,7 @@
     <!-- Indicateurs de position du carrousel -->
     <div class="flex justify-center mt-2">
       <span
-        v-for="(location, index) in [
-          'La forge',
-          'Le repaire du kraken',
-          'Le Chaos Sonore',
-        ]"
+        v-for="(zone, index) in zones"
         :key="index"
         class="w-2 h-2 mx-1 rounded-full"
         :class="index === currentSceneIndex ? 'bg-_black01' : 'bg-gray-400'"
@@ -100,7 +92,7 @@
       </button>
     </div>
   </div>
-  <div class="hidden sm:max-w-screen max-h-96 md:flex lg:hidden flex-col">
+  <div class="hidden sm:max-w-screen max-h-96 md:flex lg:hidden flex-col ">
     <!-- Carrousel des scènes -->
     <div
       v-if="dataLoaded"
@@ -117,11 +109,7 @@
       >
         <!-- Listes des scènes -->
         <div
-          v-for="(location, index) in [
-            'La forge',
-            'Le repaire du kraken',
-            'Le Chaos Sonore',
-          ]"
+          v-for="(zone, index) in zones"
           :key="index"
           class="w-full flex-shrink-0 overflow-hidden border border-_beige02"
         >
@@ -129,13 +117,13 @@
           <p class="text-xl font-semibold mb-2 h-8 flex flex-grow">
             <span class="flex-grow border-b-4 border-_black03">SCENE</span>
             <span class="text-lg mr-4 border-b-4 border-_black03">{{
-              location
+              zone.title || zone.name
             }}</span>
           </p>
           <div class="pr-2 overflow-y-auto h-64" :class="[scrollbarClass]">
             <!-- Listes des groupes par scène -->
             <div
-              v-for="(group, index) in getSortedGroupsForScene(location)"
+              v-for="(group, index) in getSortedGroupsForScene(zone)"
               :key="index"
               class="border-2 border-_darkBlue01 p-2 rounded-lg mb-2 w-full flex items-center"
             >
@@ -164,7 +152,7 @@
     <!-- Indicateurs de position du carrousel -->
     <div class="flex justify-center mt-2">
       <span
-        v-for="(location, index) in ['La forge', 'Le repaire du kraken']"
+        v-for="(zone, index) in zones"
         :key="index"
         class="w-2 h-2 mx-1 rounded-full"
         :class="index === currentSceneIndex ? 'bg-_black01' : 'bg-gray-400'"
@@ -189,18 +177,14 @@
     </div>
   </div>
   <div
-    class="hidden lg:flex w-screen lg:max-w-[1000px] xl:max-w-[1200px] lg:max-h-[48rem] flex-col xl:max-h-100% mt-4"
+    class="  hidden lg:flex w-screen lg:max-w-[1000px] xl:max-w-[1200px] lg:max-h-[48rem] flex-col xl:max-h-100% mt-4"
   >
     <!-- Carrousel des scènes -->
     <div v-if="dataLoaded">
       <div class="flex w-full gap-6 xl:gap-12 h-full">
         <!-- Listes des scènes -->
         <div
-          v-for="(location, index) in [
-            'La forge',
-            'Le repaire du kraken',
-            'Le Chaos Sonore',
-          ]"
+          v-for="(zone, index) in zones"
           :key="index"
           class="w-full flex-grow border border-_beige02 bg-_brown03 bg-opacity-20 p-4 h-fit"
         >
@@ -208,7 +192,7 @@
           <p class="text-xl font-semibold mb-2 h-8 flex flex-grow">
             <span class="flex-grow border-b-4 border-_black03">SCENE</span>
             <span class="text-lg mr-4 border-b-4 border-_black03">{{
-              location
+              zone.title || zone.name
             }}</span>
           </p>
           <div
@@ -217,7 +201,7 @@
           >
             <!-- Listes des groupes par scène -->
             <div
-              v-for="(group, index) in getSortedGroupsForScene(location)"
+              v-for="(group, index) in getSortedGroupsForScene(zone)"
               :key="index"
               class="border-2 border-_darkBlue01 p-2 rounded-lg mb-2 w-full flex items-center transition duration-300 ease-in-out hover:bg-_green03 hover:shadow hover:bg-opacity-80"
             >
@@ -264,17 +248,33 @@ onMounted(() => {
   isTouchDevice.value = 'ontouchstart' in window || navigator.maxTouchPoints > 0
 })
 
+const zones = computed(() => {
+  // On ne garde que les activités musicales
+  const musicActivities = scheduleStore.getScheduleData.filter(a => a.category && a.category.name === 'music' && a.zoneRef && a.zoneRef._id)
+  // On extrait les zones
+  const allZones = musicActivities.map(a => a.zoneRef)
+  // On déduplique par _id
+  const unique = []
+  const seen = new Set()
+  for (const zone of allZones) {
+    if (!seen.has(zone._id)) {
+      unique.push(zone)
+      seen.add(zone._id)
+    }
+  }
+  return unique
+})
+
 const currentLocation = computed(
   () =>
-    ['La forge', 'Le repaire du kraken', 'Le Chaos Sonore'][
-      currentSceneIndex.value
-    ],
+    zones.value[currentSceneIndex.value]?.title || zones.value[currentSceneIndex.value]?.name || '',
 )
 
 const getSortedGroupsForScene = scene => {
+  if (!scene || !scene._id) return []
   const { testDate, testTime } = getTestDateTime()
   return scheduleStore.getScheduleData
-    .filter(group => group.location === scene)
+    .filter(group => group.zoneRef && group.zoneRef._id === scene._id)
     .sort((a, b) => parseInt(a.order) - parseInt(b.order))
     .filter(group => group.date + group.end >= testDate + testTime)
 }

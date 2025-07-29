@@ -4,7 +4,7 @@
   >
     <!-- Titre -->
     <h1 class="text-3xl font-bold text-gray-800 mb-6">
-      Tableau de bord - Pateuf Festival
+      Gestion
     </h1>
 
     <!-- Vérification de l'authentification -->
@@ -19,8 +19,8 @@
       </button>
     </div>
 
-    <div v-else class="w-full max-w-5xl">
-    <!-- <div class="w-full max-w-5xl"> -->
+    <!-- <div v-else class="w-full max-w-5xl"> -->
+    <div >
       <!-- Sélecteur de vue de gestion -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
         <button
@@ -55,7 +55,7 @@ import EditFaq from '@/components/Gestion/EditFaq.vue'
 import EditFestivalBorder from '@/components/Gestion/EditFestivalBorder.vue'
 import EditInfo from '@/components/Gestion/EditInfo.vue'
 import EditLocation from '@/components/Gestion/EditLocation.vue'
-import EditSchedule from '@/components/Gestion/EditSchedule.vue'
+import EditSchedule from '@/components/Gestion/Schedule/EditSchedule.vue'
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -77,19 +77,9 @@ const sections = [
     icon: '🎤',
     component: EditSchedule,
   },
-  {
-    key: 'location',
-    title: 'Lieux du Festival',
-    icon: '📍',
-    component: EditLocation,
-  },
+  
   { key: 'faq', title: 'FAQ', icon: '❓', component: EditFaq },
-  {
-    key: 'festivalBorder',
-    title: 'Bordure du festival',
-    icon: '🗺️',
-    component: EditFestivalBorder,
-  },
+  
 ]
 
 // Calculer dynamiquement le composant de gestion à afficher
