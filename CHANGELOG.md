@@ -3,32 +3,58 @@
 Toutes les modifications notables du projet **Pateuf Festival** sont documentées ici.
 
 ---
-## [v0.3.0] - 2025-07-29
+## \[v0.3.0] - 2025-07-29
 
-### 🚀 Fonctionnalités & Refactorisation
+### 🚀 Fonctionnalités CRUD (composants & backend)
 
-- Suppression totale du champ `location` dans le schéma Sanity `schedule` et dans tout le code front/back.
-- Remplacement du champ `labels` par une référence `categoryRef` (vers `category`).
-- Migration du front pour exploiter `zoneRef` comme un objet Sanity (_id, name, title, image).
-- Correction de la projection GROQ dans le store pour inclure `_id` dans `zoneRef`.
-- Le carrousel des scènes musicales affiche désormais uniquement les zones utilisées par des activités de catégorie `music` (`category.name === 'music'`).
-- Nettoyage de tous les composants pour garantir l’utilisation cohérente de `categoryRef` et `zoneRef`.
+* Création de 3 **Netlify Functions sécurisées** pour les mutations Sanity :
 
-### 🛡️ Sécurité
+  * `createSanityDoc.js`
+  * `updateOrderInSanity.js`
+  * `deleteSanityDoc.js`
+* Création du composable `useSanitySync.js` pour forcer le rafraîchissement des données après modification Sanity.
+* Création du composable `useLocalEdit.js` pour la gestion des états d’édition locale dans les formulaires.
+* Implémentation complète du CRUD pour la programmation (`schedule`) avec :
 
-- Activation de la protection d’accès à la route `/gestion` (`meta: { requiresAuth: true }`).
-- Affichage conditionnel des boutons et formulaires de gestion selon l’authentification utilisateur.
+  * `Schedule/EditSchedule.vue`
+  * `Schedule/ScheduleForm.vue`
+  * Suppression de l’ancien `EditSchedule.vue` obsolète.
 
-### 🏙️ Composants/Vues impactés
+### 🗂️ Stores & Données
 
-- [Concert_comp.vue](cci:7://file:///c:/Users/matth/Pateuf_Festival/src/components/Concert_comp.vue:0:0-0:0), [Program_comp.vue](cci:7://file:///c:/Users/matth/Pateuf_Festival/src/components/Program_comp.vue:0:0-0:0), [SceneCarousel.vue](cci:7://file:///c:/Users/matth/Pateuf_Festival/src/components/SceneCarousel.vue:0:0-0:0)
-- [GestionView.vue](cci:7://file:///c:/Users/matth/Pateuf_Festival/src/views/GestionView.vue:0:0-0:0)
-- [useScheduleStore.js](cci:7://file:///c:/Users/matth/Pateuf_Festival/src/stores/useScheduleStore.js:0:0-0:0)
-- [router/index.js](cci:7://file:///c:/Users/matth/Pateuf_Festival/src/router/index.js:0:0-0:0)
+* Création du store `useCategoryStore.js` pour charger dynamiquement les catégories depuis Sanity.
+
+### 🎨 UI / Améliorations visuelles
+
+* Ajout du composant `ScrollBackground.vue` pour un effet de fond animé sur la page de gestion.
+* Nouvelle feuille de style `mapbox.css` pour styliser plus proprement les éléments Mapbox.
+
+### 🧹 Nettoyage
+
+* Suppression du composant `EditSchedule.vue` devenu obsolète.
+* Réorganisation des composants de programmation dans un sous-dossier `Schedule/` pour plus de clarté.
+
+### 📁 Fichiers ajoutés ou modifiés
+
+* `netlify/functions/createSanityDoc.js`
+* `netlify/functions/updateOrderInSanity.js`
+* `netlify/functions/deleteSanityDoc.js`
+* `src/composables/useSanitySync.js`
+* `src/composables/useLocalEdit.js`
+* `src/components/Gestion/Schedule/EditSchedule.vue`
+* `src/components/Gestion/Schedule/ScheduleForm.vue`
+* `src/stores/useCategoryStore.js`
+* `src/components/ScrollBackground.vue`
+* `src/assets/css/mapbox.css`
 
 ### 📅 Déploiement
 
-- Branche : `feature/gestion-crud-composants`
+* Branche : `feature/gestion-crud-composants`
+* Commit unique : `4a83edf - Mise en place crud`
+* Modifications : `+2269 / -1279` lignes sur `35 fichiers`
+
+> ✅ Cette version amorce la gestion centralisée et sécurisée des documents Sanity via une interface Vue 3 complète, avec mutations serverless et refactorisation front-end.
+
 
 ## [v0.2.2] - 2025-05-10
 
