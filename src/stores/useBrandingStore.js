@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia'
-import { useAuthStore } from '@/stores/authStore'
 
 export const useBrandingStore = defineStore('branding', {
   state: () => ({
@@ -10,9 +9,6 @@ export const useBrandingStore = defineStore('branding', {
   actions: {
     async fetchBranding() {
       try {
-        const authStore = useAuthStore()
-        const token = await authStore.getToken
-
         const query = `
           *[_type == "siteBranding"][0]{
             logo{asset->{url}},
@@ -25,7 +21,6 @@ export const useBrandingStore = defineStore('branding', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`,
           },
           body: JSON.stringify({
             dataset: 'pateuf_private',

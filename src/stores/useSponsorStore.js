@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia'
-import { useAuthStore } from '@/stores/authStore'
 
 export const useSponsorStore = defineStore('sponsor', {
   state: () => ({
@@ -8,9 +7,6 @@ export const useSponsorStore = defineStore('sponsor', {
   actions: {
     async fetchSponsors() {
       try {
-        const authStore = useAuthStore()
-        const token = await authStore.getToken
-
         const query = `
           *[_type == "sponsor"]{
             name,
@@ -24,7 +20,6 @@ export const useSponsorStore = defineStore('sponsor', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`,
           },
           body: JSON.stringify({
             dataset: 'pateuf_private',

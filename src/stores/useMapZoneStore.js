@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia'
-import { useAuthStore } from '@/stores/authStore'
 
 export const useMapZoneStore = defineStore('mapZoneStore', {
   state: () => ({
@@ -13,14 +12,10 @@ export const useMapZoneStore = defineStore('mapZoneStore', {
       this.loading = true
       this.error = null
       try {
-        const authStore = useAuthStore()
-        const token = await authStore.getToken
-
         const response = await fetch('/.netlify/functions/fetchSanityDoc', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`,
           },
           body: JSON.stringify({
             dataset: 'pateuf_private',
