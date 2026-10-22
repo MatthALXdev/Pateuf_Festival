@@ -1,6 +1,28 @@
 // Netlify Function: updateSanityDoc.js
 
+import { verifyAuth0Token } from './_utils/verifyAuth0JWT.js'
+
 export const handler = async (event) => {
+  // 🔐 Vérification du token JWT
+  const authHeader = event.headers.authorization
+  const jwt = authHeader?.split(' ')[1]
+
+  if (!jwt) {
+    return {
+      statusCode: 401,
+      body: JSON.stringify({ error: 'Unauthorized: JWT manquant' }),
+    }
+  }
+
+  try {
+    await verifyAuth0Token(jwt)
+  } catch (err) {
+    return {
+      statusCode: 403,
+      body: JSON.stringify({ error: 'Forbidden: JWT invalide' }),
+    }
+  }
+
   // 🔐 Vérification des variables d'environnement
   const projectId = process.env.SANITY_PROJECT_ID
   const dataset = process.env.SANITY_DATASET
