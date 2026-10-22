@@ -2,7 +2,7 @@
 
 import { verifyAuth0Token } from './_utils/verifyAuth0JWT.js'
 
-export const handler = async (event) => {
+export const handler = async event => {
   // 🔐 Vérification du token JWT
   const authHeader = event.headers.authorization
   const jwt = authHeader?.split(' ')[1]
@@ -97,7 +97,6 @@ export const handler = async (event) => {
       statusCode: 500,
       body: JSON.stringify({
         error: error.message || 'Erreur serveur interne',
-        stack: error.stack,
       }),
     }
   }
