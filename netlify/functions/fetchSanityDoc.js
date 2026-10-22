@@ -28,8 +28,7 @@ const CORS = {
     const readToken =
       process.env.SANITY_ACCESS_READ_TOKEN ||
       process.env.SANITY_READ_TOKEN ||
-      process.env.SANITY_ACCESS_TOKEN || // fallback si tu n’as pas encore créé le read-only token
-      process.env.SANITY_ACCESS_ADMIN_TOKEN // à éviter, mais garde-fou temporaire
+      process.env.SANITY_ACCESS_TOKEN
   
     if (!projectId || !readToken) {
       return {
