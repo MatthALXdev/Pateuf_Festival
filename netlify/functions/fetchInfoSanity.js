@@ -1,4 +1,32 @@
-export const handler = async () => {
+/**
+ * 🔐 Function Netlify sécurisée avec Auth0 JWT
+ * Permet de récupérer les infos depuis Sanity uniquement si l'utilisateur est authentifié
+ */
+
+import { verifyAuth0Token } from './_utils/verifyAuth0JWT.js'
+
+export const handler = async (event) => {
+  // 🔐 Vérification du token JWT dans l'en-tête Authorization
+  const authHeader = event.headers.authorization
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return {
+      statusCode: 401,
+      body: JSON.stringify({ error: 'Unauthorized: missing or invalid token' }),
+    }
+  }
+
+  const token = authHeader.split(' ')[1]
+
+  try {
+    await verifyAuth0Token(token)
+  } catch (err) {
+    console.error('JWT verification failed:', err.message)
+    return {
+      statusCode: 403,
+      body: JSON.stringify({ error: 'Forbidden: invalid token' }),
+    }
+  }
+
   console.log("🔍 Vérification des variables d'environnement Netlify")
   console.log('SANITY_PROJECT_ID:', process.env.SANITY_PROJECT_ID)
   console.log('SANITY_DATASET:', process.env.SANITY_DATASET)

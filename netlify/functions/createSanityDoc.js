@@ -1,6 +1,29 @@
 // netlify/functions/createSanityDoc.js
 
+import { verifyAuth0Token } from './_utils/verifyAuth0JWT.js'
+
 export const handler = async (event) => {
+  // 🔐 Vérification du token JWT
+  const authHeader = event.headers.authorization
+  const jwt = authHeader?.split(' ')[1]
+
+  if (!jwt) {
+    return {
+      statusCode: 401,
+      body: JSON.stringify({ error: 'Unauthorized: JWT manquant' }),
+    }
+  }
+
+  try {
+    await verifyAuth0Token(jwt)
+  } catch (err) {
+    return {
+      statusCode: 403,
+      body: JSON.stringify({ error: 'Forbidden: JWT invalide' }),
+    }
+  }
+
+  // 🔐 Vérification des variables d'environnement Sanity
   const projectId = process.env.SANITY_PROJECT_ID
   const dataset = process.env.SANITY_DATASET
   const token = process.env.SANITY_ACCESS_ADMIN_TOKEN
@@ -9,18 +32,19 @@ export const handler = async (event) => {
     return {
       statusCode: 500,
       body: JSON.stringify({
-        error: '⛔ Variables d’environnement Sanity manquantes.',
+        error: '⛔️ Variables d’environnement Sanity manquantes.',
       }),
     }
   }
 
+  // 🔎 Analyse du corps de la requête
   let parsedBody
   try {
     parsedBody = JSON.parse(event.body || '{}')
   } catch (e) {
     return {
       statusCode: 400,
-      body: JSON.stringify({ error: '⛔ JSON invalide dans la requête.' }),
+      body: JSON.stringify({ error: '⛔️ JSON invalide dans la requête.' }),
     }
   }
 
@@ -30,7 +54,7 @@ export const handler = async (event) => {
     return {
       statusCode: 400,
       body: JSON.stringify({
-        error: '⛔ Requête invalide : schema, id et data sont requis.',
+        error: '⛔️ Requête invalide : schema, id et data sont requis.',
       }),
     }
   }
@@ -46,7 +70,7 @@ export const handler = async (event) => {
   const url = `https://${projectId}.api.sanity.io/v2022-03-07/data/mutate/${dataset}`
 
   try {
-    console.log('🆕 Mutation envoyée à Sanity :', JSON.stringify(mutation))
+    console.log('🌟 Mutation envoyée à Sanity :', JSON.stringify(mutation))
 
     const response = await fetch(url, {
       method: 'POST',
