@@ -8,6 +8,7 @@
       Cette application est conçue pour être utilisée en mode portrait.<br />
       Veuillez pivoter votre appareil.
     </p>
+    <Auth0Test />
   </div>
   <div v-else>
     <!-- Conteneur principal avec fond défilant -->
@@ -88,6 +89,7 @@
 
 <script setup>
 import { ref, computed, provide, onMounted } from 'vue'
+import Auth0Test from '@/components/Auth/Auth0Test.vue'
 import mapboxgl from 'mapbox-gl'
 import Map_comp from '@/components/Map_comp.vue'
 import Concert from '@/components/Concert_comp.vue'

@@ -3,51 +3,55 @@
     <ul
       class="list-none flex flex-col text-2xl items-center justify-evenly gap-5 sm:flex-row sm:text-sm md:text-base pr-4"
     >
-      <li v-for="(link, index) in links" :key="index" :class="linkClasses">
-        <template v-if="!link.requiresAuth || store.isAuthenticated">
-          <router-link
-            v-if="link.isRouterLink"
-            :to="link.url"
-            :class="anchorClasses"
-            @click.native="handleNavigation(link)"
-          >
-            {{ link.name }}
-            <span :class="underlineClasses"></span>
-          </router-link>
+      <li
+        v-for="(link, index) in visibleLinks"
+        :key="index"
+        :class="linkClasses"
+      >
+        <router-link
+          v-if="link.isRouterLink"
+          :to="link.url"
+          :class="anchorClasses"
+          @click="handleNavigation(link)"
+        >
+          {{ link.name }}
+          <span :class="underlineClasses"></span>
+        </router-link>
 
-          <a
-            v-else-if="link.onClick"
-            href="#"
-            :class="anchorClasses"
-            @click.prevent="handleClick(link, $event)"
-          >
-            {{ link.name }}
-            <span :class="underlineClasses"></span>
-          </a>
+        <a
+          v-else-if="link.onClick"
+          href="#"
+          :class="anchorClasses"
+          @click.prevent="handleClick(link, $event)"
+        >
+          {{ link.name }}
+          <span :class="underlineClasses"></span>
+        </a>
 
-          <a
-            v-else
-            :href="link.url"
-            :class="anchorClasses"
-            @click.prevent="handleNavigation(link)"
-          >
-            {{ link.name }}
-            <span :class="underlineClasses"></span>
-          </a>
-        </template>
+        <a
+          v-else
+          :href="link.url"
+          :class="anchorClasses"
+          @click.prevent="handleNavigation(link)"
+        >
+          {{ link.name }}
+          <span :class="underlineClasses"></span>
+        </a>
       </li>
     </ul>
   </nav>
 </template>
 
 <script setup>
+import { computed, ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import { storeToRefs } from 'pinia'
 import { useAuthStore } from '@/stores/authStore'
 import { useNavigationStore } from '@/stores/useNavigationStore'
-import { defineEmits } from 'vue'
 
 const emit = defineEmits(['linkClicked'])
-const store = useAuthStore()
+const authStore = useAuthStore()
+const { isAuthenticated } = storeToRefs(authStore)
 const navigationStore = useNavigationStore()
 const router = useRouter()
 const route = useRoute()
@@ -77,7 +81,8 @@ const handleNavigation = link => {
   }
 }
 
-const links = [
+// Base des liens publics
+const baseLinks = ref([
   { name: 'Programmation', url: '#programmation' },
   { name: 'Concert', url: '#concert' },
   { name: 'Billeterie', url: '#billeterie' },
@@ -93,13 +98,20 @@ const links = [
       resetToHome()
     },
   },
-  {
-    name: 'Gestion',
-    url: '/gestion',
-    requiresAuth: true,
-    isRouterLink: true,
-  },
-]
+])
+
+// Lien protégé par authentification (Auth0)
+const gestionLink = { name: 'Gestion', url: '/gestion', requiresAuth: true, isRouterLink: true }
+
+// Liens visibles selon l'état d'authentification
+const visibleLinks = computed(() => {
+  const links = [...baseLinks.value]
+  // Ajoute "Gestion" uniquement si l'utilisateur est authentifié (authStore.isAuthenticated via Auth0)
+  if (isAuthenticated.value) {
+    links.push(gestionLink)
+  }
+  return links
+})
 
 const linkClasses = 'transform transition duration-200 hover:scale-125'
 const anchorClasses = 'relative group'
