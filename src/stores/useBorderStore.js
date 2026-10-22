@@ -1,21 +1,27 @@
 import { defineStore } from 'pinia'
+import { useAuthStore } from '@/stores/authStore'
 
 export const useBorderStore = defineStore('borderStore', {
   state: () => ({
-    festivalBorder: null, // Contiendra les données GeoJSON des bordures
+    festivalBorder: null,
     loading: false,
     error: null,
   }),
 
   actions: {
-    // Charger les données des bordures depuis Sanity et fusionner avec les données statiques
     async fetchFestivalBorder() {
       this.loading = true
       this.error = null
       try {
-        const response = await fetch('/.netlify/functions/fetchSanityData', {
+        const authStore = useAuthStore()
+        const token = await authStore.getToken
+
+        const response = await fetch('/.netlify/functions/fetchSanityDoc', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
           body: JSON.stringify({
             dataset: 'pateuf_private',
             query: "*[_type == 'festivalBorderCoordinates'][0]",
@@ -33,13 +39,11 @@ export const useBorderStore = defineStore('borderStore', {
           throw new Error('Aucune coordonnée trouvée dans la réponse.')
         }
 
-        // Transformer les coordonnées pour correspondre au format attendu par Mapbox
         const transformedCoordinates = data.result.coordinates.map(coord => [
           coord.longitude,
           coord.latitude,
         ])
 
-        // Données statiques définies localement
         const staticData = {
           type: 'FeatureCollection',
           features: [
@@ -55,7 +59,6 @@ export const useBorderStore = defineStore('borderStore', {
           ],
         }
 
-        // Assigner les données fusionnées au store
         this.festivalBorder = staticData
       } catch (error) {
         console.error(

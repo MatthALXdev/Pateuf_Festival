@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { useAuthStore } from '@/stores/authStore'
 
 export const useIconStore = defineStore('IconStore', {
   state: () => ({
@@ -13,9 +14,15 @@ export const useIconStore = defineStore('IconStore', {
       this.loading = true
       this.error = null
       try {
-        const response = await fetch('/.netlify/functions/fetchSanityData', {
+        const authStore = useAuthStore()
+        const token = await authStore.getToken
+
+        const response = await fetch('/.netlify/functions/fetchSanityDoc', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
           body: JSON.stringify({
             dataset: 'pateuf_private',
             query: "*[_type == 'iconFeature']",

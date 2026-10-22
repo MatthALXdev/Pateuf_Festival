@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { useAuthStore } from '@/stores/authStore'
 
 export const useSponsorStore = defineStore('sponsor', {
   state: () => ({
@@ -7,6 +8,9 @@ export const useSponsorStore = defineStore('sponsor', {
   actions: {
     async fetchSponsors() {
       try {
+        const authStore = useAuthStore()
+        const token = await authStore.getToken
+
         const query = `
           *[_type == "sponsor"]{
             name,
@@ -16,8 +20,12 @@ export const useSponsorStore = defineStore('sponsor', {
           }
         `
 
-        const response = await fetch('/.netlify/functions/fetchSanityData', {
+        const response = await fetch('/.netlify/functions/fetchSanityDoc', {
           method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
           body: JSON.stringify({
             dataset: 'pateuf_private',
             query,

@@ -1,5 +1,6 @@
 // src/store/useFaqStore.js
 import { defineStore } from 'pinia'
+import { useAuthStore } from '@/stores/authStore'
 
 export const useFaqStore = defineStore('faq', {
   state: () => ({
@@ -12,9 +13,15 @@ export const useFaqStore = defineStore('faq', {
       this.loading = true
       this.error = null
       try {
-        const response = await fetch('/.netlify/functions/fetchSanityData', {
+        const authStore = useAuthStore()
+        const token = await authStore.getToken
+
+        const response = await fetch('/.netlify/functions/fetchSanityDoc', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
           body: JSON.stringify({
             dataset: 'pateuf_private',
             query:
@@ -57,17 +64,21 @@ export const useFaqStore = defineStore('faq', {
 
     async updateFaqInSanity(id, updatedFields) {
       try {
+        const authStore = useAuthStore()
+        const token = await authStore.getToken
+
         const payload = {
           schema: 'faq',
           id,
           data: updatedFields,
         }
 
-        console.log('📦 Payload envoyé à updateSanityDoc:', payload)
-
         const response = await fetch('/.netlify/functions/updateSanityDoc', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
           body: JSON.stringify(payload),
         })
 
@@ -86,6 +97,9 @@ export const useFaqStore = defineStore('faq', {
 
     async submitNewQuestionToSanity(item) {
       try {
+        const authStore = useAuthStore()
+        const token = await authStore.getToken
+
         const timestamp = Date.now()
         const id = `faq-${timestamp}`
         const questionId = `q-${timestamp}`
@@ -102,7 +116,10 @@ export const useFaqStore = defineStore('faq', {
 
         const response = await fetch('/.netlify/functions/createSanityDoc', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
           body: JSON.stringify(payload),
         })
 
