@@ -78,5 +78,3 @@ async function preloadStores() {
     console.log('Montage app')
   }
 })()
-
-console.log('VITE_AUTH0_DOMAIN =', import.meta.env.VITE_AUTH0_DOMAIN)
