@@ -11,14 +11,17 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@auth0/auth0-vue": "^2.4.0",
     "@mapbox/mapbox-gl-draw": "github:mapbox/mapbox-gl-draw",
     "@sanity/client": "^6.27.1",
     "dotenv": "^16.4.7",
     "jsonwebtoken": "^9.0.2",
+    "jwks-rsa": "^3.2.0",
     "mapbox-gl": "^3.8.0",
     "netlify-identity-widget": "^1.9.2",
     "node-fetch": "^3.3.2",
     "pinia": "^2.3.1",
+    "rate-limiter-flexible": "^7.2.0",
     "tailwind-scrollbar": "^3.1.0",
     "vue": "^3.5.12",
     "vue-router": "^4.5.0",
